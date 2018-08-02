@@ -1,2 +1,2 @@
-# MssTools
-Usefull tools for java programs
+# MssUtils
+Usefull tools and utilities for java programs
