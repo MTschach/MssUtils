@@ -9,16 +9,38 @@
 // Apply the java-library plugin to add support for Java Library
 apply plugin: 'java-library'
 
-version = '1.0'
+version = '0.1.0'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+	dependencies {
+		classpath 'com.android.tools.build:gradle:2.2.2'
+		classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
+		classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.+'
+    }
+}
+
+
+allprojects {
+	repositories {
+		jcenter()
+	}
+}
+
 
 // In this section you declare where to find the dependencies of your project
 repositories {
-    // Use jcenter for resolving your dependencies.
-    // You can declare any Maven/Ivy/file repository here.
-    jcenter()
+   jcenter()
+	maven {
+		url "https://dl.bintray.com/mtschach/Mss"
+	}
 }
 
 dependencies {
+	compile 'Mss:MssLogging:0.1.1'
+
 	testCompile 'junit:junit:4.12'
 }
 
@@ -32,3 +54,7 @@ task fatJar(type: Jar) {
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
 }
+
+
+
+apply from: 'deploy.gradle'
