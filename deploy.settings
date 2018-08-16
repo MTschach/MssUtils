@@ -1,4 +1,6 @@
-version = 0.1.0
-groupId = MssUtils
+version = 0.1.1
+groupId = Mss
+artifactId = MssUtils
 licenses = ['Apache 2'] // or something else 
 id = MssUtils
+gitUrl = https://github.com/mtschach/MssUtils

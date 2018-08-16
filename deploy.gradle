@@ -1,22 +1,21 @@
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
-//apply plugin: 'com.github.dcendents.android-maven'
+
 apply plugin: 'com.jfrog.bintray'
 
 def artifact = new Properties()
-//artifact.load(new FileInputStream("deploy.settings"))
+artifact.load(new FileInputStream("deploy.settings"))
 
-version=artifact.version
 group=artifact.groupId
 
 install {
     repositories.mavenInstaller {
     pom.project {
             packaging 'aar'
-            groupId 'Mss'
-            artifactId 'MssUtils'
-            version '0.1.0'
-            name 'MssUtils' // pom.project.name must be same as bintray.pkg.name
+            groupId artifact.groupId
+            artifactId artifact.artifactId
+            version artifact.version
+            name artifact.artifactId // pom.project.name must be same as bintray.pkg.name
             inceptionYear '2015' // HARDCODED
             licenses {
                 license { // HARDCODED
@@ -53,7 +52,7 @@ def pomConfig = {
 	}
 	
 	scm {
-		url "https://github.com/mtschach/MssUtils"
+		url artifact.gitUrl
 	}
 }
 
@@ -65,15 +64,15 @@ publishing {
     publications {
         MyPublication(MavenPublication) {
             from components.java
-            groupId 'Mss'
-            artifactId 'MssUtils'
-            version '0.1.0'
+            groupId artifact.groupId
+            artifactId artifact.artifactId
+            version artifact.version
             
             pom.withXml {
             	def root = asNode()
             	root.appendNode('description', 'useful tools and utilities')
-            	root.appendNode('name', 'MssUtils')
-            	root.appendNode('url', 'https://github.com/mtschach/MssUtils')
+            	root.appendNode('name', artifact.artifactId)
+            	root.appendNode('url', artifact.gitUrl)
             	root.children().last() + pomConfig
 				}
         }
@@ -83,25 +82,22 @@ publishing {
 bintray {
 	user = properties.getProperty("bintray.user")
 	key = properties.getProperty("bintray.apikey")
-//	user = 'mtschach'
-//	key = 'ec96fd167731484f2826bfba330aa8c4703ce94f'
     
     publications = ['MyPublication']
 
     configurations = ['archives']
     pkg {
-        repo = "Mss"
-        name = 'MssUtils'
-//        websiteUrl = artifact.siteUrl
-        vcsUrl = 'https://github.com/MTschach/MssUtils.git'
+        repo = artifact.groupId
+        name = artifact.artifactId
+        desc = artifact.artifactId + ' V'+artifact.version
+        vcsUrl = artifact.gitUrl
         licenses = ['Apache-2.0']
         publish = true
+        publicDownloadNumbers = true
         version {
-            name = '0.1.0'
-            desc = 'MssUtils V0.1.0'
+            name = artifact.version
+            desc = artifact.artifactId+' V'+artifact.version
             released = new Date()
-//            vcsTag = '1.3.0'
-//            attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin']
         }
     }
 }
@@ -112,16 +108,10 @@ task sourcesJar(type: Jar) {
     classifier = 'sources'
 }
 
-//task javadoc(type: Javadoc) {
-//    source = android.sourceSets.main.java.srcDirs
-//    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-//}
-
 javadoc.failOnError = false
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     from javadoc.destinationDir
-    //options.encoding = 'UTF-8'
 }
 
 artifacts {
@@ -131,5 +121,4 @@ artifacts {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-//    compile 'com.android.support:appcompat-v7:21.0.2'
 }

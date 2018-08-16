@@ -9,7 +9,10 @@
 // Apply the java-library plugin to add support for Java Library
 apply plugin: 'java-library'
 
-version = '0.1.0'
+def artifact = new Properties()
+artifact.load(new FileInputStream("deploy.settings"))
+
+version = artifact.version
 
 buildscript {
     repositories {
@@ -39,7 +42,7 @@ repositories {
 }
 
 dependencies {
-	compile 'Mss:MssLogging:0.1.1'
+	compile 'Mss:MssLogging:latest.release'
 
 	testCompile 'junit:junit:4.12'
 }
