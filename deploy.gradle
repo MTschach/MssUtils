@@ -4,7 +4,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
 
 def artifact = new Properties()
-artifact.load(new FileInputStream("deploy.settings"))
+artifact.load(new FileInputStream("${project.projectDir}${File.separator}deploy.settings"))
 
 group=artifact.groupId
 

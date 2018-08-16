@@ -10,7 +10,7 @@
 apply plugin: 'java-library'
 
 def artifact = new Properties()
-artifact.load(new FileInputStream("deploy.settings"))
+artifact.load(new FileInputStream("${project.projectDir}${File.separator}deploy.settings"))
 
 version = artifact.version
 
