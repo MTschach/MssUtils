@@ -81,4 +81,19 @@ public class MssException extends Exception {
       return sb.toString();
    }
 
+
+   public Error getError() {
+      return this.error;
+   }
+
+
+   public int getAltErrorCode() {
+      return this.altErrorCode;
+   }
+
+
+   public String getAltErrorText() {
+      return this.altErrorText;
+   }
+
 }
