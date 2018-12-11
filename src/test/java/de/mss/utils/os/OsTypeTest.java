@@ -1,10 +1,24 @@
 package de.mss.utils.os;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
 
-public class OsTypeTest {
+import junit.framework.TestCase;
+
+public class OsTypeTest extends TestCase {
+
+   private String osName = null;
+
+
+   @Override
+   public void setUp() {
+      this.osName = System.getProperty("os.name");
+   }
+
+
+   @Override
+   public void tearDown() {
+      System.setProperty("os.name", this.osName);
+   }
 
    @Test
    public void testGetByName() {
@@ -24,6 +38,35 @@ public class OsTypeTest {
       o = OsType.getOsTypeByName("MacOS");
       checkOsType(OsType.MACOS, o);
 
+   }
+
+
+   @Test
+   public void testGetOsType() {
+      System.setProperty("os.name", "Linux");
+      OsType o = OsType.getOsType();
+
+      checkOsType(OsType.LINUX, o);
+
+      System.setProperty("os.name", "Windows");
+      o = OsType.getOsType();
+
+      checkOsType(OsType.WINDOWS, o);
+
+      System.setProperty("os.name", "MAC");
+      o = OsType.getOsType();
+
+      checkOsType(OsType.MACOS, o);
+
+      System.setProperty("os.name", "darwin");
+      o = OsType.getOsType();
+
+      checkOsType(OsType.MACOS, o);
+
+      System.setProperty("os.name", "egal");
+      o = OsType.getOsType();
+
+      checkOsType(OsType.UNKNOWN, o);
    }
 
 

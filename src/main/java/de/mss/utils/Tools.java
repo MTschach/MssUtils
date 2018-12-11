@@ -14,9 +14,48 @@ public class Tools {
    }
 
 
+   public static boolean isFalse(Boolean b) {
+      return (b != null && Boolean.FALSE.compareTo(b) == 0);
+   }
+
+
+   public static boolean isFalse(String s) {
+      String[] falses = {"0", "false", "n", "nein", "no"};
+      if (s == null)
+         return false;
+
+      for (String f : falses) {
+         if (f.equalsIgnoreCase(s))
+            return true;
+      }
+
+      return false;
+   }
+
+
+   public static boolean isTrue(Boolean b) {
+      return (b != null && Boolean.TRUE.compareTo(b) == 0);
+   }
+
+
+   public static boolean isTrue(String s) {
+      String[] falses = {"1", "true", "j", "ja", "yes"};
+      if (s == null)
+         return false;
+
+      for (String f : falses) {
+         if (f.equalsIgnoreCase(s))
+            return true;
+      }
+
+      return false;
+   }
+
+
    public static boolean isSet(String s) {
       return s != null && s.length() > 0;
    }
+
 
 
 }

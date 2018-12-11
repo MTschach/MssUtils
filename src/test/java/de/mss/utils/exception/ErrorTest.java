@@ -1,6 +1,7 @@
 package de.mss.utils.exception;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -23,5 +24,8 @@ public class ErrorTest {
       Error e2 = new Error(1, "Testfehler");
 
       assertTrue("Equals", e1.equals(e2));
+
+      assertFalse("False null", e1.equals(null));
+      assertFalse("False Code", e1.equals(new Error(2, "Testfehler2")));
    }
 }
