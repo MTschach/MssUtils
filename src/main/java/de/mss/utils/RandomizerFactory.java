@@ -5,12 +5,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+import de.mss.utils.exception.Error;
+import de.mss.utils.exception.ErrorCodes;
+import de.mss.utils.exception.MssException;
+
 public class RandomizerFactory {
 
    protected static HashMap<String, Random> randomizerMap = new HashMap<>();
 
    static {
       randomizerMap.put("default", new Random());
+   }
+
+
+   public RandomizerFactory() throws MssException {
+      throw new MssException(
+            new Error(
+                  ErrorCodes.ERROR_NOT_INSTANCABLE.getErrorCode(),
+                  ErrorCodes.ERROR_NOT_INSTANCABLE.getErrorText() + " (" + getClass().getName() + ")"));
    }
 
 

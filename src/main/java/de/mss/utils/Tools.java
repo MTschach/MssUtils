@@ -2,7 +2,19 @@ package de.mss.utils;
 
 import java.util.UUID;
 
+import de.mss.utils.exception.Error;
+import de.mss.utils.exception.ErrorCodes;
+import de.mss.utils.exception.MssException;
+
 public class Tools {
+
+   public Tools() throws MssException {
+      throw new MssException(
+            new Error(
+                  ErrorCodes.ERROR_NOT_INSTANCABLE.getErrorCode(),
+                  ErrorCodes.ERROR_NOT_INSTANCABLE.getErrorText() + " (" + getClass().getName() + ")"));
+   }
+
 
    public static String getId(String prefix) {
       return prefix + UUID.randomUUID().toString();

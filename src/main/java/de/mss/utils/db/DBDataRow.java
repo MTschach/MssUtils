@@ -8,23 +8,25 @@ public class DBDataRow {
 
 
    public DBDataRow(int size) {
-      values = new ArrayList<>(size);
+      this.values = new ArrayList<>();
+      for (int i = 0; i < size; i++ )
+         this.values.add(null);
    }
 
 
    public String getValue(int index) {
-      if (index < 0 || index >= values.size())
+      if (index < 0 || index >= this.values.size())
          return null;
 
-      return values.get(index);
+      return this.values.get(index);
    }
 
 
    public void setValue(String value, int index) {
-      if (index < 0 || index > values.size())
+      if (index < 0 || index >= this.values.size())
          return;
 
-      values.set(index, value);
+      this.values.set(index, value);
    }
 
 
@@ -33,13 +35,14 @@ public class DBDataRow {
    }
 
 
+   @Override
    public String toString() {
       StringBuilder sb = new StringBuilder();
 
-      sb.append(values.get(0));
+      sb.append(this.values.get(0));
 
-      for (int i = 1; i < values.size(); i++ ) {
-         String s = values.get(i);
+      for (int i = 1; i < this.values.size(); i++ ) {
+         String s = this.values.get(i);
          if (s == null)
             sb.append(";NULL");
          else if (s.length() > 255)

@@ -2,9 +2,23 @@ package de.mss.utils;
 
 import org.junit.Test;
 
+import de.mss.utils.exception.MssException;
 import junit.framework.TestCase;
 
 public class ToolsTest extends TestCase {
+
+   @SuppressWarnings("unused")
+   @Test
+   public void testToolsTest() {
+      try {
+         new Tools();
+         fail();
+      }
+      catch (MssException e) {
+         assertEquals("ErrorCode", 1, e.getError().getErrorCode());
+      }
+   }
+
 
    @Test
    public void testGetId() {
