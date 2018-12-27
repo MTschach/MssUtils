@@ -46,6 +46,7 @@ dependencies {
 	compile 'Mss:MssLogging:latest.release'
 
 	testCompile 'junit:junit:4.12'
+	testCompile group: 'org.easymock', name: 'easymock', version: '2.5'
 }
 
 //create a single Jar with all dependencies
