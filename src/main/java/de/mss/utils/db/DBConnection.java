@@ -1,12 +1,12 @@
 package de.mss.utils.db;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 
 import de.mss.logging.BaseLogger;
@@ -16,7 +16,7 @@ import de.mss.utils.exception.MssException;
 
 public class DBConnection {
 
-   protected ArrayList<DBServer> serverlist   = null;
+   protected List<DBServer> serverlist   = null;
    protected String              loggerName   = null;
 
    protected Connection          dbConnection = null;
@@ -34,12 +34,12 @@ public class DBConnection {
    public DBConnection(String loggerName, DBServer[] servers) {
       this.serverlist = new ArrayList<>();
       for (DBServer s : servers)
-         serverlist.add(s);
+         this.serverlist.add(s);
       this.loggerName = loggerName;
    }
 
 
-   public DBConnection(String loggerName, ArrayList<DBServer> list) {
+   public DBConnection(String loggerName, List<DBServer> list) {
       this.serverlist = list;
       this.loggerName = loggerName;
    }
@@ -60,7 +60,7 @@ public class DBConnection {
       if (isConnected())
          return;
 
-      for (DBServer server : serverlist) {
+      for (DBServer server : this.serverlist) {
          try {
             connectToDbServer(server);
             return;
@@ -75,29 +75,7 @@ public class DBConnection {
 
 
    private void connectToDbServer(DBServer server) throws MssException {
-      try {
-         Class.forName(server.getDbDriver()).newInstance();
-      }
-      catch (Exception e) {
-         throw new MssException(e);
-      }
-
-      try {
-         if (server.getDbDriver().contains("mysql"))
-            this.dbConnection = DriverManager
-                  .getConnection("jdbc:mysql://" + server.getConnectionUrl() + "/" + server.getDbname(), server.getUsername(), server.getPasswd());
-         else if (server.getDbDriver().contains("sybase"))
-            this.dbConnection = DriverManager
-                  .getConnection("jdbc:sybase:Tds:" + server.getConnectionUrl() + "/" + server.getDbname(), server.getUsername(), server.getPasswd());
-         else
-            throw new MssException(ErrorCodes.ERROR_DB_DRIVER_NOT_SUPPORTED, "Driver '" + server.getDbDriver() + "' is not supported");
-      }
-      catch (SQLException e) {
-         throw new MssException(e);
-      }
-      catch (MssException e) {
-         throw e;
-      }
+      this.dbConnection = DBConnectionFactory.getConnection(server);
    }
 
 
@@ -107,7 +85,7 @@ public class DBConnection {
       DBResult result = new DBResult();
 
       try {
-         PreparedStatement statement = dbConnection.prepareStatement(query);
+         PreparedStatement statement = this.dbConnection.prepareStatement(query);
          ResultSet res = statement.executeQuery();
 
          int resultSetNumber = 1;

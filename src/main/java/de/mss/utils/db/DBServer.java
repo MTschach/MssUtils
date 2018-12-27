@@ -10,21 +10,41 @@ public class DBServer {
    private String  options  = null;
    private String  dbDriver = null;
    private String  dbname   = null;
+   private String  connectionPrefix = null;
 
 
-   public DBServer(String driver, String h, Integer p, String dbn, String user, String pwd, String o) {
-      this.dbDriver = driver;
+   public DBServer(String s, String h, Integer p, String dbn, String user, String pwd, String o) {
+      DBServerEnum server = DBServerEnum.getByName(s);
+      this.dbDriver = server.getDriverClass();
       this.host = h;
       this.port = p;
       this.dbname = dbn;
       this.username = user;
       this.passwd = pwd;
       this.options = o;
+      this.connectionPrefix = server.getConnectionPrefix();
+   }
+
+
+   public DBServer(DBServerEnum server, String h, Integer p, String dbn, String user, String pwd, String o) {
+      this.dbDriver = server.getDriverClass();
+      this.host = h;
+      this.port = p;
+      this.dbname = dbn;
+      this.username = user;
+      this.passwd = pwd;
+      this.options = o;
+      this.connectionPrefix = server.getConnectionPrefix();
    }
 
 
    public void setDbDriver(String d) {
       this.dbDriver = d;
+   }
+
+
+   public void setConnectionPrefix(String p) {
+      this.connectionPrefix = p;
    }
 
 
@@ -63,6 +83,11 @@ public class DBServer {
    }
 
 
+   public String getConnectionPrefix() {
+      return this.connectionPrefix;
+   }
+
+
    public String getHost() {
       return this.host;
    }
@@ -98,8 +123,10 @@ public class DBServer {
    }
 
 
+   @Override
    public String toString() {
       StringBuilder sb = new StringBuilder("DBDriver : " + this.dbDriver + "\n");
+      sb.append("ConnectionPrefix : " + this.connectionPrefix + "\n");
       sb.append("Host : " + this.host + "\n");
       sb.append("Port : " + this.port + "\n");
       sb.append("DBName : " + this.dbname + "\n");
