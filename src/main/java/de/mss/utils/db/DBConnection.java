@@ -1,17 +1,11 @@
 package de.mss.utils.db;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import de.mss.logging.BaseLogger;
 import de.mss.logging.LoggingFactory;
-import de.mss.utils.StopWatch;
 import de.mss.utils.exception.ErrorCodes;
-import de.mss.utils.exception.MssException;
 
 public class DBConnection {
 
@@ -53,7 +47,7 @@ public class DBConnection {
    }
 
 
-   public void close() throws MssException {
+   public void close() throws DBException {
       if (!isConnected())
          return;
 
@@ -64,7 +58,7 @@ public class DBConnection {
    }
 
 
-   public void connect() throws MssException {
+   public void connect() throws DBException {
       if (isConnected())
          return;
 
@@ -74,13 +68,13 @@ public class DBConnection {
    }
 
 
-   public DBResult executeQuery(String loggingId, String query) throws MssException {
+   public DBResult executeQuery(String loggingId, String query) throws DBException {
       connect();
-      return getConnectionFromPool().executeQuery(loggingId, query);
+      return getConnectionFromPool(loggingId).executeQuery(loggingId, query);
    }
 
 
-   public int executeUpdate (String loggingId, String query) throws MssException {
+   public int executeUpdate(String loggingId, String query) throws DBException {
       connect();
       
       int ret = -1;
@@ -91,7 +85,7 @@ public class DBConnection {
             ret = r;
 
          if (r != ret)
-            throw new MssException(
+            throw new DBException(
                   ErrorCodes.ERROR_DB_POSSIBLE_DATA_INCONSISTENCE,
                   "Servers did return different results. possible data inconsistence. CHECK OUT");
       }
@@ -99,64 +93,6 @@ public class DBConnection {
       return ret;
    }
 
-
-   public int executeUpdate(String loggingId, PreparedStatement stmt) throws MssException {
-      if (stmt == null)
-         throw new MssException(ErrorCodes.ERROR_INVALID_PARAM, "The Statement is null");
-
-      getLogger().logDebug(loggingId, "Executing Update " + stmt);
-      StopWatch s = new StopWatch();
-      try {
-         int rows = stmt.executeUpdate();
-         getLogger().logDebug(loggingId, "Duration for executing update [" + s.getDuration() + "ms]");
-         getLogger().logDebug(loggingId, rows + " affected");
-         return rows;
-      }
-      catch (SQLException e) {
-         throw new MssException(e);
-      }
-   }
-
-
-   private DBResult handleMoreResults(DBResult result, int resultSetNumber, PreparedStatement stmt) throws MssException {
-      try {
-         if (stmt == null || !stmt.getMoreResults())
-            return result;
-      }
-      catch (SQLException e) {
-         throw new MssException(e);
-      }
-
-      try (ResultSet res = stmt.getResultSet()) {
-         result.addResult(getResultFromDb(resultSetNumber, res));
-
-         return handleMoreResults(result, resultSetNumber + 1, stmt);
-      }
-      catch (SQLException e) {
-         throw new MssException(e);
-      }
-   }
-
-
-   private DBSingleResult getResultFromDb(int resultSetNumber, ResultSet res) throws SQLException {
-      if (res == null)
-         return null;
-
-      ResultSetMetaData meta = res.getMetaData();
-
-      DBSingleResult result = new DBSingleResult(resultSetNumber, meta.getColumnCount());
-      for (int i = 0; i < meta.getColumnCount(); i++ )
-         result.setColumnName(meta.getColumnName(i), i);
-
-      while (res.next()) {
-         int row = result.addRow() - 1;
-         for (int i = 0; i < result.getColumnCount(); i++ ) {
-            result.setValue(i, row, res.getString(i + 1));
-         }
-      }
-
-      return result;
-   }
 
 
    protected BaseLogger getLogger() {
@@ -175,7 +111,11 @@ public class DBConnection {
 
 
    public boolean isConnected() {
-      return (this.dbConnection != null);
+      for (DBSingleConnection c : this.connectionList) {
+         if (!c.isConnected())
+            return false;
+      }
+      return true;
    }
 
 
@@ -184,14 +124,14 @@ public class DBConnection {
    }
 
 
-   private DBSingleConnection getConnectionFromPool() throws MssException {
-      return getConnectionFromPool(3);
+   private DBSingleConnection getConnectionFromPool(String loggingId) throws DBException {
+      return getConnectionFromPool(loggingId, 3);
    }
 
 
-   private DBSingleConnection getConnectionFromPool(int retry) throws MssException {
+   private DBSingleConnection getConnectionFromPool(String loggingId, int retry) throws DBException {
       if (retry < 0)
-         throw new MssException(ErrorCodes.ERROR_DB_NO_AVAILABLE_CONNECTION, "No Connection found");
+         throw new DBException(ErrorCodes.ERROR_DB_NO_AVAILABLE_CONNECTION, "No Connection found");
 
       DBSingleConnection ret = null;
       long usedCount = Long.MAX_VALUE;
@@ -204,12 +144,14 @@ public class DBConnection {
       }
 
       if (ret == null) {
+         getLogger().logDebug(loggingId, "no available connection found, retry");
          try {
             Thread.sleep(25);
-            return getConnectionFromPool(retry - 1);
+            return getConnectionFromPool(loggingId, retry - 1);
          }
          catch (InterruptedException e) {
-            throw new MssException(e);
+            getLogger().logError(loggingId, e);
+            throw new DBException(e);
          }
       }
 

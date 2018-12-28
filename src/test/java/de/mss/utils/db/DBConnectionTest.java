@@ -1,10 +1,14 @@
 package de.mss.utils.db;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.easymock.EasyMock;
 import org.junit.Test;
 
+import de.mss.utils.exception.MssException;
 import junit.framework.TestCase;
 
 public class DBConnectionTest extends TestCase {
@@ -27,99 +31,148 @@ public class DBConnectionTest extends TestCase {
    }
 
 
-   //   @Test
-   //   public void testConnectOk() throws MssException {
-   //      @SuppressWarnings("resource")
-   //      Connection connectionMock = EasyMock.createMock(Connection.class);
-   //
-   //      DBConnectionFactory.initConnectionFactory(connectionMock);
-   //
-   //      DBConnection con = new DBConnection("default", prepareServerList(1));
-   //
-   //      EasyMock.replay(connectionMock);
-   //      con.connect();
-   //      assertTrue("Connected", con.isConnected());
-   //   }
-   //
-   //
-   //   @Test
-   //   public void testConnectOkAlreadyConnected() throws MssException {
-   //      @SuppressWarnings("resource")
-   //      Connection connectionMock = EasyMock.createMock(Connection.class);
-   //
-   //      DBConnectionFactory.initConnectionFactory(connectionMock);
-   //
-   //      DBConnection con = new DBConnection("default", prepareServerList(1));
-   //
-   //      con.connect();
-   //      assertTrue("Connected", con.isConnected());
-   //
-   //      con.connect();
-   //      assertTrue("Connected 2", con.isConnected());
-   //   }
-   //
-   //
-   //   @Test
-   //   public void testConnectNook() {
-   //      DBConnection con = new DBConnection("default", prepareServerList(1));
-   //
-   //      try {
-   //         con.connect();
-   //      }
-   //      catch (MssException e) {
-   //         assertEquals("ErrorCode", 1002, e.getError().getErrorCode());
-   //      }
-   //   }
-   //
-   //
-   //   @Test
-   //   public void testCloseOk() throws SQLException, MssException {
-   //      DBConnection con = new DBConnection("default", prepareServerList(1));
-   //      con.close();
-   //      assertFalse("Connected", con.isConnected());
-   //
-   //      @SuppressWarnings("resource")
-   //      Connection connectionMock = EasyMock.createMock(Connection.class);
-   //      connectionMock.close();
-   //      EasyMock.expectLastCall();
-   //      EasyMock.expect(connectionMock.isClosed()).andReturn(Boolean.FALSE);
-   //
-   //      DBConnectionFactory.initConnectionFactory(connectionMock);
-   //
-   //      EasyMock.replay(connectionMock);
-   //      con.connect();
-   //      assertTrue("Connected before close", con.isConnected());
-   //
-   //      con.close();
-   //      assertFalse("Connected after close", con.isConnected());
-   //
-   //      EasyMock.verify(connectionMock);
-   //   }
-   //
-   //
-   //   @Test
-   //   public void testCloseOkAlreadyClosed() throws SQLException, MssException {
-   //      DBConnection con = new DBConnection("default", prepareServerList(1));
-   //      con.close();
-   //      assertFalse("Connected", con.isConnected());
-   //
-   //      @SuppressWarnings("resource")
-   //      Connection connectionMock = EasyMock.createMock(Connection.class);
-   //      EasyMock.expect(connectionMock.isClosed()).andReturn(Boolean.TRUE);
-   //
-   //      DBConnectionFactory.initConnectionFactory(connectionMock);
-   //
-   //      EasyMock.replay(connectionMock);
-   //      con.connect();
-   //      assertTrue("Connected before close", con.isConnected());
-   //
-   //      con.close();
-   //      assertFalse("Connected after close", con.isConnected());
-   //
-   //      EasyMock.verify(connectionMock);
-   //   }
-   //
-   //
+   @Test
+   public void testConnectAndClose() throws SQLException {
+      List<DBServer> list = prepareServerList(1);
+
+      @SuppressWarnings("resource")
+      Connection connectionMock = EasyMock.createMock(Connection.class);
+      EasyMock.expect(connectionMock.isClosed()).andReturn(Boolean.FALSE).times(3);
+      connectionMock.close();
+      EasyMock.expectLastCall();
+      
+      DBConnectionFactory.initConnectionFactory(connectionMock);
+
+      DBConnection con = new DBConnection("default", list);
+      
+      EasyMock.replay(connectionMock);
+
+      assertFalse("before connect", con.isConnected());
+
+      try {
+         con.connect();
+      }
+      catch (MssException e) {
+         e.printStackTrace();
+         fail();
+      }
+
+      assertTrue("after connect", con.isConnected());
+
+      try {
+         con.close();
+      }
+      catch (MssException e) {
+         e.printStackTrace();
+         fail();
+      }
+
+      assertFalse("after close", con.isConnected());
+
+      EasyMock.verify(connectionMock);
+   }
+
+
+   @Test
+   public void testConnectAlready() throws SQLException {
+      List<DBServer> list = prepareServerList(1);
+
+      @SuppressWarnings("resource")
+      Connection connectionMock = EasyMock.createMock(Connection.class);
+
+      DBConnectionFactory.initConnectionFactory(connectionMock);
+
+      DBConnection con = new DBConnection("default", list);
+
+      assertFalse("before connect", con.isConnected());
+
+      try {
+         con.connect();
+      }
+      catch (MssException e) {
+         e.printStackTrace();
+         fail();
+      }
+
+      assertTrue("after connect", con.isConnected());
+
+      try {
+         con.connect();
+      }
+      catch (MssException e) {
+         e.printStackTrace();
+         fail();
+      }
+
+      assertTrue("after re-connect", con.isConnected());
+   }
+
+
+   @Test
+   public void testConnectAndCloseAlreadyClosed() throws SQLException {
+      List<DBServer> list = prepareServerList(1);
+
+      @SuppressWarnings("resource")
+      Connection connectionMock = EasyMock.createMock(Connection.class);
+
+      DBConnectionFactory.initConnectionFactory(connectionMock);
+
+      DBConnection con = new DBConnection("default", list);
+
+      assertFalse("before connect", con.isConnected());
+
+      try {
+         con.close();
+      }
+      catch (MssException e) {
+         e.printStackTrace();
+         fail();
+      }
+
+      assertFalse("after close", con.isConnected());
+   }
+
+
+   @Test
+   public void testCloseMultiple() throws SQLException {
+      List<DBServer> list = prepareServerList(2);
+
+      @SuppressWarnings("resource")
+      Connection connectionMock = EasyMock.createMock(Connection.class);
+      EasyMock.expect(connectionMock.isClosed()).andReturn(Boolean.FALSE).times(3).andReturn(Boolean.TRUE);
+      connectionMock.close();
+      EasyMock.expectLastCall();
+
+      DBConnectionFactory.initConnectionFactory(connectionMock);
+
+      EasyMock.replay(connectionMock);
+
+      DBConnection con = new DBConnection("default", list);
+
+      assertFalse("before connect", con.isConnected());
+
+      try {
+         con.connect();
+      }
+      catch (MssException e) {
+         e.printStackTrace();
+         fail();
+      }
+
+      try {
+         con.close();
+      }
+      catch (MssException e) {
+         e.printStackTrace();
+         fail();
+      }
+
+      assertFalse("after close", con.isConnected());
+
+      EasyMock.verify(connectionMock);
+   }
+
+
    private List<DBServer> prepareServerList(int count) {
       ArrayList<DBServer> list = new ArrayList<>();
 
