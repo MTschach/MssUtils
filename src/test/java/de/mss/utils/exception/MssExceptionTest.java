@@ -23,6 +23,16 @@ public class MssExceptionTest extends TestCase {
 
 
    @Test
+   public void testErrorCodeThrowableMsg() {
+      MssException e = new MssException(
+            new Error(ErrorCodes.ERROR_NOT_INSTANCABLE.getErrorCode(), ErrorCodes.ERROR_NOT_INSTANCABLE.getErrorText()),
+            new Throwable(),
+            "own errortext");
+      checkException(e, ErrorCodes.ERROR_NOT_INSTANCABLE, true, "own errortext", 0);
+   }
+
+
+   @Test
    public void testErrorCodeMessage() {
       MssException e = new MssException(
             new Error(ErrorCodes.ERROR_NOT_INSTANCABLE.getErrorCode(), ErrorCodes.ERROR_NOT_INSTANCABLE.getErrorText()),
@@ -42,6 +52,13 @@ public class MssExceptionTest extends TestCase {
    public void testThrowable() {
       MssException e = new MssException(new Throwable());
       checkException(e, ErrorCodes.NO_ERROR, true, null, 0);
+   }
+
+
+   @Test
+   public void testThrowableMsg() {
+      MssException e = new MssException(new Throwable(), "own errortext");
+      checkException(e, ErrorCodes.NO_ERROR, true, "own errortext", 0);
    }
 
 

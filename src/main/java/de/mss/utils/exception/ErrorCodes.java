@@ -10,6 +10,12 @@ public class ErrorCodes {
 
    public static final Error ERROR_DB_DRIVER_NOT_SUPPORTED  = new Error(1001, "Driver is not supported");
    public static final Error ERROR_DB_NO_SERVER_TO_CONNECT  = new Error(1002, "no connectable server found");
+   public static final Error ERROR_DB_NO_AVAILABLE_CONNECTION = new Error(1003, "no available connection found");
+   public static final Error ERROR_DB_POSSIBLE_DATA_INCONSISTENCE = new Error(1004, "possible data inconsistence");
+   public static final Error ERROR_DB_CLOSE_FAILURE               = new Error(1005, "failure whie closing");
+   public static final Error ERROR_DB_EXECUTE_QUERY_FAILURE       = new Error(1006, "failure while executing query");
+   public static final Error ERROR_DB_EXECUTE_UPDATE_FAILURE      = new Error(1007, "failure while executing update");
+   public static final Error ERROR_DB_RESUTSET_FAILURE            = new Error(1008, "failure while handling resut set");
 
 
 

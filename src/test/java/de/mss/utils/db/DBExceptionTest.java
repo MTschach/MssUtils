@@ -28,6 +28,17 @@ public class DBExceptionTest extends MssExceptionTest {
 
 
    @Test
+   public void testErrorThrowableMsg() {
+      DBException e = new DBException(
+            new Error(ErrorCodes.ERROR_NOT_INSTANCABLE.getErrorCode(), ErrorCodes.ERROR_NOT_INSTANCABLE.getErrorText()),
+            new Throwable(),
+            "own errortext");
+
+      checkException(e, ErrorCodes.ERROR_NOT_INSTANCABLE, true, "own errortext", 0);
+   }
+
+
+   @Test
    public void testErrorString() {
       DBException e = new DBException(
             new Error(ErrorCodes.ERROR_NOT_INSTANCABLE.getErrorCode(), ErrorCodes.ERROR_NOT_INSTANCABLE.getErrorText()),
@@ -52,6 +63,15 @@ public class DBExceptionTest extends MssExceptionTest {
       DBException e = new DBException(new Throwable());
 
       checkException(e, ErrorCodes.NO_ERROR, true, null, 0);
+   }
+
+
+   @Override
+   @Test
+   public void testThrowableMsg() {
+      DBException e = new DBException(new Throwable(), "own errortext");
+
+      checkException(e, ErrorCodes.NO_ERROR, true, "own errortext", 0);
    }
 
 

@@ -1,26 +1,23 @@
 package de.mss.utils.db;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 import de.mss.logging.BaseLogger;
 import de.mss.logging.LoggingFactory;
+import de.mss.utils.StopWatch;
 import de.mss.utils.exception.ErrorCodes;
 import de.mss.utils.exception.MssException;
 
 public class DBConnection {
 
    protected List<DBServer> serverlist   = null;
+   protected List<DBSingleConnection> connectionList = null;
    protected String              loggerName   = null;
-
-   protected Connection          dbConnection = null;
-
    private BaseLogger            logger       = null;
 
 
@@ -28,6 +25,7 @@ public class DBConnection {
       this.serverlist = new ArrayList<>();
       this.serverlist.add(server);
       this.loggerName = loggerName;
+      init();
    }
 
 
@@ -36,23 +34,33 @@ public class DBConnection {
       for (DBServer s : servers)
          this.serverlist.add(s);
       this.loggerName = loggerName;
+      init();
    }
 
 
    public DBConnection(String loggerName, List<DBServer> list) {
       this.serverlist = list;
       this.loggerName = loggerName;
+      init();
    }
 
 
-   public void close() throws SQLException {
+   private void init() {
+      this.connectionList = new ArrayList<>();
+      for (DBServer s : this.serverlist) {
+         this.connectionList.add(new DBSingleConnection(this.loggerName, s));
+      }
+   }
+
+
+   public void close() throws MssException {
       if (!isConnected())
          return;
 
-      if (!this.dbConnection.isClosed())
-         this.dbConnection.close();
-
-      this.dbConnection = null;
+      for (DBSingleConnection c : this.connectionList) {
+         if (!c.isClosed())
+            c.close();
+      }
    }
 
 
@@ -60,48 +68,73 @@ public class DBConnection {
       if (isConnected())
          return;
 
-      for (DBServer server : this.serverlist) {
-         try {
-            connectToDbServer(server);
-            return;
-         }
-         catch (Exception e) {
-            getLogger().log(Level.SEVERE, "could not connect to server " + server.toString(), e);
-         }
+      for (DBSingleConnection c : this.connectionList) {
+         c.connect();
       }
-
-      throw new MssException(ErrorCodes.ERROR_DB_NO_SERVER_TO_CONNECT);
    }
 
 
-   private void connectToDbServer(DBServer server) throws MssException {
-      this.dbConnection = DBConnectionFactory.getConnection(server);
-   }
-
-
-   public DBResult executeQuery(String query) throws MssException {
+   public DBResult executeQuery(String loggingId, String query) throws MssException {
       connect();
+      return getConnectionFromPool().executeQuery(loggingId, query);
+   }
 
-      DBResult result = new DBResult();
 
+   public int executeUpdate (String loggingId, String query) throws MssException {
+      connect();
+      
+      int ret = -1;
+      
+      for (DBSingleConnection c : this.connectionList) {
+         int r = c.executeUpdate(loggingId, query);
+         if (ret == -1)
+            ret = r;
+
+         if (r != ret)
+            throw new MssException(
+                  ErrorCodes.ERROR_DB_POSSIBLE_DATA_INCONSISTENCE,
+                  "Servers did return different results. possible data inconsistence. CHECK OUT");
+      }
+      
+      return ret;
+   }
+
+
+   public int executeUpdate(String loggingId, PreparedStatement stmt) throws MssException {
+      if (stmt == null)
+         throw new MssException(ErrorCodes.ERROR_INVALID_PARAM, "The Statement is null");
+
+      getLogger().logDebug(loggingId, "Executing Update " + stmt);
+      StopWatch s = new StopWatch();
       try {
-         PreparedStatement statement = this.dbConnection.prepareStatement(query);
-         ResultSet res = statement.executeQuery();
+         int rows = stmt.executeUpdate();
+         getLogger().logDebug(loggingId, "Duration for executing update [" + s.getDuration() + "ms]");
+         getLogger().logDebug(loggingId, rows + " affected");
+         return rows;
+      }
+      catch (SQLException e) {
+         throw new MssException(e);
+      }
+   }
 
-         int resultSetNumber = 1;
-         while (res != null) {
-            result.addResult(getResultFromDb(resultSetNumber++ , res));
 
-            res = null;
-            if (statement.getMoreResults())
-               res = statement.getResultSet();
-         }
+   private DBResult handleMoreResults(DBResult result, int resultSetNumber, PreparedStatement stmt) throws MssException {
+      try {
+         if (stmt == null || !stmt.getMoreResults())
+            return result;
       }
       catch (SQLException e) {
          throw new MssException(e);
       }
 
-      return null;
+      try (ResultSet res = stmt.getResultSet()) {
+         result.addResult(getResultFromDb(resultSetNumber, res));
+
+         return handleMoreResults(result, resultSetNumber + 1, stmt);
+      }
+      catch (SQLException e) {
+         throw new MssException(e);
+      }
    }
 
 
@@ -148,5 +181,38 @@ public class DBConnection {
 
    public void setLoggerName(String loggerName) {
       this.loggerName = loggerName;
+   }
+
+
+   private DBSingleConnection getConnectionFromPool() throws MssException {
+      return getConnectionFromPool(3);
+   }
+
+
+   private DBSingleConnection getConnectionFromPool(int retry) throws MssException {
+      if (retry < 0)
+         throw new MssException(ErrorCodes.ERROR_DB_NO_AVAILABLE_CONNECTION, "No Connection found");
+
+      DBSingleConnection ret = null;
+      long usedCount = Long.MAX_VALUE;
+
+      for (DBSingleConnection c : this.connectionList) {
+         if (!c.isBusy() && c.getUsedCount() < usedCount) {
+            ret = c;
+            usedCount = c.getUsedCount();
+         }
+      }
+
+      if (ret == null) {
+         try {
+            Thread.sleep(25);
+            return getConnectionFromPool(retry - 1);
+         }
+         catch (InterruptedException e) {
+            throw new MssException(e);
+         }
+      }
+
+      return ret;
    }
 }

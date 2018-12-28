@@ -20,6 +20,11 @@ public class MssException extends Exception {
    }
 
 
+   public MssException(Error ec, Throwable t, String msg) {
+      init(ec, 0, msg, t);
+   }
+
+
    public MssException(Error ec, String msg) {
       init(ec, 0, msg, null);
    }
@@ -32,6 +37,11 @@ public class MssException extends Exception {
 
    public MssException(Throwable t) {
       init(null, 0, null, t);
+   }
+
+
+   public MssException(Throwable t, String msg) {
+      init(null, 0, msg, t);
    }
 
 

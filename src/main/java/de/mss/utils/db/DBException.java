@@ -19,6 +19,11 @@ public class DBException extends MssException {
    }
 
 
+   public DBException(Error ec, Throwable t, String msg) {
+      super(ec, t, msg);
+   }
+
+
    public DBException(Error ec, String msg) {
       super(ec, msg);
    }
@@ -31,6 +36,11 @@ public class DBException extends MssException {
 
    public DBException(Throwable t) {
       super(t);
+   }
+
+
+   public DBException(Throwable t, String msg) {
+      super(t, msg);
    }
 
 

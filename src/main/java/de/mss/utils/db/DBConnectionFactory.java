@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import de.mss.utils.exception.MssException;
-
 public class DBConnectionFactory {
 
    private static Connection connection = null;
@@ -16,7 +14,7 @@ public class DBConnectionFactory {
    }
 
 
-   public static Connection getConnection(DBServer server) throws MssException {
+   public static Connection getConnection(DBServer server) throws DBException {
       if (connection != null)
          return connection;
 
@@ -24,7 +22,7 @@ public class DBConnectionFactory {
          Class.forName(server.getDbDriver()).newInstance();
       }
       catch (Exception e) {
-         throw new MssException(e);
+         throw new DBException(e, "Driver '" + server.getDbDriver() + "' not found");
       }
 
       try {
@@ -35,7 +33,7 @@ public class DBConnectionFactory {
                      server.getPasswd());
       }
       catch (SQLException e) {
-         throw new MssException(e);
+         throw new DBException(e, "Could not get a connection from the DriverManager");
       }
    }
 }
