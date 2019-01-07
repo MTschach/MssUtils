@@ -321,6 +321,52 @@ public class DBConnectionTest extends TestCase {
    }
 
 
+   @Test
+   public void testGetConnectionBusy() {
+      List<DBServer> list = prepareServerList(1);
+      String loggingId = Tools.getId(new Throwable());
+
+      @SuppressWarnings("resource")
+      Connection connectionMock = EasyMock.createMock(Connection.class);
+
+      DBConnectionFactory.initConnectionFactory(connectionMock);
+      DBConnectionForTest con = new DBConnectionForTest("default", list);
+      for (DBSingleConnection c : con.getConnectionList()) {
+         ((DBSingleConnectionForTest)c).setBusy(true);
+      }
+      try {
+         con.executeQuery(loggingId, "select * from table1");
+         fail();
+      }
+      catch (DBException e) {
+         assertEquals("ErrorCode", 1003, e.getError().getErrorCode());
+      }
+   }
+
+
+   @Test
+   public void testGetConnectionUsedCount() {
+      List<DBServer> list = prepareServerList(1);
+      String loggingId = Tools.getId(new Throwable());
+
+      @SuppressWarnings("resource")
+      Connection connectionMock = EasyMock.createMock(Connection.class);
+
+      DBConnectionFactory.initConnectionFactory(connectionMock);
+      DBConnectionForTest con = new DBConnectionForTest("default", list);
+      for (DBSingleConnection c : con.getConnectionList()) {
+         ((DBSingleConnectionForTest)c).setUsedCount(Long.MAX_VALUE);
+      }
+      try {
+         con.executeQuery(loggingId, "select * from table1");
+         fail();
+      }
+      catch (DBException e) {
+         assertEquals("ErrorCode", 1003, e.getError().getErrorCode());
+      }
+   }
+
+
    private List<DBServer> prepareServerList(int count) {
       ArrayList<DBServer> list = new ArrayList<>();
 
@@ -329,5 +375,62 @@ public class DBConnectionTest extends TestCase {
       }
 
       return list;
+   }
+
+
+   protected class DBSingleConnectionForTest extends DBSingleConnection {
+
+      public DBSingleConnectionForTest(String l, DBServer s) {
+         super(l, s);
+      }
+
+
+      public DBSingleConnectionForTest(String l, DBServer s, Connection c) {
+         super(l, s, c);
+      }
+
+
+      public void setUsedCount(long l) {
+         this.usedCount = l;
+      }
+
+
+      public void setBusy(boolean b) {
+         this.busy = b;
+      }
+   }
+
+
+   protected class DBConnectionForTest extends DBConnection {
+
+      public DBConnectionForTest(String loggerName, DBServer server) {
+         super(loggerName, server);
+         init();
+      }
+
+
+      public DBConnectionForTest(String loggerName, DBServer[] servers) {
+         super(loggerName, servers);
+         init();
+      }
+
+
+      public DBConnectionForTest(String loggerName, List<DBServer> list) {
+         super(loggerName, list);
+         init();
+      }
+
+
+      private void init() {
+         this.connectionList = new ArrayList<>();
+         for (DBServer s : this.serverlist) {
+            this.connectionList.add(new DBSingleConnectionForTest(this.loggerName, s));
+         }
+      }
+
+
+      public List<DBSingleConnection> getConnectionList() {
+         return this.connectionList;
+      }
    }
 }

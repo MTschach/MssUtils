@@ -17,8 +17,8 @@ public class DBSingleConnection {
    protected Connection dbConnection = null;
    protected String     loggerName   = null;
    private BaseLogger   logger       = null;
-   private boolean      busy         = false;
-   private long         usedCount    = 0;
+   protected boolean    busy         = false;
+   protected long       usedCount    = 0;
 
 
    public DBSingleConnection(String l, DBServer s) {
