@@ -28,6 +28,7 @@ public class Error {
    }
 
 
+   @Override
    public String toString() {
       return "Error : " + this.errorCode + "(" + this.errorText + ")";
    }
