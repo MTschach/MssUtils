@@ -119,11 +119,6 @@ public class DBConnection {
    }
 
 
-   public void setLoggerName(String loggerName) {
-      this.loggerName = loggerName;
-   }
-
-
    private DBSingleConnection getConnectionFromPool(String loggingId) throws DBException {
       return getConnectionFromPool(loggingId, 3);
    }
