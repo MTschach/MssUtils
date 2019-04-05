@@ -6,29 +6,44 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
-import de.mss.logging.BaseLogger;
-import de.mss.logging.LoggingFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import de.mss.utils.StopWatch;
+import de.mss.utils.Tools;
 import de.mss.utils.exception.ErrorCodes;
 
 public class DBSingleConnection {
 
    protected DBServer   server       = null;
    protected Connection dbConnection = null;
-   protected String     loggerName   = null;
-   private BaseLogger   logger       = null;
    protected boolean    busy         = false;
    protected long       usedCount    = 0;
 
 
+   protected static String        loggerName = null;
+   private static volatile Logger logger     = null;
+
+
+   protected static Logger getLogger() {
+      if (logger != null)
+         return logger;
+      if (!Tools.isSet(DBSingleConnection.loggerName))
+         DBSingleConnection.loggerName = "default";
+
+      logger = LogManager.getLogger(DBSingleConnection.loggerName);
+      return logger;
+   }
+
+
    public DBSingleConnection(String l, DBServer s) {
-      this.loggerName = l;
+      DBSingleConnection.loggerName = l;
       this.server = s;
    }
 
 
    public DBSingleConnection(String l, DBServer s, Connection c) {
-      this.loggerName = l;
+      DBSingleConnection.loggerName = l;
       this.server = s;
       this.dbConnection = c;
    }
@@ -97,15 +112,15 @@ public class DBSingleConnection {
       int resultSetNumber = 1;
       this.busy = true;
       this.usedCount++ ;
-      getLogger().logDebug(loggingId, "Executing Query " + stmt);
+      getLogger().debug("<" + loggingId + "> Executing Query " + stmt);
       StopWatch s = new StopWatch();
       try (ResultSet res = stmt.executeQuery()) {
-         getLogger().logDebug(loggingId, "Duration for executing query [" + s.getDuration() + "ms]");
+         getLogger().debug("<" + loggingId + "> Duration for executing query [" + s.getDuration() + "ms]");
          if (res != null)
             result.addResult(getResultFromDb(resultSetNumber, res));
 
          result = handleMoreResults(result, resultSetNumber + 1, stmt);
-         getLogger().logDebug(loggingId, "Result " + result);
+         getLogger().debug("<" + loggingId + "> Result " + result);
       }
       catch (SQLException e) {
          throw new DBException(ErrorCodes.ERROR_DB_EXECUTE_QUERY_FAILURE, e, "Failure while executing query");
@@ -131,15 +146,15 @@ public class DBSingleConnection {
       if (stmt == null)
          throw new DBException(ErrorCodes.ERROR_INVALID_PARAM, "The Statement is null");
 
-      getLogger().logDebug(loggingId, "Executing Update " + stmt);
+      getLogger().debug("<" + loggingId + "> Executing Update " + stmt);
       int rows = 0;
       this.usedCount++ ;
       StopWatch s = new StopWatch();
       try {
          this.busy = true;
          rows = stmt.executeUpdate();
-         getLogger().logDebug(loggingId, "Duration for executing update [" + s.getDuration() + "ms]");
-         getLogger().logDebug(loggingId, rows + " affected");
+         getLogger().debug("<" + loggingId + "> Duration for executing update [" + s.getDuration() + "ms]");
+         getLogger().debug("<" + loggingId + "> " + rows + " affected");
       }
       catch (SQLException e) {
          throw new DBException(ErrorCodes.ERROR_DB_EXECUTE_UPDATE_FAILURE, e, "Failure while executing update");
@@ -192,18 +207,8 @@ public class DBSingleConnection {
    }
 
 
-   protected BaseLogger getLogger() {
-      if (this.logger != null)
-         return this.logger;
-
-      this.logger = LoggingFactory.createInstance(this.loggerName, new BaseLogger());
-
-      return this.logger;
-   }
-
-
    public String getLoggerName() {
-      return this.loggerName;
+      return DBSingleConnection.loggerName;
    }
 
 

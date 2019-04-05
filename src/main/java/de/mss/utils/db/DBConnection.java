@@ -3,22 +3,36 @@ package de.mss.utils.db;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.mss.logging.BaseLogger;
-import de.mss.logging.LoggingFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import de.mss.utils.Tools;
 import de.mss.utils.exception.ErrorCodes;
 
 public class DBConnection {
 
    protected List<DBServer> serverlist   = null;
    protected List<DBSingleConnection> connectionList = null;
-   protected String              loggerName   = null;
-   private BaseLogger            logger       = null;
+   protected static String            loggerName     = null;
+
+   private static volatile Logger     logger         = null;
+
+
+   protected static Logger getLogger() {
+      if (logger != null)
+         return logger;
+      if (!Tools.isSet(DBConnection.loggerName))
+         DBConnection.loggerName = "default";
+
+      logger = LogManager.getLogger(DBConnection.loggerName);
+      return logger;
+   }
 
 
    public DBConnection(String loggerName, DBServer server) {
       this.serverlist = new ArrayList<>();
       this.serverlist.add(server);
-      this.loggerName = loggerName;
+      DBConnection.loggerName = loggerName;
       init();
    }
 
@@ -27,14 +41,14 @@ public class DBConnection {
       this.serverlist = new ArrayList<>();
       for (DBServer s : servers)
          this.serverlist.add(s);
-      this.loggerName = loggerName;
+      DBConnection.loggerName = loggerName;
       init();
    }
 
 
    public DBConnection(String loggerName, List<DBServer> list) {
       this.serverlist = list;
-      this.loggerName = loggerName;
+      DBConnection.loggerName = loggerName;
       init();
    }
 
@@ -95,18 +109,8 @@ public class DBConnection {
 
 
 
-   protected BaseLogger getLogger() {
-      if (this.logger != null)
-         return this.logger;
-
-      this.logger = LoggingFactory.createInstance(this.loggerName, new BaseLogger());
-
-      return this.logger;
-   }
-
-
    public String getLoggerName() {
-      return this.loggerName;
+      return DBConnection.loggerName;
    }
 
 
@@ -139,13 +143,13 @@ public class DBConnection {
       }
 
       if (ret == null) {
-         getLogger().logDebug(loggingId, "no available connection found, retry");
+         getLogger().debug("<" + loggingId + "> no available connection found, retry");
          try {
             Thread.sleep(25);
             return getConnectionFromPool(loggingId, retry - 1);
          }
          catch (InterruptedException e) {
-            getLogger().logError(loggingId, e);
+            getLogger().error(e);
             throw new DBException(e);
          }
       }
