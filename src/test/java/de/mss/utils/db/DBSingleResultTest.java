@@ -1,6 +1,7 @@
 package de.mss.utils.db;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 import org.junit.Test;
 
@@ -95,6 +96,13 @@ public class DBSingleResultTest extends TestCase {
       assertEquals("getIntegerValue", Integer.valueOf(1), res.getValue("COL1", 0, Integer.valueOf(2), (Integer)null));
       assertEquals("getIntegerValue", Integer.valueOf(2), res.getValue("COL0", 0, Integer.valueOf(2), (Integer)null));
 
+      assertEquals("getBigIntegerValue", BigInteger.valueOf(1), res.getValue(1, 0, (BigInteger)null));
+      assertEquals("getBigIntegerValue", BigInteger.valueOf(1), res.getValue(1, 0, BigInteger.valueOf(2), (BigInteger)null));
+      assertEquals("getBigIntegerValue", BigInteger.valueOf(2), res.getValue(4, 0, BigInteger.valueOf(2), (BigInteger)null));
+      assertEquals("getBigIntegerValue", BigInteger.valueOf(1), res.getValue("COL1", 0, (BigInteger)null));
+      assertEquals("getBigIntegerValue", BigInteger.valueOf(1), res.getValue("COL1", 0, BigInteger.valueOf(2), (BigInteger)null));
+      assertEquals("getBigIntegerValue", BigInteger.valueOf(2), res.getValue("COL0", 0, BigInteger.valueOf(2), (BigInteger)null));
+
       assertEquals("getBooleanValue", Boolean.TRUE, res.getValue(2, 0, (Boolean)null));
       assertEquals("getBooleanValue", Boolean.TRUE, res.getValue(2, 0, Boolean.FALSE, (Boolean)null));
       assertEquals("getBooleanValue", Boolean.FALSE, res.getValue(4, 0, Boolean.FALSE, (Boolean)null));
@@ -108,6 +116,20 @@ public class DBSingleResultTest extends TestCase {
       assertEquals("getBigDecimalValue", BigDecimal.valueOf(1.234), res.getValue("COL3", 0, (BigDecimal)null));
       assertEquals("getBigDecimalValue", BigDecimal.valueOf(1.234), res.getValue("COL3", 0, BigDecimal.valueOf(2.34), (BigDecimal)null));
       assertEquals("getBigDecimalValue", BigDecimal.valueOf(2.34), res.getValue("COL0", 0, BigDecimal.valueOf(2.34), (BigDecimal)null));
+
+      assertEquals("getDoubleValue", Double.valueOf(1.234), res.getValue(3, 0, (Double)null));
+      assertEquals("getDoubleValue", Double.valueOf(1.234), res.getValue(3, 0, Double.valueOf(2.34), (Double)null));
+      assertEquals("getDoubleValue", Double.valueOf(2.34), res.getValue(4, 0, Double.valueOf(2.34), (Double)null));
+      assertEquals("getDoubleValue", Double.valueOf(1.234), res.getValue("COL3", 0, (Double)null));
+      assertEquals("getDoubleValue", Double.valueOf(1.234), res.getValue("COL3", 0, Double.valueOf(2.34), (Double)null));
+      assertEquals("getDoubleValue", Double.valueOf(2.34), res.getValue("COL0", 0, Double.valueOf(2.34), (Double)null));
+
+      assertEquals("getFloatValue", Float.valueOf("1.234"), res.getValue(3, 0, (Float)null));
+      assertEquals("getFloatValue", Float.valueOf("1.234"), res.getValue(3, 0, Float.valueOf("2.34"), (Float)null));
+      assertEquals("getFloatValue", Float.valueOf("2.34"), res.getValue(4, 0, Float.valueOf("2.34"), (Float)null));
+      assertEquals("getFloatValue", Float.valueOf("1.234"), res.getValue("COL3", 0, (Float)null));
+      assertEquals("getFloatValue", Float.valueOf("1.234"), res.getValue("COL3", 0, Float.valueOf("2.34"), (Float)null));
+      assertEquals("getFloatValue", Float.valueOf("2.34"), res.getValue("COL0", 0, Float.valueOf("2.34"), (Float)null));
 
    }
 }

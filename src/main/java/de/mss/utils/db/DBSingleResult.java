@@ -1,6 +1,7 @@
 package de.mss.utils.db;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 import de.mss.utils.Tools;
@@ -90,7 +91,39 @@ public class DBSingleResult {
       try {
          return Integer.valueOf(s);
       }
-      catch (Exception e) {}
+      catch (Exception e) {
+         Tools.doNullLog(e);
+      }
+      return defaultValue;
+   }
+
+
+   public BigInteger getValue(String columnName, int row, BigInteger asBigIntegerValue) {
+      return getValue(getColumnIndex(columnName), row, (BigInteger)null, asBigIntegerValue);
+   }
+
+
+   public BigInteger getValue(String columnName, int row, BigInteger defaultValue, BigInteger asBigIntegerValue) {
+      return getValue(getColumnIndex(columnName), row, defaultValue, asBigIntegerValue);
+   }
+
+
+   public BigInteger getValue(int column, int row, BigInteger asBigIntegerValue) {
+      return getValue(column, row, (BigInteger)null, asBigIntegerValue);
+   }
+
+
+   public BigInteger getValue(int column, int row, BigInteger defaultValue, @SuppressWarnings("unused") BigInteger asBigIntegerValue) {
+      String s = getValue(column, row, (String)null, (String)null);
+      if (s == null)
+         return defaultValue;
+
+      try {
+         return new BigInteger(s);
+      }
+      catch (Exception e) {
+         Tools.doNullLog(e);
+      }
       return defaultValue;
    }
 
@@ -118,7 +151,69 @@ public class DBSingleResult {
       try {
          return new BigDecimal(s);
       }
-      catch (Exception e) {}
+      catch (Exception e) {
+         Tools.doNullLog(e);
+      }
+      return defaultValue;
+   }
+
+
+   public Double getValue(String columnName, int row, Double asDoubleValue) {
+      return getValue(getColumnIndex(columnName), row, (Double)null, asDoubleValue);
+   }
+
+
+   public Double getValue(String columnName, int row, Double defaultValue, Double asDoubleValue) {
+      return getValue(getColumnIndex(columnName), row, defaultValue, asDoubleValue);
+   }
+
+
+   public Double getValue(int column, int row, Double asDoubleValue) {
+      return getValue(column, row, (Double)null, asDoubleValue);
+   }
+
+
+   public Double getValue(int column, int row, Double defaultValue, @SuppressWarnings("unused") Double asDoubleValue) {
+      String s = getValue(column, row, (String)null, (String)null);
+      if (s == null)
+         return defaultValue;
+
+      try {
+         return new Double(s);
+      }
+      catch (Exception e) {
+         Tools.doNullLog(e);
+      }
+      return defaultValue;
+   }
+
+
+   public Float getValue(String columnName, int row, Float asFloatValue) {
+      return getValue(getColumnIndex(columnName), row, (Float)null, asFloatValue);
+   }
+
+
+   public Float getValue(String columnName, int row, Float defaultValue, Float asFloatValue) {
+      return getValue(getColumnIndex(columnName), row, defaultValue, asFloatValue);
+   }
+
+
+   public Float getValue(int column, int row, Float asFloatValue) {
+      return getValue(column, row, (Float)null, asFloatValue);
+   }
+
+
+   public Float getValue(int column, int row, Float defaultValue, @SuppressWarnings("unused") Float asFloatValue) {
+      String s = getValue(column, row, (String)null, (String)null);
+      if (s == null)
+         return defaultValue;
+
+      try {
+         return new Float(s);
+      }
+      catch (Exception e) {
+         Tools.doNullLog(e);
+      }
       return defaultValue;
    }
 
@@ -183,6 +278,7 @@ public class DBSingleResult {
    }
 
 
+   @Override
    public String toString() {
       StringBuilder sb = new StringBuilder();
 

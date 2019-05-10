@@ -56,7 +56,7 @@ public class DBConnection {
    private void init() {
       this.connectionList = new ArrayList<>();
       for (DBServer s : this.serverlist) {
-         this.connectionList.add(new DBSingleConnection(this.loggerName, s));
+         this.connectionList.add(new DBSingleConnection(DBConnection.loggerName, s));
       }
    }
 

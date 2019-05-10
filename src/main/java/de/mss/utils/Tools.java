@@ -2,6 +2,9 @@ package de.mss.utils;
 
 import java.util.UUID;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+
 import de.mss.utils.exception.Error;
 import de.mss.utils.exception.ErrorCodes;
 import de.mss.utils.exception.MssException;
@@ -69,5 +72,8 @@ public class Tools {
    }
 
 
+   public static void doNullLog(Exception e) {
+      LogManager.getLogger("default").log(Level.OFF, "Error", e);
+   }
 
 }

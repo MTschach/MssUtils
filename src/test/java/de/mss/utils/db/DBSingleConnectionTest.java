@@ -40,6 +40,29 @@ public class DBSingleConnectionTest extends TestCase {
 
 
    @Test
+   public void testConstructorNullLogger() {
+      DBServer server = prepareServer(1);
+
+      DBSingleConnection c = new DBSingleConnection(null, server);
+
+      assertNull("DBConnection", c.getDbConnection());
+      assertNull("LoggerName", c.getLoggerName());
+      assertFalse("is busy", c.isBusy());
+      assertEquals("Used count", Long.valueOf(0), Long.valueOf(c.getUsedCount()));
+
+      @SuppressWarnings("resource")
+      Connection connectionMock = EasyMock.createMock(Connection.class);
+      DBConnectionFactory.initConnectionFactory(connectionMock);
+      c = new DBSingleConnection("", server, connectionMock);
+
+      assertEquals("DBConnection", connectionMock, c.getDbConnection());
+      assertEquals("LoggerName", "", c.getLoggerName());
+      assertFalse("is busy", c.isBusy());
+      assertEquals("Used count", Long.valueOf(0), Long.valueOf(c.getUsedCount()));
+   }
+
+
+   @Test
    public void testCloseConnectionIsNull() {
       DBServer server = prepareServer(1);
 
@@ -501,7 +524,7 @@ public class DBSingleConnectionTest extends TestCase {
       EasyMock.expect(connectionMock.prepareStatement(EasyMock.eq("select * from table1"))).andReturn(stmtMock);
 
       DBConnectionFactory.initConnectionFactory(connectionMock);
-      DBSingleConnection c = new DBSingleConnection("default", server, connectionMock);
+      DBSingleConnection c = new DBSingleConnection("", server, connectionMock);
 
       EasyMock.replay(connectionMock, stmtMock, resultMock, metaMock);
       DBResult res = null;

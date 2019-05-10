@@ -211,7 +211,7 @@ public class DBConnectionTest extends TestCase {
       EasyMock.expect(connectionMock.prepareStatement(EasyMock.eq("select * from table1"))).andReturn(stmtMock);
 
       DBConnectionFactory.initConnectionFactory(connectionMock);
-      DBConnection con = new DBConnection("default", list);
+      DBConnection con = new DBConnection("", list);
 
       EasyMock.replay(connectionMock, stmtMock, resultMock, metaMock);
       DBResult res = null;

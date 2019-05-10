@@ -1,6 +1,7 @@
 package de.mss.utils.db;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 import org.junit.Test;
 
@@ -103,6 +104,54 @@ public class DBResultTest extends TestCase {
       assertEquals("Col0", Integer.valueOf(1), res.getValue(1, "COLUMN2", 0, Integer.valueOf(2), (Integer)null));
       assertEquals("Col0", Integer.valueOf(2), res.getValue(-1, "COLUMN2", 0, Integer.valueOf(2), (Integer)null));
       assertEquals("Col0", Integer.valueOf(2), res.getValue(10, "COLUMN2", 0, Integer.valueOf(2), (Integer)null));
+   }
+
+
+   @Test
+   public void testGetBigIntegerValue() {
+      DBResult res = setupResult();
+
+      assertEquals("Col0", BigInteger.valueOf(1), res.getValue(1, 2, 0, (BigInteger)null));
+      assertEquals("Col0", BigInteger.valueOf(1), res.getValue(1, 2, 0, BigInteger.valueOf(2), (BigInteger)null));
+      assertEquals("Col0", BigInteger.valueOf(2), res.getValue(-1, 2, 0, BigInteger.valueOf(2), (BigInteger)null));
+      assertEquals("Col0", BigInteger.valueOf(2), res.getValue(10, 2, 0, BigInteger.valueOf(2), (BigInteger)null));
+
+      assertEquals("Col0", BigInteger.valueOf(1), res.getValue(1, "COLUMN2", 0, (BigInteger)null));
+      assertEquals("Col0", BigInteger.valueOf(1), res.getValue(1, "COLUMN2", 0, BigInteger.valueOf(2), (BigInteger)null));
+      assertEquals("Col0", BigInteger.valueOf(2), res.getValue(-1, "COLUMN2", 0, BigInteger.valueOf(2), (BigInteger)null));
+      assertEquals("Col0", BigInteger.valueOf(2), res.getValue(10, "COLUMN2", 0, BigInteger.valueOf(2), (BigInteger)null));
+   }
+
+
+   @Test
+   public void testGetDoubleValue() {
+      DBResult res = setupResult();
+
+      assertEquals("Col0", Double.valueOf(1), res.getValue(1, 2, 0, (Double)null));
+      assertEquals("Col0", Double.valueOf(1), res.getValue(1, 2, 0, Double.valueOf(2), (Double)null));
+      assertEquals("Col0", Double.valueOf(2), res.getValue(-1, 2, 0, Double.valueOf(2), (Double)null));
+      assertEquals("Col0", Double.valueOf(2), res.getValue(10, 2, 0, Double.valueOf(2), (Double)null));
+
+      assertEquals("Col0", Double.valueOf(1), res.getValue(1, "COLUMN2", 0, (Double)null));
+      assertEquals("Col0", Double.valueOf(1), res.getValue(1, "COLUMN2", 0, Double.valueOf(2), (Double)null));
+      assertEquals("Col0", Double.valueOf(2), res.getValue(-1, "COLUMN2", 0, Double.valueOf(2), (Double)null));
+      assertEquals("Col0", Double.valueOf(2), res.getValue(10, "COLUMN2", 0, Double.valueOf(2), (Double)null));
+   }
+
+
+   @Test
+   public void testGetFloatValue() {
+      DBResult res = setupResult();
+
+      assertEquals("Col0", Float.valueOf(1), res.getValue(1, 2, 0, (Float)null));
+      assertEquals("Col0", Float.valueOf(1), res.getValue(1, 2, 0, Float.valueOf(2), (Float)null));
+      assertEquals("Col0", Float.valueOf(2), res.getValue(-1, 2, 0, Float.valueOf(2), (Float)null));
+      assertEquals("Col0", Float.valueOf(2), res.getValue(10, 2, 0, Float.valueOf(2), (Float)null));
+
+      assertEquals("Col0", Float.valueOf(1), res.getValue(1, "COLUMN2", 0, (Float)null));
+      assertEquals("Col0", Float.valueOf(1), res.getValue(1, "COLUMN2", 0, Float.valueOf(2), (Float)null));
+      assertEquals("Col0", Float.valueOf(2), res.getValue(-1, "COLUMN2", 0, Float.valueOf(2), (Float)null));
+      assertEquals("Col0", Float.valueOf(2), res.getValue(10, "COLUMN2", 0, Float.valueOf(2), (Float)null));
    }
 
 
