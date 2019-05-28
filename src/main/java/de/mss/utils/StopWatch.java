@@ -18,10 +18,18 @@ public class StopWatch {
    }
 
 
+   public void reset() {
+      this.start = new Date();
+      this.stop = null;
+   }
+
+
    public long getDuration() {
       if (this.stop == null)
          stop();
 
       return this.stop.getTime() - this.start.getTime();
    }
+
+
 }

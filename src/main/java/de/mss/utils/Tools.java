@@ -76,4 +76,9 @@ public class Tools {
       LogManager.getLogger("default").log(Level.OFF, "Error", e);
    }
 
+
+   public static String formatLoggingId(String loggingId) {
+      return "<" + loggingId + "> ";
+   }
+
 }
