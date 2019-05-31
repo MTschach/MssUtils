@@ -1,34 +1,41 @@
 package de.mss.utils;
 
-import java.util.Date;
+public class StopWatch implements IfStopWatch {
 
-public class StopWatch {
-
-   private java.util.Date start = null;
-   private java.util.Date stop  = null;
+   private long start = 0l;
+   private long stop  = 0l;
 
 
    public StopWatch() {
-      this.start = new Date();
+      start();
    }
 
 
+   @Override
+   public void start() {
+      this.start = System.currentTimeMillis();
+   }
+
+
+   @Override
    public void stop() {
-      this.stop = new Date();
+      this.stop = System.currentTimeMillis();
    }
 
 
+   @Override
    public void reset() {
-      this.start = new Date();
-      this.stop = null;
+      this.start = System.currentTimeMillis();
+      this.stop = 0l;
    }
 
 
+   @Override
    public long getDuration() {
-      if (this.stop == null)
+      if (this.stop <= 0l)
          stop();
 
-      return this.stop.getTime() - this.start.getTime();
+      return this.stop - this.start;
    }
 
 

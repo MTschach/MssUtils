@@ -90,4 +90,14 @@ public class ToolsTest extends TestCase {
    }
 
 
+   @Test
+   public void testGetLoggingId() {
+      assertEquals("<myLoggingId> ", Tools.formatLoggingId("myLoggingId"));
+   }
+
+
+   @Test
+   public void testDoNullLog() {
+      Tools.doNullLog(new Exception("ein Test"));
+   }
 }
