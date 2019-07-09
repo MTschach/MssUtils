@@ -22,6 +22,17 @@ public abstract class RunnableApp {
       }
    }
 
+
+   public void setWaitInterval(int w) {
+      this.waitInterval = w;
+   }
+
+
+   public int getWaitInterval() {
+      return this.waitInterval;
+   }
+
+
    protected boolean checkRunning() {
       return this.running;
    }
