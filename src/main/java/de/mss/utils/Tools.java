@@ -1,5 +1,6 @@
 package de.mss.utils;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 import org.apache.logging.log4j.Level;
@@ -54,11 +55,11 @@ public class Tools {
 
 
    public static boolean isTrue(String s) {
-      String[] falses = {"1", "true", "j", "ja", "yes"};
+      String[] trues = {"1", "true", "j", "ja", "yes"};
       if (s == null)
          return false;
 
-      for (String f : falses) {
+      for (String f : trues) {
          if (f.equalsIgnoreCase(s))
             return true;
       }
@@ -79,6 +80,111 @@ public class Tools {
 
    public static String formatLoggingId(String loggingId) {
       return "<" + loggingId + "> ";
+   }
+
+
+   public static Integer conBigDecimal2Integer(BigDecimal value) {
+      return (value == null ? null : Integer.valueOf(value.intValue()));
+   }
+
+
+   public static int conBigDecimal2PrimitiveInteger(BigDecimal value) {
+      return (value == null ? 0 : value.intValue());
+   }
+
+
+   public static Double conBigDecimal2Double(BigDecimal value) {
+      return (value == null ? null : Double.valueOf(value.doubleValue()));
+   }
+
+
+   public static double conBigDecimal2PrimitiveDouble(BigDecimal value) {
+      return (value == null ? 0 : value.doubleValue());
+   }
+
+
+   public static Float conBigDecimal2Float(BigDecimal value) {
+      return (value == null ? null : Float.valueOf(value.floatValue()));
+   }
+
+
+   public static float conBigDecimal2PrimitiveFloat(BigDecimal value) {
+      return (value == null ? 0 : value.floatValue());
+   }
+
+
+   public static BigDecimal conInteger2BigDecimal(Integer value) {
+      return (value == null ? null : BigDecimal.valueOf(value.intValue()));
+   }
+
+
+   public static Double conInteger2Double(Integer value) {
+      return (value == null ? null : Double.valueOf(value.doubleValue()));
+   }
+
+
+   public static double conInteger2PrimitiveDouble(Integer value) {
+      return (value == null ? 0 : value.doubleValue());
+   }
+
+
+   public static Float conInteger2Float(Integer value) {
+      return (value == null ? null : Float.valueOf(value.floatValue()));
+   }
+
+
+   public static float conInteger2PrimitiveFloat(Integer value) {
+      return (value == null ? 0 : value.floatValue());
+   }
+
+
+   public static BigDecimal conDouble2BigDecimal(Double value) {
+      return (value == null ? null : BigDecimal.valueOf(value.doubleValue()));
+   }
+
+
+   public static Integer conDouble2Integer(Double value) {
+      return (value == null ? null : Integer.valueOf(value.intValue()));
+   }
+
+
+   public static int conDouble2PrimitiveInteger(Double value) {
+      return (value == null ? 0 : value.intValue());
+   }
+
+
+   public static Float conDouble2Float(Double value) {
+      return (value == null ? null : Float.valueOf(value.floatValue()));
+   }
+
+
+   public static float conDouble2PrimitiveFloat(Double value) {
+      return (value == null ? 0 : value.floatValue());
+   }
+
+
+   public static BigDecimal conFloat2BigDecimal(Float value) {
+      return (value == null ? null : BigDecimal.valueOf(value.doubleValue()));
+   }
+
+
+   public static Integer conFloat2Integer(Float value) {
+      return (value == null ? null : Integer.valueOf(value.intValue()));
+   }
+
+
+   public static int conFloat2PrimitiveInteger(Float value) {
+      return (value == null ? 0 : value.intValue());
+   }
+
+
+   public static Double conFloat2Double(Float value) {
+      return (value == null ? null : Double.valueOf(value.doubleValue()));
+   }
+
+
+   public static double conFloat2PrimitiveDouble(Float value) {
+      return (value == null ? 0 : value.doubleValue());
    }
 
 }

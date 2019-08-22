@@ -4,7 +4,6 @@ import java.util.Random;
 
 import org.junit.Test;
 
-import de.mss.utils.exception.MssException;
 import junit.framework.TestCase;
 
 public class RandomizerFactoryTest extends TestCase {
@@ -12,19 +11,6 @@ public class RandomizerFactoryTest extends TestCase {
    @Override
    public void tearDown() {
       RandomizerFactory.closeAllInstances();
-   }
-
-
-   @SuppressWarnings("unused")
-   @Test
-   public void testRandomizerFactoryTest() {
-      try {
-         new RandomizerFactory();
-         fail();
-      }
-      catch (MssException e) {
-         assertEquals("ErrorCode", 1, e.getError().getErrorCode());
-      }
    }
 
 

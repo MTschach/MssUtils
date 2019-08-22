@@ -1,5 +1,7 @@
 package de.mss.utils;
 
+import java.math.BigDecimal;
+
 import org.junit.Test;
 
 import de.mss.utils.exception.MssException;
@@ -99,5 +101,79 @@ public class ToolsTest extends TestCase {
    @Test
    public void testDoNullLog() {
       Tools.doNullLog(new Exception("ein Test"));
+   }
+
+
+   @Test
+   public void testConBigDecimal() {
+      BigDecimal value = new BigDecimal("1.2");
+
+      assertNull("null to Integer", Tools.conBigDecimal2Integer(null));
+      assertTrue("null to int", Tools.conBigDecimal2PrimitiveInteger(null) == 0);
+      assertNull("null to Double", Tools.conBigDecimal2Double(null));
+      assertTrue("null to double", Tools.conBigDecimal2PrimitiveDouble(null) == 0);
+      assertNull("null to Float", Tools.conBigDecimal2Float(null));
+      assertTrue("null to float", Tools.conBigDecimal2PrimitiveFloat(null) == 0);
+
+      assertEquals("1.2 to Integer", Integer.valueOf(1), Tools.conBigDecimal2Integer(value));
+      assertTrue("1.2 to int", Tools.conBigDecimal2PrimitiveInteger(value) == 1);
+      assertEquals("1.2 to Double", Double.valueOf(1.2d), Tools.conBigDecimal2Double(value));
+      assertTrue("1.2 to double", Tools.conBigDecimal2PrimitiveDouble(value) == 1.2d);
+      assertEquals("1.2 to Float", Float.valueOf(1.2f), Tools.conBigDecimal2Float(value));
+      assertTrue("1.2 to float", Tools.conBigDecimal2PrimitiveFloat(value) == 1.2f);
+   }
+
+
+   @Test
+   public void testConDouble() {
+      Double value = new Double("1.2");
+
+      assertNull("null to Integer", Tools.conDouble2Integer(null));
+      assertTrue("null to int", Tools.conDouble2PrimitiveInteger(null) == 0);
+      assertNull("null to BigDecimal", Tools.conDouble2BigDecimal(null));
+      assertNull("null to Float", Tools.conDouble2Float(null));
+      assertTrue("null to float", Tools.conDouble2PrimitiveFloat(null) == 0);
+
+      assertEquals("1.2 to Integer", Integer.valueOf(1), Tools.conDouble2Integer(value));
+      assertTrue("1.2 to int", Tools.conDouble2PrimitiveInteger(value) == 1);
+      assertEquals("1.2 to BigDecimal", BigDecimal.valueOf(1.2d), Tools.conDouble2BigDecimal(value));
+      assertEquals("1.2 to Float", Float.valueOf(1.2f), Tools.conDouble2Float(value));
+      assertTrue("1.2 to float", Tools.conDouble2PrimitiveFloat(value) == 1.2f);
+   }
+
+
+   @Test
+   public void testConFloat() {
+      Float value = new Float("1.2");
+
+      assertNull("null to Integer", Tools.conFloat2Integer(null));
+      assertTrue("null to int", Tools.conFloat2PrimitiveInteger(null) == 0);
+      assertNull("null to BigDecimal", Tools.conFloat2BigDecimal(null));
+      assertNull("null to Double", Tools.conFloat2Double(null));
+      assertTrue("null to double", Tools.conFloat2PrimitiveDouble(null) == 0);
+
+      assertEquals("1.2 to Integer", Integer.valueOf(1), Tools.conFloat2Integer(value));
+      assertTrue("1.2 to int", Tools.conFloat2PrimitiveInteger(value) == 1);
+      assertEquals("1.2 to BigDecimal", BigDecimal.valueOf(1.2f), Tools.conFloat2BigDecimal(value));
+      assertEquals("1.2 to Double", Double.valueOf(1.2f), Tools.conFloat2Double(value));
+      assertTrue("1.2 to double", Tools.conFloat2PrimitiveDouble(value) == 1.2f);
+   }
+
+
+   @Test
+   public void testConInteger() {
+      Integer value = Integer.valueOf(2);
+
+      assertNull("null to Float", Tools.conInteger2Float(null));
+      assertTrue("null to float", Tools.conInteger2PrimitiveFloat(null) == 0);
+      assertNull("null to BigDecimal", Tools.conInteger2BigDecimal(null));
+      assertNull("null to Double", Tools.conInteger2Double(null));
+      assertTrue("null to double", Tools.conInteger2PrimitiveDouble(null) == 0);
+
+      assertEquals("2 to Float", Float.valueOf(2), Tools.conInteger2Float(value));
+      assertTrue("2 to float", Tools.conInteger2PrimitiveFloat(value) == 2f);
+      assertEquals("2 to BigDecimal", BigDecimal.valueOf(2), Tools.conInteger2BigDecimal(value));
+      assertEquals("2 to Double", Double.valueOf(2f), Tools.conInteger2Double(value));
+      assertTrue("2 to double", Tools.conInteger2PrimitiveDouble(value) == 2d);
    }
 }

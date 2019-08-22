@@ -18,7 +18,7 @@ public class RandomizerFactory {
    }
 
 
-   public RandomizerFactory() throws MssException {
+   private RandomizerFactory() throws MssException {
       throw new MssException(
             new Error(
                   ErrorCodes.ERROR_NOT_INSTANCABLE.getErrorCode(),
