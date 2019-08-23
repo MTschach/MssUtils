@@ -1,6 +1,11 @@
 package de.mss.utils;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Vector;
 
 import org.junit.Test;
 
@@ -41,7 +46,7 @@ public class ToolsTest extends TestCase {
    @Test
    public void testIsSet() {
       assertTrue("Is set 1", Tools.isSet("1"));
-      assertFalse("Is not set null", Tools.isSet(null));
+      assertFalse("Is not set null", Tools.isSet((String)null));
       assertFalse("Is not set ''", Tools.isSet(""));
    }
 
@@ -175,5 +180,62 @@ public class ToolsTest extends TestCase {
       assertEquals("2 to BigDecimal", BigDecimal.valueOf(2), Tools.conInteger2BigDecimal(value));
       assertEquals("2 to Double", Double.valueOf(2f), Tools.conInteger2Double(value));
       assertTrue("2 to double", Tools.conInteger2PrimitiveDouble(value) == 2d);
+   }
+
+
+   @Test
+   public void testIsEmptyMap() {
+      Map<String, String> map = null;
+      assertTrue("null", Tools.isEmpty(map));
+      map = new HashMap<>();
+      assertTrue("empty", Tools.isEmpty(map));
+      map.put("1", "2");
+      assertFalse(Tools.isEmpty(map));
+   }
+
+
+   @Test
+   public void testIsEmptyList() {
+      List<String> list = null;
+      assertTrue("null", Tools.isEmpty(list));
+      list = new ArrayList<>();
+      assertTrue("empty", Tools.isEmpty(list));
+      list.add("1");
+      assertFalse(Tools.isEmpty(list));
+   }
+
+
+   @Test
+   public void testIsEmptyVector() {
+      Vector<String> vec = null;
+      assertTrue("null", Tools.isEmpty(vec));
+      vec = new Vector<>();
+      assertTrue("empty", Tools.isEmpty(vec));
+      vec.add("1");
+      assertFalse(Tools.isEmpty(vec));
+   }
+
+
+   @Test
+   public void testIsSetByte() {
+      byte[] value = null;
+      assertFalse("null", Tools.isSet(value));
+      value = new byte[0];
+      assertFalse("empty", Tools.isSet(value));
+      value = new byte[1];
+      value[0] = 48;
+      assertTrue(Tools.isSet(value));
+   }
+
+
+   @Test
+   public void testIsSetObject() {
+      String[] value = null;
+      assertFalse("null", Tools.isSet(value));
+      value = new String[0];
+      assertFalse("empty", Tools.isSet(value));
+      value = new String[1];
+      value[0] = "48";
+      assertTrue(Tools.isSet(value));
    }
 }

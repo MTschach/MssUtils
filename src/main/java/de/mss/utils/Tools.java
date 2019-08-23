@@ -1,7 +1,10 @@
 package de.mss.utils;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.Vector;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -65,6 +68,31 @@ public class Tools {
       }
 
       return false;
+   }
+
+
+   public static boolean isEmpty(Map<?, ?> m) {
+      return m == null || m.isEmpty();
+   }
+
+
+   public static boolean isEmpty(List<?> l) {
+      return l == null || l.isEmpty();
+   }
+
+
+   public static boolean isEmpty(Vector<?> v) {
+      return v == null || v.isEmpty();
+   }
+
+
+   public static boolean isSet(byte[] b) {
+      return b != null && b.length > 0;
+   }
+
+
+   public static boolean isSet(Object[] o) {
+      return o != null && o.length > 0;
    }
 
 
@@ -186,5 +214,6 @@ public class Tools {
    public static double conFloat2PrimitiveDouble(Float value) {
       return (value == null ? 0 : value.doubleValue());
    }
+
 
 }
