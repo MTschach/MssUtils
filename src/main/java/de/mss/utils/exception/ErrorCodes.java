@@ -16,7 +16,9 @@ public class ErrorCodes {
    public static final Error ERROR_DB_EXECUTE_QUERY_FAILURE       = new Error(1006, "failure while executing query");
    public static final Error ERROR_DB_EXECUTE_UPDATE_FAILURE      = new Error(1007, "failure while executing update");
    public static final Error ERROR_DB_RESUTSET_FAILURE            = new Error(1008, "failure while handling resut set");
-
+   public static final Error ERROR_PROTOCOL_NOT_SUPPORTED         = new Error(1009, "the protocol is not supported");
+   public static final Error ERROR_NOT_PARSABLE                   = new Error(1010, "the value is not parsable");
+   public static final Error ERROR_UNABLE_TO_EXECUTE_REQUEST      = new Error(1011, "unable to execute therest request");
 
 
    public ErrorCodes() throws MssException {
