@@ -182,5 +182,15 @@ public class Server {
       else
          setHost(u);
    }
+
+
+   public String getCompleteUrl() {
+      //@formatter:off
+      return (this.protocol == null ? "" : this.protocol.getProtocol() + "://") +
+             (this.host == null ? "" : this.host) + 
+             (this.port == null ? "" : ":" + this.port.toString()) +
+             (this.url == null ? "" : "/" + this.url);
+      //@formatter:on
+   }
 }
 

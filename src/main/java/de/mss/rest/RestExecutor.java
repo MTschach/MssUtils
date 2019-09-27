@@ -67,7 +67,11 @@ public class RestExecutor {
          }
          catch (MssException e) {
             getLogger()
-                  .debug(de.mss.utils.Tools.formatLoggingId(loggingId) + "could not execute request for server " + server.getServer().getUrl(), e);
+                  .debug(
+                        de.mss.utils.Tools.formatLoggingId(loggingId)
+                              + "could not execute request for server "
+                              + (server.getServer() != null ? server.getServer().getUrl() : "null"),
+                        e);
          }
 
       }
@@ -76,7 +80,22 @@ public class RestExecutor {
 
 
    public RestResponse executeRequest(String loggingId, RestRequest request, RestServer server, String bindAddress) throws MssException {
+      if (request == null || server == null || server.getServer() == null)
+         throw new MssException(de.mss.utils.exception.ErrorCodes.ERROR_INVALID_PARAM, "some required parameter are null");
 
+      getLogger().debug(de.mss.utils.Tools.formatLoggingId(loggingId) + "executing request to " + server.getServer().getCompleteUrl());
+      de.mss.utils.StopWatch stopWatch = new de.mss.utils.StopWatch();
+
+
+      stopWatch.stop();
+      getLogger()
+            .debug(
+                  de.mss.utils.Tools.formatLoggingId(loggingId)
+                        + "executing request to "
+                        + server.getServer().getCompleteUrl()
+                        + " done ["
+                        + stopWatch.getDuration()
+                        + " ms]");
 
       throw new MssException(de.mss.utils.exception.ErrorCodes.ERROR_UNABLE_TO_EXECUTE_REQUEST);
    }
