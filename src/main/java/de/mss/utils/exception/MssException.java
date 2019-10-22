@@ -5,9 +5,9 @@ public class MssException extends Exception {
 
    private static final long serialVersionUID = -3480449385872006327L;
 
-   protected Error           error            = ErrorCodes.NO_ERROR;
-   protected int             altErrorCode     = 0;
-   protected String          altErrorText     = null;
+   private Error             error            = ErrorCodes.NO_ERROR;
+   private int               altErrorCode     = 0;
+   private String            altErrorText     = null;
 
 
    public MssException(Error ec) {
@@ -50,11 +50,11 @@ public class MssException extends Exception {
    }
 
 
-   protected void init(Error error, int altErrorCode, String msg, Throwable t) {
-      if (error != null)
-         this.error = error;
+   protected void init(Error e, int ec, String msg, Throwable t) {
+      if (e != null)
+         this.error = e;
 
-      this.altErrorCode = altErrorCode;
+      this.altErrorCode = ec;
       this.altErrorText = msg;
 
       if (t != null)
@@ -62,6 +62,7 @@ public class MssException extends Exception {
    }
 
 
+   @Override
    public String toString() {
       StringBuilder sb = new StringBuilder();
       if (!ErrorCodes.NO_ERROR.equals(this.error))
