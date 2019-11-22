@@ -19,6 +19,9 @@ public class DateTimeTools {
 
 
    public static java.util.Date parseString2Date(String dateString) throws MssException {
+      if (!Tools.isSet(dateString))
+         return null;
+
       for (DateTimeFormat format : DateTimeFormat.values()) {
          try {
                SimpleDateFormat sdf = new SimpleDateFormat(format.getFormat());

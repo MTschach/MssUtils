@@ -26,22 +26,8 @@ public class DateTimeToolsTest extends TestCase {
 
    @Test
    public void testParseString2Date() throws MssException {
-      try {
-         DateTimeTools.parseString2Date(null);
-         fail();
-      }
-      catch (MssException e) {
-         assertEquals("ErrorCode for null", 3, e.getError().getErrorCode());
-      }
-
-      try {
-         DateTimeTools.parseString2Date("");
-         fail();
-      }
-      catch (MssException e) {
-         assertEquals("ErrorCode for ''", 3, e.getError().getErrorCode());
-      }
-
+      assertNull(DateTimeTools.parseString2Date(null));
+      assertNull(DateTimeTools.parseString2Date(""));
       try {
          DateTimeTools.parseString2Date("bla");
          fail();
