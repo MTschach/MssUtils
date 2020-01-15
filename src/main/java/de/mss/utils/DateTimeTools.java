@@ -10,11 +10,26 @@ import de.mss.utils.exception.MssException;
 
 public class DateTimeTools {
 
+   private static java.util.Date nowForTest = null;
+
    public DateTimeTools() throws MssException {
       throw new MssException(
             new Error(
                   ErrorCodes.ERROR_NOT_INSTANCABLE.getErrorCode(),
                   ErrorCodes.ERROR_NOT_INSTANCABLE.getErrorText() + " (" + getClass().getName() + ")"));
+   }
+
+
+   public static void initNowForTest(java.util.Date v) {
+      nowForTest = v;
+   }
+
+
+   public static java.util.Date now() {
+      if (nowForTest != null)
+         return nowForTest;
+
+      return new java.util.Date();
    }
 
 
