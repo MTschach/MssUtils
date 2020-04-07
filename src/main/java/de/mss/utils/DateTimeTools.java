@@ -12,7 +12,7 @@ public class DateTimeTools {
 
    private static java.util.Date nowForTest = null;
 
-   public DateTimeTools() throws MssException {
+   private DateTimeTools() throws MssException {
       throw new MssException(
             new Error(
                   ErrorCodes.ERROR_NOT_INSTANCABLE.getErrorCode(),

@@ -12,17 +12,10 @@ import junit.framework.TestCase;
 
 public class DateTimeToolsTest extends TestCase {
 
-   @Test
-   public void testDateTimeTools() {
-      try {
-         new DateTimeTools();
-         fail();
-      }
-      catch (MssException e) {
-         assertEquals("ErrorCode", 1, e.getError().getErrorCode());
-      }
-   }
-
+   private static final String STR_DATE_STRING = "2018-12-11 17:15:35.128";
+   private static final String STR_DATE_EN     = "2018-12-11";
+   private static final String STR_DATE_DE     = "11.12.2018";
+   private static final String STR_ERROR_CODE  = "ErrorCode";
 
    @Test
    public void testParseString2Date() throws MssException {
@@ -33,15 +26,15 @@ public class DateTimeToolsTest extends TestCase {
          fail();
       }
       catch (MssException e) {
-         assertEquals("ErrorCode fÃ¼r 'bla'", 3, e.getError().getErrorCode());
+         assertEquals("ErrorCode für 'bla'", 3, e.getError().getErrorCode());
       }
 
-      String ampm = new SimpleDateFormat("a").format(DateTimeTools.parseString2Date("2018-12-11 17:15:35.128"));
+      String ampm = new SimpleDateFormat("a").format(DateTimeTools.parseString2Date(STR_DATE_STRING));
 
       Date d = DateTimeTools.parseString2Date("2018-12-11T17:15:35 +0100");
       checkDate(d, true, true, false);
 
-      d = DateTimeTools.parseString2Date("2018-12-11 17:15:35.128");
+      d = DateTimeTools.parseString2Date(STR_DATE_STRING);
       checkDate(d, true, true, true);
 
       d = DateTimeTools.parseString2Date("2018-12-11 05:15:35 " + ampm);
@@ -59,10 +52,10 @@ public class DateTimeToolsTest extends TestCase {
       d = DateTimeTools.parseString2Date("11.12.2018 17:15");
       checkDate(d, true, false, false);
 
-      d = DateTimeTools.parseString2Date("2018-12-11");
+      d = DateTimeTools.parseString2Date(STR_DATE_EN);
       checkDate(d, false, false, false);
 
-      d = DateTimeTools.parseString2Date("11.12.2018");
+      d = DateTimeTools.parseString2Date(STR_DATE_DE);
       checkDate(d, false, false, false);
    }
 
@@ -74,19 +67,19 @@ public class DateTimeToolsTest extends TestCase {
          fail();
       }
       catch (MssException e) {
-         assertEquals("ErrorCode", 2, e.getError().getErrorCode());
+         assertEquals(STR_ERROR_CODE, 2, e.getError().getErrorCode());
       }
-      Date d = DateTimeTools.parseString2Date("2018-12-11 17:15:35.128");
+      Date d = DateTimeTools.parseString2Date(STR_DATE_STRING);
       String ampm = new SimpleDateFormat("a").format(d);
 
-      assertEquals("11.12.2018", DateTimeTools.formatDate(d, "dd.MM.yyyy"));
+      assertEquals(STR_DATE_DE, DateTimeTools.formatDate(d, "dd.MM.yyyy"));
 
-      assertEquals("11.12.2018", DateTimeTools.formatDate(d, DateTimeFormat.DATE_FORMAT_DE));
-      assertEquals("2018-12-11", DateTimeTools.formatDate(d, DateTimeFormat.DATE_FORMAT_EN));
+      assertEquals(STR_DATE_DE, DateTimeTools.formatDate(d, DateTimeFormat.DATE_FORMAT_DE));
+      assertEquals(STR_DATE_EN, DateTimeTools.formatDate(d, DateTimeFormat.DATE_FORMAT_EN));
       assertEquals("2018-12-11 17:15:35", DateTimeTools.formatDate(d, DateTimeFormat.DATE_TIME_FORMAT_DB));
       assertEquals("11.12.2018 17:15", DateTimeTools.formatDate(d, DateTimeFormat.DATE_TIME_FORMAT_DE));
       assertEquals("2018-12-11 05:15 " + ampm, DateTimeTools.formatDate(d, DateTimeFormat.DATE_TIME_FORMAT_EN));
-      assertEquals("2018-12-11 17:15:35.128", DateTimeTools.formatDate(d, DateTimeFormat.DATE_TIMESTAMP_FORMAT_DB));
+      assertEquals(STR_DATE_STRING, DateTimeTools.formatDate(d, DateTimeFormat.DATE_TIMESTAMP_FORMAT_DB));
       assertEquals("11.12.2018 17:15:35", DateTimeTools.formatDate(d, DateTimeFormat.DATE_TIMESTAMP_FORMAT_DE));
       assertEquals("2018-12-11 05:15:35 " + ampm, DateTimeTools.formatDate(d, DateTimeFormat.DATE_TIMESTAMP_FORMAT_EN));
       assertEquals("2018-12-11T17:15:35 +0100", DateTimeTools.formatDate(d, DateTimeFormat.DATE_TIMESTAMP_FORMAT_UTC));
@@ -100,7 +93,7 @@ public class DateTimeToolsTest extends TestCase {
          fail();
       }
       catch (MssException e) {
-         assertEquals("ErrorCode", 2, e.getError().getErrorCode());
+         assertEquals(STR_ERROR_CODE, 2, e.getError().getErrorCode());
       }
 
       java.util.Date today = DateTimeTools.getActDate();
@@ -112,7 +105,7 @@ public class DateTimeToolsTest extends TestCase {
       assertFalse("Yesterday", DateTimeTools.isSameDay(today, DateTimeTools.getYesterdayDate()));
       assertFalse("Tomorrow", DateTimeTools.isSameDay(today, DateTimeTools.getTomorrowDate()));
 
-      today = DateTimeTools.parseString2Date("2018-12-11");
+      today = DateTimeTools.parseString2Date(STR_DATE_EN);
 
       assertFalse("different year", DateTimeTools.isSameDay(today, DateTimeTools.parseString2Date("2017-12-11")));
       assertFalse("different month", DateTimeTools.isSameDay(today, DateTimeTools.parseString2Date("2018-11-11")));
@@ -369,7 +362,7 @@ public class DateTimeToolsTest extends TestCase {
          fail();
       }
       catch (MssException e) {
-         assertEquals("ErrorCode", 2, e.getError().getErrorCode());
+         assertEquals(STR_ERROR_CODE, 2, e.getError().getErrorCode());
       }
 
       try {
@@ -377,7 +370,7 @@ public class DateTimeToolsTest extends TestCase {
          fail();
       }
       catch (MssException e) {
-         assertEquals("ErrorCode", 3, e.getError().getErrorCode());
+         assertEquals(STR_ERROR_CODE, 3, e.getError().getErrorCode());
       }
    }
 
