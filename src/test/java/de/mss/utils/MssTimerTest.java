@@ -10,7 +10,6 @@ public class MssTimerTest extends TestCase {
    public void testSleep() throws InterruptedException {
       MssTimer t = new MssTimer();
 
-      long currentTime = System.currentTimeMillis();
       t.sleep(10);
    }
 

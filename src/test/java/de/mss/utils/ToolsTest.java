@@ -14,7 +14,6 @@ import junit.framework.TestCase;
 
 public class ToolsTest extends TestCase {
 
-   @SuppressWarnings("unused")
    @Test
    public void testToolsTest() {
       try {
@@ -131,7 +130,7 @@ public class ToolsTest extends TestCase {
 
    @Test
    public void testConDouble() {
-      Double value = new Double("1.2");
+      Double value = Double.parseDouble("1.2");
 
       assertNull("null to Integer", Tools.conDouble2Integer(null));
       assertTrue("null to int", Tools.conDouble2PrimitiveInteger(null) == 0);
@@ -149,7 +148,7 @@ public class ToolsTest extends TestCase {
 
    @Test
    public void testConFloat() {
-      Float value = new Float("1.2");
+      Float value = Float.parseFloat("1.2");
 
       assertNull("null to Integer", Tools.conFloat2Integer(null));
       assertTrue("null to int", Tools.conFloat2PrimitiveInteger(null) == 0);
