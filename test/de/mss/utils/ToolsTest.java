@@ -9,26 +9,13 @@ import java.util.Vector;
 
 import org.junit.Test;
 
-import de.mss.utils.exception.MssException;
 import junit.framework.TestCase;
 
 public class ToolsTest extends TestCase {
 
    @Test
-   public void testToolsTest() {
-      try {
-         new Tools();
-         fail();
-      }
-      catch (MssException e) {
-         assertEquals("ErrorCode", 1, e.getError().getErrorCode());
-      }
-   }
-
-
-   @Test
    public void testGetId() {
-      String loggingId = Tools.getId("prefix");
+      final String loggingId = Tools.getId("prefix");
       assertNotNull("LoggingId not null", loggingId);
       assertTrue("Startswith prefix", loggingId.startsWith("prefix"));
    }
@@ -36,7 +23,7 @@ public class ToolsTest extends TestCase {
 
    @Test
    public void testGetIdWithThrowable() {
-      String loggingId = Tools.getId(new Throwable());
+      final String loggingId = Tools.getId(new Throwable());
       assertNotNull("LoggingId not null", loggingId);
       assertTrue("Startswith testGetIdWithThrowable", loggingId.startsWith("testGetIdWithThrowable"));
    }
@@ -110,7 +97,7 @@ public class ToolsTest extends TestCase {
 
    @Test
    public void testConBigDecimal() {
-      BigDecimal value = new BigDecimal("1.2");
+      final BigDecimal value = new BigDecimal("1.2");
 
       assertNull("null to Integer", Tools.conBigDecimal2Integer(null));
       assertTrue("null to int", Tools.conBigDecimal2PrimitiveInteger(null) == 0);
@@ -130,7 +117,7 @@ public class ToolsTest extends TestCase {
 
    @Test
    public void testConDouble() {
-      Double value = Double.parseDouble("1.2");
+      final Double value = Double.valueOf("1.2");
 
       assertNull("null to Integer", Tools.conDouble2Integer(null));
       assertTrue("null to int", Tools.conDouble2PrimitiveInteger(null) == 0);
@@ -148,7 +135,7 @@ public class ToolsTest extends TestCase {
 
    @Test
    public void testConFloat() {
-      Float value = Float.parseFloat("1.2");
+      final Float value = Float.valueOf("1.2");
 
       assertNull("null to Integer", Tools.conFloat2Integer(null));
       assertTrue("null to int", Tools.conFloat2PrimitiveInteger(null) == 0);
@@ -166,7 +153,7 @@ public class ToolsTest extends TestCase {
 
    @Test
    public void testConInteger() {
-      Integer value = Integer.valueOf(2);
+      final Integer value = Integer.valueOf(2);
 
       assertNull("null to Float", Tools.conInteger2Float(null));
       assertTrue("null to float", Tools.conInteger2PrimitiveFloat(null) == 0);

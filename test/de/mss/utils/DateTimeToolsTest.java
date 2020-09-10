@@ -7,6 +7,7 @@ import java.util.GregorianCalendar;
 
 import org.junit.Test;
 
+import de.mss.utils.exception.ErrorCodes;
 import de.mss.utils.exception.MssException;
 import junit.framework.TestCase;
 
@@ -25,11 +26,11 @@ public class DateTimeToolsTest extends TestCase {
          DateTimeTools.parseString2Date("bla");
          fail();
       }
-      catch (MssException e) {
-         assertEquals("ErrorCode für 'bla'", 3, e.getError().getErrorCode());
+      catch (final MssException e) {
+         assertEquals("ErrorCode fÃ¼r 'bla'", 3, e.getError().getErrorCode());
       }
 
-      String ampm = new SimpleDateFormat("a").format(DateTimeTools.parseString2Date(STR_DATE_STRING));
+      final String ampm = new SimpleDateFormat("a").format(DateTimeTools.parseString2Date(STR_DATE_STRING));
 
       Date d = DateTimeTools.parseString2Date("2018-12-11T17:15:35 +0100");
       checkDate(d, true, true, false);
@@ -62,17 +63,20 @@ public class DateTimeToolsTest extends TestCase {
 
    @Test
    public void testFormatDate() throws MssException {
-      try {
-         DateTimeTools.formatDate(null, "dd.MM.yyyy");
-         fail();
-      }
-      catch (MssException e) {
-         assertEquals(STR_ERROR_CODE, 2, e.getError().getErrorCode());
-      }
-      Date d = DateTimeTools.parseString2Date(STR_DATE_STRING);
-      String ampm = new SimpleDateFormat("a").format(d);
+      assertNull(DateTimeTools.formatDate(null, "dd.MM.yyyy"));
+
+      final Date d = DateTimeTools.parseString2Date(STR_DATE_STRING);
+      final String ampm = new SimpleDateFormat("a").format(d);
 
       assertEquals(STR_DATE_DE, DateTimeTools.formatDate(d, "dd.MM.yyyy"));
+      assertEquals("2018/11/12", DateTimeTools.formatDate(d, "yyyy/dd/MM"));
+      try {
+         DateTimeTools.formatDate(d, "abc");
+         fail();
+      }
+      catch (final MssException e) {
+         assertEquals(ErrorCodes.ERROR_DATE_TIME_FORMAT_UNKNOWN.getErrorCode(), e.getError().getErrorCode());
+      }
 
       assertEquals(STR_DATE_DE, DateTimeTools.formatDate(d, DateTimeFormat.DATE_FORMAT_DE));
       assertEquals(STR_DATE_EN, DateTimeTools.formatDate(d, DateTimeFormat.DATE_FORMAT_EN));
@@ -88,13 +92,7 @@ public class DateTimeToolsTest extends TestCase {
 
    @Test
    public void testIsSameDay() throws MssException {
-      try {
-         DateTimeTools.isSameDay(null, null);
-         fail();
-      }
-      catch (MssException e) {
-         assertEquals(STR_ERROR_CODE, 2, e.getError().getErrorCode());
-      }
+      assertFalse(DateTimeTools.isSameDay(null, null));
 
       java.util.Date today = DateTimeTools.getActDate();
 
@@ -115,9 +113,9 @@ public class DateTimeToolsTest extends TestCase {
 
    @Test
    public void testGetMonday() throws MssException {
-      GregorianCalendar gc = new GregorianCalendar();
+      final GregorianCalendar gc = new GregorianCalendar();
 
-      java.util.Date monday = DateTimeTools.getMondayDate();
+      final java.util.Date monday = DateTimeTools.getMondayDate();
 
       switch (gc.get(Calendar.DAY_OF_WEEK)) {
          case Calendar.MONDAY:
@@ -149,9 +147,9 @@ public class DateTimeToolsTest extends TestCase {
 
    @Test
    public void testGetTuesday() throws MssException {
-      GregorianCalendar gc = new GregorianCalendar();
+      final GregorianCalendar gc = new GregorianCalendar();
 
-      java.util.Date monday = DateTimeTools.getTuesdayDate();
+      final java.util.Date monday = DateTimeTools.getTuesdayDate();
 
       switch (gc.get(Calendar.DAY_OF_WEEK)) {
          case Calendar.MONDAY:
@@ -183,9 +181,9 @@ public class DateTimeToolsTest extends TestCase {
 
    @Test
    public void testGetWednesday() throws MssException {
-      GregorianCalendar gc = new GregorianCalendar();
+      final GregorianCalendar gc = new GregorianCalendar();
 
-      java.util.Date monday = DateTimeTools.getWednesdayDate();
+      final java.util.Date monday = DateTimeTools.getWednesdayDate();
 
       switch (gc.get(Calendar.DAY_OF_WEEK)) {
          case Calendar.MONDAY:
@@ -217,9 +215,9 @@ public class DateTimeToolsTest extends TestCase {
 
    @Test
    public void testGetThursday() throws MssException {
-      GregorianCalendar gc = new GregorianCalendar();
+      final GregorianCalendar gc = new GregorianCalendar();
 
-      java.util.Date monday = DateTimeTools.getThursdayDate();
+      final java.util.Date monday = DateTimeTools.getThursdayDate();
 
       switch (gc.get(Calendar.DAY_OF_WEEK)) {
          case Calendar.MONDAY:
@@ -251,9 +249,9 @@ public class DateTimeToolsTest extends TestCase {
 
    @Test
    public void testGetFriday() throws MssException {
-      GregorianCalendar gc = new GregorianCalendar();
+      final GregorianCalendar gc = new GregorianCalendar();
 
-      java.util.Date monday = DateTimeTools.getFridayDate();
+      final java.util.Date monday = DateTimeTools.getFridayDate();
 
       switch (gc.get(Calendar.DAY_OF_WEEK)) {
          case Calendar.MONDAY:
@@ -285,9 +283,9 @@ public class DateTimeToolsTest extends TestCase {
 
    @Test
    public void testGetSaturday() throws MssException {
-      GregorianCalendar gc = new GregorianCalendar();
+      final GregorianCalendar gc = new GregorianCalendar();
 
-      java.util.Date monday = DateTimeTools.getSaturdayDate();
+      final java.util.Date monday = DateTimeTools.getSaturdayDate();
 
       switch (gc.get(Calendar.DAY_OF_WEEK)) {
          case Calendar.MONDAY:
@@ -319,9 +317,9 @@ public class DateTimeToolsTest extends TestCase {
 
    @Test
    public void testGetSunday() throws MssException {
-      GregorianCalendar gc = new GregorianCalendar();
+      final GregorianCalendar gc = new GregorianCalendar();
 
-      java.util.Date monday = DateTimeTools.getSundayDate();
+      final java.util.Date monday = DateTimeTools.getSundayDate();
 
       switch (gc.get(Calendar.DAY_OF_WEEK)) {
          case Calendar.MONDAY:
@@ -353,15 +351,15 @@ public class DateTimeToolsTest extends TestCase {
 
    @Test
    public void testAddDate() throws MssException {
-      java.util.Date tomorrow = DateTimeTools.getTomorrowDate();
-      java.util.Date date = DateTimeTools.addDate(new java.util.Date(), 1, Calendar.DAY_OF_MONTH);
+      final java.util.Date tomorrow = DateTimeTools.getTomorrowDate();
+      final java.util.Date date = DateTimeTools.addDate(new java.util.Date(), 1, Calendar.DAY_OF_MONTH);
       assertTrue("addDate", DateTimeTools.isSameDay(tomorrow, date));
 
       try {
          DateTimeTools.addDate(null, 1, Calendar.DAY_OF_MONTH);
          fail();
       }
-      catch (MssException e) {
+      catch (final MssException e) {
          assertEquals(STR_ERROR_CODE, 2, e.getError().getErrorCode());
       }
 
@@ -369,13 +367,26 @@ public class DateTimeToolsTest extends TestCase {
          DateTimeTools.addDate(new java.util.Date(), 1, 123);
          fail();
       }
-      catch (MssException e) {
+      catch (final MssException e) {
          assertEquals(STR_ERROR_CODE, 3, e.getError().getErrorCode());
       }
    }
 
+
+   @Test
+   public void testNow() throws MssException {
+      final java.util.Date d = DateTimeTools.parseString2Date("2020-07-20 12:34:56");
+
+      assertEquals(
+            DateTimeTools.formatDate(new java.util.Date(), DateTimeFormat.DATE_TIME_FORMAT_DB),
+            DateTimeTools.formatDate(DateTimeTools.now(), DateTimeFormat.DATE_TIME_FORMAT_DB));
+      DateTimeTools.initNowForTest(d);
+      assertEquals("2020-07-20 12:34:56", DateTimeTools.formatDate(DateTimeTools.now(), DateTimeFormat.DATE_TIME_FORMAT_DB));
+   }
+
+
    private void checkDate(Date d, boolean withTime, boolean withSecond, boolean withMillisecond) {
-      GregorianCalendar gc = new GregorianCalendar();
+      final GregorianCalendar gc = new GregorianCalendar();
       gc.setTime(d);
       assertEquals("Year", 2018, gc.get(Calendar.YEAR));
       assertEquals("Month", 11, gc.get(Calendar.MONTH));

@@ -14,54 +14,59 @@ artifact.load(new FileInputStream("${project.projectDir}${File.separator}deploy.
 
 version = artifact.version
 
+defaultTasks 'build'
+
 buildscript {
     repositories {
         jcenter()
         google()
     }
-	dependencies {
-		classpath 'com.android.tools.build:gradle:3.2.1'
-		classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
-		classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.+'
+   dependencies {
+      classpath 'com.android.tools.build:gradle:3.2.1'
+      classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
+      classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.+'
     }
 }
 
 
 allprojects {
-	repositories {
-		jcenter()
-	}
+   repositories {
+      jcenter()
+      maven {
+         url "https://dl.bintray.com/mtschach/Mss"
+      }
+      mavenLocal()
+   }
 }
 
 
-// In this section you declare where to find the dependencies of your project
-repositories {
-   jcenter()
-	maven {
-		url "https://dl.bintray.com/mtschach/Mss"
-	}
+sourceSets {
+   main {
+      java {
+         srcDir 'src'
+      }
+   }
+   test {
+      java {
+         srcDir 'test'
+      }
+   }
 }
+
 
 dependencies {
    compile 'org.apache.logging.log4j:log4j-core:latest.release'
    compile 'org.apache.logging.log4j:log4j-api:latest.release'
 
 
-	testCompile 'junit:junit:4.12'
-	testCompile group: 'org.easymock', name: 'easymock', version: '2.5'
+   testCompile 'junit:junit:4.12'
+   testCompile group: 'org.easymock', name: 'easymock', version: '2.5'
 }
 
-//create a single Jar with all dependencies
-task fatJar(type: Jar) {
-   manifest {
-        attributes 'Implementation-Title': 'MssTools',  
-         'Implementation-Version': version
-    }
-    baseName = project.name + '-all'
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    with jar
-}
 
+task publishLocal {
+   dependsOn 'publishToMavenLocal'
+}
 
 
 apply from: 'deploy.gradle'
