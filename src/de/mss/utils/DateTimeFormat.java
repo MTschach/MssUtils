@@ -4,6 +4,7 @@ import de.mss.utils.exception.ErrorCodes;
 import de.mss.utils.exception.MssException;
 
 public enum DateTimeFormat {
+
    DATE_TIMESTAMP_FORMAT_UTC("yyyy-MM-dd'T'HH:mm:ss Z"),
    DATE_TIMESTAMP_FORMAT_DB("yyyy-MM-dd HH:mm:ss.SSS"),
    DATE_TIMESTAMP_FORMAT_EN("yyyy-MM-dd hh:mm:ss a"),
@@ -29,9 +30,11 @@ public enum DateTimeFormat {
 
 
    public static final DateTimeFormat getDateTimeFormatByName(String n) throws MssException {
-      for (DateTimeFormat os : DateTimeFormat.values())
-         if (os.getFormat().equals(n))
+      for (final DateTimeFormat os : DateTimeFormat.values()) {
+         if (os.getFormat().equals(n)) {
             return os;
+         }
+      }
 
       throw new MssException(ErrorCodes.ERROR_DATE_TIME_FORMAT_UNKNOWN);
    }
