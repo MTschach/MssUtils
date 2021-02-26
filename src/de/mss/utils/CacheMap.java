@@ -41,16 +41,6 @@ public class CacheMap<K extends Object, V extends Object> {
    }
 
 
-   public boolean containsValue(Object key) {
-      cleanUp(key);
-      if (!this.map.containsKey(key)) {
-         return false;
-      }
-
-      return this.map.get(key) != null && this.map.get(key).getValue() != null;
-   }
-
-
    public Set<Entry<K, V>> entrySet() {
       return mapForMethods().entrySet();
    }
@@ -67,7 +57,7 @@ public class CacheMap<K extends Object, V extends Object> {
 
 
    public boolean isEmpty() {
-      return this.map.isEmpty();
+      return mapForMethods().isEmpty();
    }
 
 
