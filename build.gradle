@@ -8,6 +8,8 @@
 
 // Apply the java-library plugin to add support for Java Library
 apply plugin: 'java-library'
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
 
 def artifact = new Properties()
 artifact.load(new FileInputStream("${project.projectDir}${File.separator}deploy.settings"))
@@ -24,7 +26,7 @@ buildscript {
    dependencies {
       classpath 'com.android.tools.build:gradle:3.2.1'
       classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
-      classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.+'
+      classpath "org.jfrog.buildinfo:build-info-extractor-gradle:latest.release"
     }
 }
 
@@ -33,12 +35,11 @@ allprojects {
    repositories {
       jcenter()
       maven {
-         url "https://dl.bintray.com/mtschach/Mss"
+         url "https://mtschach.jfrog.io/artifactory"
       }
       mavenLocal()
    }
 }
-
 
 sourceSets {
    main {

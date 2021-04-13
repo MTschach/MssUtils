@@ -4,3 +4,4 @@ artifactId = MssUtils
 licenses = ['Apache 2'] // or something else 
 id = MssUtils
 gitUrl = https://github.com/mtschach/MssUtils
+repoUrl = https://mtschach
