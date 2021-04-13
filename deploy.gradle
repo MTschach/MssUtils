@@ -21,7 +21,7 @@ artifactory {
          // Properties to be attached to the published artifacts.
          properties = ['qa.level': 'basic', 'dev.team' : 'core']
          publishPom = true // Publish generated POM files to Artifactory (true by default)
-         publishIvy = true // Publish generated Ivy descriptor files to Artifactory (true by default)
+         publishIvy = false // Publish generated Ivy descriptor files to Artifactory (true by default)
       }
    }
 }
@@ -34,7 +34,7 @@ artifactoryPublish {
     properties {
         c '**:**:**:*@*', cProperty: 'only in c'
     }
-    clientConfig.publisher.repoKey = artifact.artifactId
+    clientConfig.publisher.repoKey = jfrog_artifactoryPath
     clientConfig.publisher.username = jfrog_user
     clientConfig.publisher.password = jfrog_password
  

@@ -35,7 +35,7 @@ allprojects {
    repositories {
       jcenter()
       maven {
-         url "https://mtschach.jfrog.io/artifactory"
+         url 'https://mtschach.jfrog.io/artifactory/mss-repo'
       }
       mavenLocal()
    }
