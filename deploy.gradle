@@ -46,7 +46,9 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
-            groupId = artifact.groupId
+            groupId artifact.groupId
+            artifactId artifact.artifactId
+            version artifact.version
         }
     }
 }
