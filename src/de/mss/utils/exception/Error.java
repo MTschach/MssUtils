@@ -3,13 +3,26 @@ package de.mss.utils.exception;
 
 public class Error {
 
-   private int    errorCode = 0;
-   private String errorText = "";
+   private int     errorCode  = 0;
+   private String  errorText  = "";
+   private Integer statusCode = null;
 
 
    public Error(int ec, String et) {
       this.errorCode = ec;
       this.errorText = et;
+   }
+
+
+   public Error(int ec, String et, Integer st) {
+      this.errorCode = ec;
+      this.errorText = et;
+      this.statusCode = st;
+   }
+
+
+   public boolean equals(Error e) {
+      return e != null && this.errorCode == e.getErrorCode();
    }
 
 
@@ -23,8 +36,8 @@ public class Error {
    }
 
 
-   public boolean equals(Error e) {
-      return (e != null && this.errorCode == e.getErrorCode());
+   public Integer getStatusCode() {
+      return this.statusCode;
    }
 
 
