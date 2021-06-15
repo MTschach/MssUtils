@@ -18,6 +18,8 @@ version = artifact.version
 
 defaultTasks 'build'
 
+apply from: 'artifactory.gradle'
+
 buildscript {
     repositories {
         jcenter()
@@ -30,16 +32,6 @@ buildscript {
     }
 }
 
-
-allprojects {
-   repositories {
-      jcenter()
-      maven {
-         url 'https://mtschach.jfrog.io/artifactory/mss-repo'
-      }
-      mavenLocal()
-   }
-}
 
 sourceSets {
    main {
@@ -62,11 +54,6 @@ dependencies {
 
    testCompile 'junit:junit:4.12'
    testCompile group: 'org.easymock', name: 'easymock', version: '2.5'
-}
-
-
-task publishLocal {
-   dependsOn 'publishToMavenLocal'
 }
 
 

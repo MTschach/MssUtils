@@ -1,0 +1,19 @@
+allprojects {
+   repositories {
+      jcenter()
+      maven {
+         url 'https://michassoftwareschmiede.jfrog.io/artifactory/mss-repo'
+      }
+      mavenLocal()
+   }
+}
+
+
+task publishLocal {
+   dependsOn 'publishToMavenLocal'
+}
+
+
+task upload {
+   dependsOn 'artifactoryPublish'
+}
