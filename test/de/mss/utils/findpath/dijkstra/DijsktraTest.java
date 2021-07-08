@@ -12,37 +12,37 @@ public class DijsktraTest extends TestCase {
 
    @Test
    public void testNoPath() {
-      Dijkstra d = new Dijkstra(null, new Node("D", 2, 2));
+      Dijkstra d = new Dijkstra(null, new NodeInt("D", 2, 2));
       d.findPath();
-      assertEquals(-1, d.getMinimumDistance());
+      assertEquals(Double.valueOf(-1), Double.valueOf(d.getMinimumDistance()));
 
-      d = new Dijkstra(new Node("S", 2, 2), null);
+      d = new Dijkstra(new NodeInt("S", 2, 2), null);
       d.findPath();
-      assertEquals(-1, d.getMinimumDistance());
+      assertEquals(Double.valueOf(-1), Double.valueOf(d.getMinimumDistance()));
 
-      final Node s = new Node("S", 2, 2, NodeType.START);
-      final Node z = new Node("D", 3, 4, NodeType.DESTINATION);
+      final NodeInt s = new NodeInt("S", 2, 2, NodeType.START);
+      final NodeInt z = new NodeInt("D", 3, 4, NodeType.DESTINATION);
       s.addNeighbour(z);
       d = new Dijkstra(s, z);
       d.findPath();
-      assertEquals(2, d.getMinimumDistance());
+      assertEquals(Double.valueOf(2), Double.valueOf(d.getMinimumDistance()));
       d.setDestinationNode(null);
-      assertEquals(2, d.getMinimumDistance());
+      assertEquals(Double.valueOf(2), Double.valueOf(d.getMinimumDistance()));
    }
 
 
    @Test
    public void testOk() {
-      final Node frankfurt = new Node("Frankfurt", 50117, 8683, NodeType.START);
-      final Node mannheim = new Node("Mannheim", 49483, 8467);
-      final Node wuerzburg = new Node("Würzburg", 49800, 9933);
-      final Node kassel = new Node("Kassel", 51317, 9500);
-      final Node karlsruhe = new Node("Karlsruhe", 49017, 8400);
-      final Node erfurt = new Node("Erfurt", 50986, 11022);
-      final Node nuernberg = new Node("Nürnberg", 49450, 11083);
-      final Node stuttgard = new Node("Stuttgart", 48783, 9183);
-      final Node augsburg = new Node("Augsburg", 48367, 10900);
-      final Node muenchen = new Node("München", 48133, 11567, NodeType.DESTINATION);
+      final NodeInt frankfurt = new NodeInt("Frankfurt", 50117, 8683, NodeType.START);
+      final NodeInt mannheim = new NodeInt("Mannheim", 49483, 8467);
+      final NodeInt wuerzburg = new NodeInt("Würzburg", 49800, 9933);
+      final NodeInt kassel = new NodeInt("Kassel", 51317, 9500);
+      final NodeInt karlsruhe = new NodeInt("Karlsruhe", 49017, 8400);
+      final NodeInt erfurt = new NodeInt("Erfurt", 50986, 11022);
+      final NodeInt nuernberg = new NodeInt("Nürnberg", 49450, 11083);
+      final NodeInt stuttgard = new NodeInt("Stuttgart", 48783, 9183);
+      final NodeInt augsburg = new NodeInt("Augsburg", 48367, 10900);
+      final NodeInt muenchen = new NodeInt("München", 48133, 11567, NodeType.DESTINATION);
 
       frankfurt.addNeighbour(mannheim);
       frankfurt.addNeighbour(wuerzburg);
@@ -65,7 +65,7 @@ public class DijsktraTest extends TestCase {
       final Dijkstra d = new Dijkstra(frankfurt, muenchen);
       d.findPath();
 
-      assertEquals(3717, d.getMinimumDistance());
+      assertEquals(Double.valueOf(3717), Double.valueOf(d.getMinimumDistance()));
 
       final List<Node> path = d.getPath();
       assertEquals(4, path.size());
@@ -80,12 +80,12 @@ public class DijsktraTest extends TestCase {
    @Test
    public void testToString() {
       final Dijkstra d = new Dijkstra(null, null);
-      assertEquals("MinimumDistance {-1} ", d.toString());
+      assertEquals("MinimumDistance {-1.0} ", d.toString());
 
-      d.setStartNode(new Node("s", 1, 1, NodeType.START));
-      assertEquals("StartNode {Name {s} NodeType {START} } MinimumDistance {-1} ", d.toString());
+      d.setStartNode(new NodeInt("s", 1, 1, NodeType.START));
+      assertEquals("StartNode {Name {s} NodeType {START} } MinimumDistance {-1.0} ", d.toString());
 
-      d.setDestinationNode(new Node("d", 2, 2, NodeType.DESTINATION));
-      assertEquals("StartNode {Name {s} NodeType {START} } DestinationNode {Name {d} NodeType {DESTINATION} } MinimumDistance {-1} ", d.toString());
+      d.setDestinationNode(new NodeInt("d", 2, 2, NodeType.DESTINATION));
+      assertEquals("StartNode {Name {s} NodeType {START} } DestinationNode {Name {d} NodeType {DESTINATION} } MinimumDistance {-1.0} ", d.toString());
    }
 }

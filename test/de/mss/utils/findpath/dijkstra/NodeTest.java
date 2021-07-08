@@ -7,23 +7,23 @@ import junit.framework.TestCase;
 
 public class NodeTest extends TestCase {
 
-   private Node classUnderTest;
-   private Node n1;
-   private Node n2;
+   private NodeInt classUnderTest;
+   private NodeInt n1;
+   private NodeInt n2;
 
 
    @Override
    public void setUp() throws Exception {
       super.setUp();
 
-      this.classUnderTest = new Node("TestNode", 12, 87, NodeType.START);
+      this.classUnderTest = new NodeInt("TestNode", 12, 87, NodeType.START);
       setUpMap();
    }
 
 
    private void setUpMap() {
-      this.n1 = new Node("N1", 2, 4);
-      this.n2 = new Node("N2", 7, 85, NodeType.DESTINATION);
+      this.n1 = new NodeInt("N1", 2, 4);
+      this.n2 = new NodeInt("N2", 7, 85, NodeType.DESTINATION);
 
       this.classUnderTest.addNeighbour(this.n1);
       this.n1.addNeighbour(this.n2);
@@ -38,33 +38,48 @@ public class NodeTest extends TestCase {
 
 
    @Test
+   public void testCalcDistance() {
+      final Node n = new Node("node");
+      n.addNeighbour(null);
+   }
+
+
+   @Test
+   public void testCalcDistance1() {
+      final Node n = new Node("node");
+      final Node n1 = new Node("node1", 1.0, 0.0);
+      n.addNeighbour(n1);
+   }
+
+
+   @Test
    public void testCalculateDistanceRecursivePredesessorNoStart() {
-      final Node t = new Node("t", 4, 7);
+      final NodeInt t = new NodeInt("t", 4, 7);
       this.classUnderTest.setPredecessor(t);
 
-      assertEquals(-1, this.classUnderTest.calculateDistanceRecursive());
+      assertEquals(Double.valueOf(-1.0), Double.valueOf(this.classUnderTest.calculateDistanceRecursive()));
    }
 
 
    @Test
    public void testCalculateDistanceRecursivePredesessorStart() {
-      final Node t = new Node("t", 4, 7);
+      final NodeInt t = new NodeInt("t", 4, 7);
       t.setPredecessor(this.classUnderTest);
 
-      assertEquals(80, t.calculateDistanceRecursive());
+      assertEquals(Double.valueOf(80.0), Double.valueOf(t.calculateDistanceRecursive()));
    }
 
 
    @Test
    public void testCalculateDistanceRecursiveStartNode() {
-      assertEquals(0, this.classUnderTest.calculateDistanceRecursive());
+      assertEquals(Double.valueOf(0.0), Double.valueOf(this.classUnderTest.calculateDistanceRecursive()));
    }
 
 
    @Test
    public void testCalculateDistanceRecursiveStartNoPredecessor() {
-      final Node t = new Node("t", 2, 3);
-      assertEquals(-1, t.calculateDistanceRecursive());
+      final NodeInt t = new NodeInt("t", 2, 3);
+      assertEquals(Double.valueOf(-1.0), Double.valueOf(t.calculateDistanceRecursive()));
    }
 
 
@@ -82,17 +97,37 @@ public class NodeTest extends TestCase {
 
 
    @Test
+   public void testConstructorName() {
+      final Node n = new Node("node");
+      assertEquals("name", "node", n.getName());
+      assertEquals("x", Double.valueOf(0), Double.valueOf(n.getX()));
+      assertEquals("y", Double.valueOf(0), Double.valueOf(n.getY()));
+      assertEquals("type", NodeType.NORMAL, n.getType());
+   }
+
+
+   @Test
+   public void testConstructorNameType() {
+      final Node n = new Node("node", NodeType.DESTINATION);
+      assertEquals("name", "node", n.getName());
+      assertEquals("x", Double.valueOf(0), Double.valueOf(n.getX()));
+      assertEquals("y", Double.valueOf(0), Double.valueOf(n.getY()));
+      assertEquals("type", NodeType.DESTINATION, n.getType());
+   }
+
+
+   @Test
    public void testDistance() {
-      assertEquals(0, this.classUnderTest.distance(null));
-      assertEquals(83, this.classUnderTest.distance(this.n1));
-      assertEquals(5, this.classUnderTest.distance(this.n2));
+      assertEquals(Double.valueOf(0.0), Double.valueOf(this.classUnderTest.distance(null)));
+      assertEquals(Double.valueOf(83.0), Double.valueOf(this.classUnderTest.distance(this.n1)));
+      assertEquals(Double.valueOf(5.0), Double.valueOf(this.classUnderTest.distance(this.n2)));
    }
 
 
    @Test
    public void testGetter() {
-      assertEquals(12, this.classUnderTest.getX());
-      assertEquals(87, this.classUnderTest.getY());
+      assertEquals(Double.valueOf(12.0), Double.valueOf(this.classUnderTest.getX()));
+      assertEquals(Double.valueOf(87.0), Double.valueOf(this.classUnderTest.getY()));
       assertEquals(NodeType.START, this.classUnderTest.getType());
       assertNull(this.classUnderTest.getPredecessor());
       assertNotNull(this.classUnderTest.getNeighbours());
@@ -117,7 +152,7 @@ public class NodeTest extends TestCase {
 
       assertEquals("Name {TestNode} NodeType {START} ", this.classUnderTest.toString());
 
-      this.classUnderTest.setPredecessor(new Node("T", 1, 1));
+      this.classUnderTest.setPredecessor(new NodeInt("T", 1, 1));
 
       assertEquals("Name {TestNode} NodeType {START} Predecessor {Name {T} NodeType {NORMAL} } ", this.classUnderTest.toString());
    }

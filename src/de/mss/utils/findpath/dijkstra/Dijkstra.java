@@ -2,8 +2,10 @@ package de.mss.utils.findpath.dijkstra;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class Dijkstra implements Serializable {
 
@@ -13,7 +15,7 @@ public class Dijkstra implements Serializable {
    private Node             startNode       = null;
    private Node             destinationNode = null;
    private final List<Node> priorityList    = new ArrayList<>();
-   private int              minimumDistance = -1;
+   private double             minimumDistance = -1.0;
 
 
    public Dijkstra(Node s, Node d) {
@@ -29,20 +31,20 @@ public class Dijkstra implements Serializable {
          return;
       }
 
-      final List<Node> nodeList = new ArrayList<>();
-      nodeList.addAll(node.getNeighbours());
+      final Map<Node, Double> nodeList = new HashMap<>();
+      nodeList.putAll(node.getNeighbours());
       nodeList.remove(node.getPredecessor());
-      Collections.sort(nodeList);
+      //      Collections.sort(nodeList);
 
-      for (final Node n : nodeList) {
-         final double distance = node.distance(n);
-         final double nDistance = n.calculateDistanceRecursive();
+      for (final Entry<Node, Double> n : nodeList.entrySet()) {
+         final double distance = node.distance(n.getKey());
+         final double nDistance = n.getKey().calculateDistanceRecursive();
          if (nDistance == -1 || nDistance > node.calculateDistanceRecursive() + distance) {
-            n.setPredecessor(node);
+            n.getKey().setPredecessor(node);
          }
 
-         if (!this.priorityList.contains(n)) {
-            this.priorityList.add(n);
+         if (!this.priorityList.contains(n.getKey())) {
+            this.priorityList.add(n.getKey());
          }
       }
    }
@@ -61,7 +63,7 @@ public class Dijkstra implements Serializable {
    }
 
 
-   public int getMinimumDistance() {
+   public double getMinimumDistance() {
       if (this.minimumDistance == -1 && this.destinationNode != null) {
          this.minimumDistance = this.destinationNode.calculateDistanceRecursive();
       }

@@ -1,64 +1,87 @@
 package de.mss.utils.findpath.dijkstra;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.mss.utils.findpath.NodeType;
 
 public class Node implements Comparable<Node>, Serializable {
 
-   private static final long serialVersionUID = -7986718756107743029L;
+   private static final long   serialVersionUID = -7356676034409958568L;
 
-   private String            name;
+   private String              name             = null;
+   protected Map<Node, Double> neighbours       = new HashMap<>();
 
-   private final List<Node>  neighbours       = new ArrayList<>();
+   protected Node              predecessor      = null;
 
-   private Node              predecessor      = null;
+   private NodeType            type             = NodeType.NORMAL;
 
-   private NodeType          nodeType         = NodeType.NORMAL;
-
-   private int               x                = 0;
-   private int               y                = 0;
+   private double              x                = 0.0;
+   private double              y                = 0.0;
 
 
-   public Node(String n, int x, int y) {
-      setX(x);
-      setY(y);
-      setName(n);
+   public Node(String n) {
+      this.name = n;
    }
 
 
-   public Node(String n, int x, int y, NodeType t) {
-      setX(x);
-      setY(y);
-      setName(n);
-      setType(t);
+   public Node(String n, double px, double py) {
+      this.name = n;
+      this.x = px;
+      this.y = py;
    }
 
 
-   public void addNeighbour(Node n) {
-      if (n == null) {
+   public Node(String n, double px, double py, NodeType t) {
+      this.name = n;
+      this.x = px;
+      this.y = py;
+      this.type = t;
+   }
+
+
+   public Node(String n, NodeType t) {
+      this.name = n;
+      this.type = t;
+   }
+
+
+   public void addNeighbour(Node otherNode) {
+      addNeighbour(otherNode, calcDistance(otherNode));
+   }
+
+
+   public void addNeighbour(Node otherNode, double distance) {
+      if (otherNode == null) {
          return;
       }
 
-      if (!this.neighbours.contains(n)) {
-         this.neighbours.add(n);
-      }
+      this.neighbours.put(otherNode, Double.valueOf(distance));
 
-      if (!n.isNeighbour(this)) {
-         n.addNeighbour(this);
-      }
+      otherNode.getNeighbours().put(this, Double.valueOf(distance));
    }
 
 
-   public int calculateDistanceRecursive() {
-      int distance = 0;
+   protected double calcDistance(Node otherNode) {
+      if (otherNode == null) {
+         return 0.0;
+      }
+
+      final double diffx = this.x - otherNode.getX();
+      final double diffy = this.y - otherNode.getY();
+
+      return Math.sqrt(diffx * diffx + diffy * diffy);
+   }
+
+
+   public double calculateDistanceRecursive() {
+      double distance = 0;
 
       if (this.predecessor != null) {
          distance += this.predecessor.distance(this);
 
-         final int distancePredecessor = this.predecessor.calculateDistanceRecursive();
+         final double distancePredecessor = this.predecessor.calculateDistanceRecursive();
 
          if (distancePredecessor == -1) {
             distance = distancePredecessor;
@@ -67,7 +90,7 @@ public class Node implements Comparable<Node>, Serializable {
          }
 
          return distance;
-      } else if (this.nodeType != NodeType.START) {
+      } else if (this.type != NodeType.START) {
          return -1;
       } else {
          return 0;
@@ -76,12 +99,12 @@ public class Node implements Comparable<Node>, Serializable {
 
 
    @Override
-   public int compareTo(Node other) {
-      if (other == null) {
+   public int compareTo(Node otherNode) {
+      if (otherNode == null) {
          return -1;
       }
 
-      final double difference = this.calculateDistanceRecursive() - other.calculateDistanceRecursive();
+      final double difference = this.calculateDistanceRecursive() - otherNode.calculateDistanceRecursive();
 
       if (difference == 0) {
          return 0;
@@ -90,15 +113,18 @@ public class Node implements Comparable<Node>, Serializable {
       }
 
       return -1;
+
    }
 
 
-   public int distance(Node n) {
-      if (n == null) {
-         return 0;
+   public double distance(Node otherNode) {
+      if (otherNode == null) {
+         return 0.0;
       }
 
-      return Math.max(Math.abs(this.x - n.getX()), Math.abs(this.y - n.getY()));
+      final Double dist = this.neighbours.get(otherNode);
+
+      return dist != null ? dist.doubleValue() : calcDistance(otherNode);
    }
 
 
@@ -107,7 +133,7 @@ public class Node implements Comparable<Node>, Serializable {
    }
 
 
-   public List<Node> getNeighbours() {
+   public Map<Node, Double> getNeighbours() {
       return this.neighbours;
    }
 
@@ -117,23 +143,23 @@ public class Node implements Comparable<Node>, Serializable {
    }
 
 
-   public NodeType getType() {
-      return this.nodeType;
+   public de.mss.utils.findpath.NodeType getType() {
+      return this.type;
    }
 
 
-   public int getX() {
+   public double getX() {
       return this.x;
    }
 
 
-   public int getY() {
+   public double getY() {
       return this.y;
    }
 
 
-   public boolean isNeighbour(Node n) {
-      return this.neighbours.contains(n);
+   public boolean isNeighbour(Node otherNode) {
+      return this.neighbours.containsKey(otherNode);
    }
 
 
@@ -142,23 +168,13 @@ public class Node implements Comparable<Node>, Serializable {
    }
 
 
-   public void setPredecessor(Node p) {
-      this.predecessor = p;
+   public void setPredecessor(Node otherNode) {
+      this.predecessor = otherNode;
    }
 
 
    public void setType(NodeType t) {
-      this.nodeType = t;
-   }
-
-
-   private void setX(int v) {
-      this.x = v;
-   }
-
-
-   private void setY(int v) {
-      this.y = v;
+      this.type = t;
    }
 
 
@@ -169,8 +185,8 @@ public class Node implements Comparable<Node>, Serializable {
          sb.append("Name {" + this.name + "} ");
       }
 
-      if (this.nodeType != null) {
-         sb.append("NodeType {" + this.nodeType + "} ");
+      if (this.type != null) {
+         sb.append("NodeType {" + this.type + "} ");
       }
 
       if (this.predecessor != null) {
