@@ -1,8 +1,13 @@
+
+def artifact = new Properties()
+artifact.load(new FileInputStream("${project.projectDir}${File.separator}deploy.settings"))
+
+
 allprojects {
    repositories {
       jcenter()
       maven {
-         url 'https://michassoftwareschmiede.jfrog.io/artifactory/mss-repo'
+         url 'https://raw.githubusercontent.com/MTschach/MssArtifactory/master'
       }
       mavenLocal()
    }
@@ -14,6 +19,13 @@ task publishLocal {
 }
 
 
-task upload {
-   dependsOn 'artifactoryPublish'
+task genArtifacts (type: Exec) {
+   dependsOn build
+   def jarfile = "-Dfile=${project.projectDir}${File.separator}build${File.separator}libs${File.separator}" + artifact.artifactId + '-' + artifact.version + '.jar'
+   def groupid = '-DgroupId=' + artifact.groupId
+   def artifactid = '-DartifactId=' + artifact.artifactId
+   def version = '-Dversion=' + artifact.version
+   def artifactpath = "-DlocalRepositoryPath=${localArtifactoryPath}${File.separator}"
+   commandLine 'echo', artifactpath
+   commandLine 'mvn', 'install:install-file', groupid, artifactid, version, jarfile, '-Dpackaging=jar', '-DgeneratePom=true', artifactpath, '-DcreateChecksum=true'
 }
