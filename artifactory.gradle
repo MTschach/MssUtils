@@ -7,7 +7,7 @@ allprojects {
    repositories {
       jcenter()
       maven {
-         url 'https://raw.githubusercontent.com/MTschach/MssArtifactory/master'
+         url 'https://raw.githubusercontent.com/MTschach/MssArtifactory/main'
       }
       mavenLocal()
    }
@@ -18,14 +18,27 @@ task publishLocal {
    dependsOn 'publishToMavenLocal'
 }
 
-
-task genArtifacts (type: Exec) {
+task callMaven (type: Exec) {
    dependsOn build
    def jarfile = "-Dfile=${project.projectDir}${File.separator}build${File.separator}libs${File.separator}" + artifact.artifactId + '-' + artifact.version + '.jar'
    def groupid = '-DgroupId=' + artifact.groupId
    def artifactid = '-DartifactId=' + artifact.artifactId
    def version = '-Dversion=' + artifact.version
    def artifactpath = "-DlocalRepositoryPath=${localArtifactoryPath}${File.separator}"
-   commandLine 'echo', artifactpath
    commandLine 'mvn', 'install:install-file', groupid, artifactid, version, jarfile, '-Dpackaging=jar', '-DgeneratePom=true', artifactpath, '-DcreateChecksum=true'
+}
+
+
+task renameFiles {
+   dependsOn callMaven
+   doLast {
+      file ("${localArtifactoryPath}${File.separator}" + artifact.groupId + "${File.separator}" + artifact.artifactId + "${File.separator}maven-metadata-local.xml").renameTo(file("${localArtifactoryPath}${File.separator}" + artifact.groupId + "${File.separator}" + artifact.artifactId + "${File.separator}maven-metadata.xml"))
+      file ("${localArtifactoryPath}${File.separator}" + artifact.groupId + "${File.separator}" + artifact.artifactId + "${File.separator}maven-metadata-local.xml.md5").renameTo(file("${localArtifactoryPath}${File.separator}" + artifact.groupId + "${File.separator}" + artifact.artifactId + "${File.separator}maven-metadata.xml.md5"))
+      file ("${localArtifactoryPath}${File.separator}" + artifact.groupId + "${File.separator}" + artifact.artifactId + "${File.separator}maven-metadata-local.xml.sha1").renameTo(file("${localArtifactoryPath}${File.separator}" + artifact.groupId + "${File.separator}" + artifact.artifactId + "${File.separator}maven-metadata.xml.sha1"))
+   }
+}
+
+
+task genArtifacts {
+   dependsOn callMaven, renameFiles
 }
