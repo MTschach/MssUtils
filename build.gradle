@@ -18,6 +18,9 @@ version = artifact.version
 
 defaultTasks 'build'
 
+
+apply from: 'deploy.gradle'
+
 apply from: 'artifactory.gradle'
 
 buildscript {
@@ -56,5 +59,3 @@ dependencies {
    testCompile group: 'org.easymock', name: 'easymock', version: '2.5'
 }
 
-
-apply from: 'deploy.gradle'
