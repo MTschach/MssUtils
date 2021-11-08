@@ -14,88 +14,6 @@ import junit.framework.TestCase;
 public class ToolsTest extends TestCase {
 
    @Test
-   public void testGetId() {
-      final String loggingId = Tools.getId("prefix");
-      assertNotNull("LoggingId not null", loggingId);
-      assertTrue("Startswith prefix", loggingId.startsWith("prefix"));
-   }
-
-
-   @Test
-   public void testGetIdWithThrowable() {
-      final String loggingId = Tools.getId(new Throwable());
-      assertNotNull("LoggingId not null", loggingId);
-      assertTrue("Startswith testGetIdWithThrowable", loggingId.startsWith("testGetIdWithThrowable"));
-   }
-
-
-   @Test
-   public void testIsSet() {
-      assertTrue("Is set 1", Tools.isSet("1"));
-      assertFalse("Is not set null", Tools.isSet((String)null));
-      assertFalse("Is not set ''", Tools.isSet(""));
-   }
-
-
-   @Test
-   public void testIsFalseBoolean() {
-      assertFalse("isFalse null", Tools.isFalse((Boolean)null));
-      assertTrue("IsFalse false", Tools.isFalse(Boolean.FALSE));
-      assertFalse("IsFalse true", Tools.isFalse(Boolean.TRUE));
-   }
-
-
-   @Test
-   public void testIsFalseString() {
-      assertFalse("isFalse null", Tools.isFalse((String)null));
-      assertFalse("isFalse ''", Tools.isFalse(""));
-      assertFalse("isFalse 'bla'", Tools.isFalse("bla"));
-      assertTrue("isFalse '0'", Tools.isFalse("0"));
-      assertTrue("isFalse 'n'", Tools.isFalse("n"));
-      assertTrue("isFalse 'N'", Tools.isFalse("N"));
-      assertTrue("isFalse 'false'", Tools.isFalse("false"));
-      assertTrue("isFalse 'False'", Tools.isFalse("False"));
-      assertTrue("isFalse 'no'", Tools.isFalse("no"));
-      assertTrue("isFalse 'NO'", Tools.isFalse("NO"));
-   }
-
-
-   @Test
-   public void testIsTrueBoolean() {
-      assertFalse("isTrue null", Tools.isTrue((Boolean)null));
-      assertFalse("IsTrue false", Tools.isTrue(Boolean.FALSE));
-      assertTrue("IsTrue true", Tools.isTrue(Boolean.TRUE));
-   }
-
-
-   @Test
-   public void testIsTrueString() {
-      assertFalse("isTrue null", Tools.isTrue((String)null));
-      assertFalse("isTrue ''", Tools.isTrue(""));
-      assertFalse("isTrue 'bla'", Tools.isTrue("bla"));
-      assertTrue("isTrue '1'", Tools.isTrue("1"));
-      assertTrue("isTrue 'j'", Tools.isTrue("j"));
-      assertTrue("isTrue 'J'", Tools.isTrue("J"));
-      assertTrue("isTrue 'true'", Tools.isTrue("true"));
-      assertTrue("isTrue 'True'", Tools.isTrue("True"));
-      assertTrue("isTrue 'yes'", Tools.isTrue("yes"));
-      assertTrue("isTrue 'YES'", Tools.isTrue("YES"));
-   }
-
-
-   @Test
-   public void testGetLoggingId() {
-      assertEquals("<myLoggingId> ", Tools.formatLoggingId("myLoggingId"));
-   }
-
-
-   @Test
-   public void testDoNullLog() {
-      Tools.doNullLog(new Exception("ein Test"));
-   }
-
-
-   @Test
    public void testConBigDecimal() {
       final BigDecimal value = new BigDecimal("1.2");
 
@@ -170,13 +88,46 @@ public class ToolsTest extends TestCase {
 
 
    @Test
-   public void testIsEmptyMap() {
-      Map<String, String> map = null;
-      assertTrue("null", Tools.isEmpty(map));
-      map = new HashMap<>();
-      assertTrue("empty", Tools.isEmpty(map));
-      map.put("1", "2");
-      assertFalse(Tools.isEmpty(map));
+   public void testDoNullLog() {
+      Tools.doNullLog(new Exception("ein Test"));
+   }
+
+
+   @Test
+   public void testGetHash() throws Exception {
+      assertEquals("982d9e3eb996f559e633f4d194def3761d909f5a3b647d1a851fead67c32c9d1", Tools.getHash("SHA-256", "text", () -> {
+         return new Exception();
+      }));
+      assertNull(Tools.getHash("blah", "text", null));
+      try {
+         Tools.getHash("blah", "text", () -> {
+            return new Exception();
+         });
+         fail("no exception was thrown");
+      }
+      catch (final Exception e) {}
+   }
+
+
+   @Test
+   public void testGetId() {
+      final String loggingId = Tools.getId("prefix");
+      assertNotNull("LoggingId not null", loggingId);
+      assertTrue("Startswith prefix", loggingId.startsWith("prefix"));
+   }
+
+
+   @Test
+   public void testGetIdWithThrowable() {
+      final String loggingId = Tools.getId(new Throwable());
+      assertNotNull("LoggingId not null", loggingId);
+      assertTrue("Startswith testGetIdWithThrowable", loggingId.startsWith("testGetIdWithThrowable"));
+   }
+
+
+   @Test
+   public void testGetLoggingId() {
+      assertEquals("<myLoggingId> ", Tools.formatLoggingId("myLoggingId"));
    }
 
 
@@ -192,6 +143,17 @@ public class ToolsTest extends TestCase {
 
 
    @Test
+   public void testIsEmptyMap() {
+      Map<String, String> map = null;
+      assertTrue("null", Tools.isEmpty(map));
+      map = new HashMap<>();
+      assertTrue("empty", Tools.isEmpty(map));
+      map.put("1", "2");
+      assertFalse(Tools.isEmpty(map));
+   }
+
+
+   @Test
    public void testIsEmptyVector() {
       Vector<String> vec = null;
       assertTrue("null", Tools.isEmpty(vec));
@@ -199,6 +161,37 @@ public class ToolsTest extends TestCase {
       assertTrue("empty", Tools.isEmpty(vec));
       vec.add("1");
       assertFalse(Tools.isEmpty(vec));
+   }
+
+
+   @Test
+   public void testIsFalseBoolean() {
+      assertFalse("isFalse null", Tools.isFalse((Boolean)null));
+      assertTrue("IsFalse false", Tools.isFalse(Boolean.FALSE));
+      assertFalse("IsFalse true", Tools.isFalse(Boolean.TRUE));
+   }
+
+
+   @Test
+   public void testIsFalseString() {
+      assertFalse("isFalse null", Tools.isFalse((String)null));
+      assertFalse("isFalse ''", Tools.isFalse(""));
+      assertFalse("isFalse 'bla'", Tools.isFalse("bla"));
+      assertTrue("isFalse '0'", Tools.isFalse("0"));
+      assertTrue("isFalse 'n'", Tools.isFalse("n"));
+      assertTrue("isFalse 'N'", Tools.isFalse("N"));
+      assertTrue("isFalse 'false'", Tools.isFalse("false"));
+      assertTrue("isFalse 'False'", Tools.isFalse("False"));
+      assertTrue("isFalse 'no'", Tools.isFalse("no"));
+      assertTrue("isFalse 'NO'", Tools.isFalse("NO"));
+   }
+
+
+   @Test
+   public void testIsSet() {
+      assertTrue("Is set 1", Tools.isSet("1"));
+      assertFalse("Is not set null", Tools.isSet((String)null));
+      assertFalse("Is not set ''", Tools.isSet(""));
    }
 
 
@@ -223,5 +216,28 @@ public class ToolsTest extends TestCase {
       value = new String[1];
       value[0] = "48";
       assertTrue(Tools.isSet(value));
+   }
+
+
+   @Test
+   public void testIsTrueBoolean() {
+      assertFalse("isTrue null", Tools.isTrue((Boolean)null));
+      assertFalse("IsTrue false", Tools.isTrue(Boolean.FALSE));
+      assertTrue("IsTrue true", Tools.isTrue(Boolean.TRUE));
+   }
+
+
+   @Test
+   public void testIsTrueString() {
+      assertFalse("isTrue null", Tools.isTrue((String)null));
+      assertFalse("isTrue ''", Tools.isTrue(""));
+      assertFalse("isTrue 'bla'", Tools.isTrue("bla"));
+      assertTrue("isTrue '1'", Tools.isTrue("1"));
+      assertTrue("isTrue 'j'", Tools.isTrue("j"));
+      assertTrue("isTrue 'J'", Tools.isTrue("J"));
+      assertTrue("isTrue 'true'", Tools.isTrue("true"));
+      assertTrue("isTrue 'True'", Tools.isTrue("True"));
+      assertTrue("isTrue 'yes'", Tools.isTrue("yes"));
+      assertTrue("isTrue 'YES'", Tools.isTrue("YES"));
    }
 }

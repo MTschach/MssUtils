@@ -1,10 +1,13 @@
 package de.mss.utils;
 
 import java.math.BigDecimal;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.Vector;
+import java.util.function.Supplier;
 
 public class Tools {
 
@@ -120,6 +123,37 @@ public class Tools {
 
    public static String formatLoggingId(String loggingId) {
       return "<" + loggingId + "> ";
+   }
+
+
+   public static <T extends Exception> String getHash(String algo, String stringToHash, Supplier<T> throwException) throws T {
+
+      MessageDigest md;
+      try {
+         md = MessageDigest.getInstance(algo);
+         md.update(stringToHash.getBytes());
+
+         final StringBuilder hash = new StringBuilder();
+         final byte[] hashData = md.digest();
+         for (final byte b : hashData) {
+            final String h = Integer.toHexString(b & 0xff);
+            if (h.length() == 1) {
+               hash.append("0");
+            }
+            hash.append(h);
+         }
+
+         return hash.toString();
+      }
+      catch (final NoSuchAlgorithmException e) {
+         if (throwException != null) {
+            final T ex = throwException.get();
+            ex.initCause(e);
+            throw ex;
+         }
+      }
+
+      return null;
    }
 
 

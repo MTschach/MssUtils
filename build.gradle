@@ -8,7 +8,6 @@
 
 // Apply the java-library plugin to add support for Java Library
 apply plugin: 'java-library'
-apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
 def artifact = new Properties()
@@ -17,7 +16,6 @@ artifact.load(new FileInputStream("${project.projectDir}${File.separator}deploy.
 version = artifact.version
 
 defaultTasks 'build'
-
 
 apply from: 'deploy.gradle'
 
@@ -35,7 +33,6 @@ buildscript {
     }
 }
 
-
 sourceSets {
    main {
       java {
@@ -49,13 +46,10 @@ sourceSets {
    }
 }
 
-
 dependencies {
-   compile 'org.apache.logging.log4j:log4j-core:latest.release'
-   compile 'org.apache.logging.log4j:log4j-api:latest.release'
+   implementation 'org.apache.logging.log4j:log4j-core:latest.release'
+   implementation 'org.apache.logging.log4j:log4j-api:latest.release'
 
-
-   testCompile 'junit:junit:4.12'
-   testCompile group: 'org.easymock', name: 'easymock', version: '2.5'
+   testImplementation 'junit:junit:4.12'
+   testImplementation group: 'org.easymock', name: 'easymock', version: '2.5'
 }
-

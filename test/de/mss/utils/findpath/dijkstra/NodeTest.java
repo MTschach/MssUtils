@@ -47,8 +47,8 @@ public class NodeTest extends TestCase {
    @Test
    public void testCalcDistance1() {
       final Node n = new Node("node");
-      final Node n1 = new Node("node1", 1.0, 0.0);
-      n.addNeighbour(n1);
+      final Node otherNode = new Node("node1", 1.0, 0.0);
+      n.addNeighbour(otherNode);
    }
 
 
