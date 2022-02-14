@@ -23,6 +23,10 @@ apply from: 'artifactory.gradle'
 
 buildscript {
     repositories {
+        mavenLocal()
+        maven {
+            url 'https://plugins.gradle.org/m2/'
+        }
         jcenter()
         google()
     }
@@ -30,8 +34,11 @@ buildscript {
       classpath 'com.android.tools.build:gradle:3.2.1'
       classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
       classpath "org.jfrog.buildinfo:build-info-extractor-gradle:latest.release"
+      classpath 'de.jjohannes.gradle:extra-java-module-info:0.10'
     }
 }
+
+apply plugin: 'de.jjohannes.extra-java-module-info'
 
 sourceSets {
    main {
@@ -44,6 +51,14 @@ sourceSets {
          srcDir 'test'
       }
    }
+}
+
+extraJavaModuleInfo {
+   automaticModule('junit-4.12.jar','')
+   automaticModule('easymock-2.5.jar', '')
+   automaticModule('hamcrest-core-1.3.jar', '')
+   automaticModule('log4j-core-2.17.1.jar', '')
+   automaticModule('log4j-api-2.17.1.jar', '')
 }
 
 dependencies {

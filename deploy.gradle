@@ -3,7 +3,11 @@ apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.artifactory'
 
 def artifact = new Properties()
-artifact.load(new FileInputStream("${project.projectDir}${File.separator}deploy.settings"))
+try {
+   artifact.load(new FileInputStream("${project.projectDir}${File.separator}deploy.settings"))
+} catch (Exception e) {
+   artifact.load(new FileInputStream("${project.projectDir}${File.separator}..${File.separator}deploy.settings"))
+}
 
 artifactory {
    contextUrl = jfrog_contextUrl

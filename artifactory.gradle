@@ -1,6 +1,10 @@
 
 def artifact = new Properties()
-artifact.load(new FileInputStream("${project.projectDir}${File.separator}deploy.settings"))
+try {
+   artifact.load(new FileInputStream("${project.projectDir}${File.separator}deploy.settings"))
+} catch (Exception e) {
+   artifact.load(new FileInputStream("${project.projectDir}${File.separator}..${File.separator}deploy.settings"))
+}
 
 
 allprojects {
@@ -19,13 +23,19 @@ task publishLocal {
 }
 
 task callMaven (type: Exec) {
-   dependsOn build, generatePomFileForMavenJavaPublication
-   def jarfile = "-Dfile=${project.projectDir}${File.separator}build${File.separator}libs${File.separator}" + artifact.artifactId + '-' + artifact.version + '.jar'
-   def groupid = '-DgroupId=' + artifact.groupId
-   def artifactid = '-DartifactId=' + artifact.artifactId
-   def version = '-Dversion=' + artifact.version
-   def artifactpath = "-DlocalRepositoryPath=${localArtifactoryPath}${File.separator}"
-   commandLine 'mvn', 'install:install-file', groupid, artifactid, version, jarfile, '-Dpackaging=jar', '-DgeneratePom=true', artifactpath, '-DcreateChecksum=true', "-DpomFile=${project.projectDir}${File.separator}build${File.separator}publications${File.separator}mavenJava${File.separator}pom-default.xml"
+   def file = new File("${project.projectDir}${File.separator}build${File.separator}libs${File.separator}" + artifact.artifactId + '-' + artifact.version + '.jar')
+   if (file.exists()) {
+      dependsOn build, generatePomFileForMavenJavaPublication
+      def jarfile = "-Dfile=${project.projectDir}${File.separator}build${File.separator}libs${File.separator}" + artifact.artifactId + '-' + artifact.version + '.jar'
+      def groupid = '-DgroupId=' + artifact.groupId
+      def artifactid = '-DartifactId=' + artifact.artifactId
+      def version = '-Dversion=' + artifact.version
+      def artifactpath = "-DlocalRepositoryPath=${localArtifactoryPath}${File.separator}"
+      commandLine 'mvn', 'install:install-file', groupid, artifactid, version, jarfile, '-Dpackaging=jar', '-DgeneratePom=true', artifactpath, '-DcreateChecksum=true', "-DpomFile=${project.projectDir}${File.separator}build${File.separator}publications${File.separator}mavenJava${File.separator}pom-default.xml"
+   }
+   else {
+      commandLine 'echo', 'no client lib required for artifactory'
+   }
 }
 
 
