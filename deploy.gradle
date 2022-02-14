@@ -1,7 +1,5 @@
 apply plugin: 'maven-publish'
 
-apply plugin: 'com.jfrog.artifactory'
-
 def artifact = new Properties()
 try {
    artifact.load(new FileInputStream("${project.projectDir}${File.separator}deploy.settings"))
@@ -9,41 +7,6 @@ try {
    artifact.load(new FileInputStream("${project.projectDir}${File.separator}..${File.separator}deploy.settings"))
 }
 
-artifactory {
-   contextUrl = jfrog_contextUrl
-   publish {
-      contextUrl = jfrog_contextUrl
-      repository {
-         repoKey = artifact.artifactId
-         username = jfrog_user
-         password = jfrog_password
-      }
-      defaults {
-         publications('mavenJava')
-         publishArtifacts = true
-         // Properties to be attached to the published artifacts.
-         properties = ['qa.level': 'basic', 'dev.team' : 'core']
-         publishPom = true // Publish generated POM files to Artifactory (true by default)
-         publishIvy = false // Publish generated Ivy descriptor files to Artifactory (true by default)
-      }
-   }
-}
-
-artifactoryPublish {
-    skip = false //Skip build info analysis and publishing (false by default)
-    contextUrl = jfrog_contextUrl
-    publications ('a','b','c')
-    properties = ['qa.level': 'basic', 'q.os': 'win32, deb, osx']
-    properties {
-        c '**:**:**:*@*', cProperty: 'only in c'
-    }
-    clientConfig.publisher.repoKey = jfrog_artifactoryPath
-    clientConfig.publisher.username = jfrog_user
-    clientConfig.publisher.password = jfrog_password
- 
-    // Minimum file size in KB for which the plugin performs checksum deploy optimization. Default: 10. Set to 0 to disable uploading files with checksum that already exists in Artifactory.
-    clientConfig.publisher.minChecksumDeploySizeKb = 10
-}
 
 publishing {
     publications {

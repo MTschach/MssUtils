@@ -33,7 +33,6 @@ buildscript {
    dependencies {
       classpath 'com.android.tools.build:gradle:3.2.1'
       classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
-      classpath "org.jfrog.buildinfo:build-info-extractor-gradle:latest.release"
       classpath 'de.jjohannes.gradle:extra-java-module-info:0.10'
     }
 }
