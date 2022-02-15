@@ -1,10 +1,12 @@
 package de.mss.utils;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class CacheValueTest extends TestCase {
+public class CacheValueTest {
 
    private static final String TEST_VALUE = "Testvalue 1234567 abcdef";
 
@@ -12,12 +14,12 @@ public class CacheValueTest extends TestCase {
    public void test() {
       final CacheValue<String> cv = new CacheValue<>(TEST_VALUE, 1000l);
 
-      assertEquals("Value", TEST_VALUE, cv.getValue());
-      assertNotNull("ToString", cv.toString());
+      assertEquals(TEST_VALUE, cv.getValue());
+      assertNotNull(cv.toString());
 
       try {
          Thread.sleep(1500l);
-         assertNull("Value", cv.getValue());
+         assertNull(cv.getValue());
       }
       catch (final InterruptedException e) {
          e.printStackTrace();

@@ -1,27 +1,30 @@
 package de.mss.utils.exception;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class MssExceptionTest extends TestCase {
+public class MssExceptionTest {
 
    protected void checkException(MssException e, Error expError, boolean throwable, String expErrorText, int expErrorCode) {
-      assertEquals("ErrorCode", expError.getErrorCode(), e.getError().getErrorCode());
-      assertEquals("ErrorText", expError.getErrorText(), e.getError().getErrorText());
+      assertEquals(expError.getErrorCode(), e.getError().getErrorCode());
+      assertEquals(expError.getErrorText(), e.getError().getErrorText());
 
-      assertEquals("Alt ErrorCode", expErrorCode, e.getAltErrorCode());
+      assertEquals(expErrorCode, e.getAltErrorCode());
 
       if (expErrorText != null) {
-         assertEquals("Alt Error text", expErrorText, e.getAltErrorText());
+         assertEquals(expErrorText, e.getAltErrorText());
       } else {
-         assertNull("Alt ErrorText", e.getAltErrorText());
+         assertNull(e.getAltErrorText());
       }
 
       if (throwable) {
-         assertNotNull("Cause not null", e.getCause());
+         assertNotNull(e.getCause());
       } else {
-         assertNull("Cause is null", e.getCause());
+         assertNull(e.getCause());
       }
 
       final StringBuilder expMsg = new StringBuilder("Error : ");
@@ -33,7 +36,7 @@ public class MssExceptionTest extends TestCase {
 
       final String msg = e.toString();
 
-      assertTrue("toString", msg.startsWith(expMsg.toString()));
+      assertTrue(msg.startsWith(expMsg.toString()));
 
    }
 

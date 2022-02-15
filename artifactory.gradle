@@ -9,11 +9,11 @@ try {
 
 allprojects {
    repositories {
-      jcenter()
+      mavenLocal()
       maven {
          url 'https://raw.githubusercontent.com/MTschach/MssArtifactory/main'
       }
-      mavenLocal()
+      jcenter()
    }
 }
 

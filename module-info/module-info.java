@@ -7,5 +7,5 @@ module mss.utils {
    exports de.mss.utils.logging;
    exports de.mss.utils.os;
 
-   requires transitive org.apache.logging.log4j;
+   requires org.apache.logging.log4j;
 }

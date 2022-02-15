@@ -1,24 +1,29 @@
 package de.mss.utils.os;
 
-import org.junit.Test;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class OsTypeTest extends TestCase {
+import org.junit.jupiter.api.Test;
+
+public class OsTypeTest {
 
    private String osName = null;
 
 
-   @Override
+   private void checkOsType(OsType exp, OsType o) {
+      assertEquals(exp.getName(), o.getName());
+   }
+
+
    public void setUp() {
       this.osName = System.getProperty("os.name");
    }
 
 
-   @Override
    public void tearDown() {
       System.setProperty("os.name", this.osName);
    }
+
 
    @Test
    public void testGetByName() {
@@ -67,10 +72,5 @@ public class OsTypeTest extends TestCase {
       o = OsType.getOsType();
 
       checkOsType(OsType.UNKNOWN, o);
-   }
-
-
-   private void checkOsType(OsType exp, OsType o) {
-      assertEquals("Name " + exp.getName(), exp.getName(), o.getName());
    }
 }

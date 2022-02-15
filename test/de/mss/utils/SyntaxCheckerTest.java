@@ -1,10 +1,20 @@
 package de.mss.utils;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class SyntaxCheckerTest extends TestCase {
+public class SyntaxCheckerTest {
+
+   @Test
+   public void testCheck() {
+      assertFalse(SyntaxChecker.check(null, "\\w+"));
+      assertFalse(SyntaxChecker.check("", "\\w+"));
+      assertFalse(SyntaxChecker.check("value", null));
+      assertFalse(SyntaxChecker.check("value", ""));
+   }
+
 
    @Test
    public void testEmail() {
@@ -29,14 +39,5 @@ public class SyntaxCheckerTest extends TestCase {
       assertTrue(SyntaxChecker.checkPhone("0049 375 / 81 92 87 - 65"));
 
       assertFalse(SyntaxChecker.checkPhone("+49 (0) 375 / 81 92 - a"));
-   }
-
-
-   @Test
-   public void testCheck() {
-      assertFalse(SyntaxChecker.check(null, "\\w+"));
-      assertFalse(SyntaxChecker.check("", "\\w+"));
-      assertFalse(SyntaxChecker.check("value", null));
-      assertFalse(SyntaxChecker.check("value", ""));
    }
 }

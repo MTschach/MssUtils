@@ -1,13 +1,14 @@
 package de.mss.utils.findpath.dijkstra;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import de.mss.utils.findpath.NodeType;
-import junit.framework.TestCase;
 
-public class DijsktraTest extends TestCase {
+public class DijsktraTest {
 
 
    @Test

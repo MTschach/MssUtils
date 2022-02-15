@@ -1,11 +1,19 @@
 package de.mss.utils;
 
-import org.junit.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.Test;
 
 import de.mss.utils.exception.MssException;
-import junit.framework.TestCase;
 
-public class DateTimeFormatTest extends TestCase {
+public class DateTimeFormatTest {
+
+   private void checkDateTimeFormat(DateTimeFormat exp, DateTimeFormat o) {
+      assertEquals(exp.getFormat(), o.getFormat());
+   }
+
 
    @Test
    public void testGetByName() throws MssException {
@@ -14,24 +22,24 @@ public class DateTimeFormatTest extends TestCase {
          d = DateTimeFormat.getDateTimeFormatByName(null);
          fail();
       }
-      catch (MssException e) {
-         assertEquals("ErrorCode", 3, e.getError().getErrorCode());
+      catch (final MssException e) {
+         assertEquals(3, e.getError().getErrorCode());
       }
 
       try {
          d = DateTimeFormat.getDateTimeFormatByName("");
          fail();
       }
-      catch (MssException e) {
-         assertEquals("ErrorCode", 3, e.getError().getErrorCode());
+      catch (final MssException e) {
+         assertEquals(3, e.getError().getErrorCode());
       }
 
       try {
          d = DateTimeFormat.getDateTimeFormatByName("dd.mm.jjjj");
          fail();
       }
-      catch (MssException e) {
-         assertEquals("ErrorCode", 3, e.getError().getErrorCode());
+      catch (final MssException e) {
+         assertEquals(3, e.getError().getErrorCode());
       }
 
       d = DateTimeFormat.getDateTimeFormatByName("yyyy-MM-dd");
@@ -61,11 +69,5 @@ public class DateTimeFormatTest extends TestCase {
       d = DateTimeFormat.getDateTimeFormatByName("yyyy-MM-dd'T'HH:mm:ss Z");
       checkDateTimeFormat(DateTimeFormat.DATE_TIMESTAMP_FORMAT_UTC, d);
 
-   }
-
-
-
-   private void checkDateTimeFormat(DateTimeFormat exp, DateTimeFormat o) {
-      assertEquals("Format " + exp.getFormat(), exp.getFormat(), o.getFormat());
    }
 }

@@ -1,14 +1,13 @@
 package de.mss.utils;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.Random;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
+public class RandomizerFactoryTest {
 
-public class RandomizerFactoryTest extends TestCase {
-
-   @Override
    public void tearDown() {
       RandomizerFactory.closeAllInstances();
    }
@@ -20,7 +19,7 @@ public class RandomizerFactoryTest extends TestCase {
       RandomizerFactory.createInstance("test1", r);
       Random r1 = RandomizerFactory.getInstance("test1");
 
-      assertEquals("Same", r, r1);
+      assertEquals(r, r1);
 
       r1 = RandomizerFactory.getInstance("newInstance");
 
@@ -37,7 +36,7 @@ public class RandomizerFactoryTest extends TestCase {
       RandomizerFactory.createInstance("test2", r2);
       RandomizerFactory.createInstance("test2", r2);
 
-      assertEquals("Same", r1, RandomizerFactory.getInstance("test1"));
+      assertEquals(r1, RandomizerFactory.getInstance("test1"));
    }
 
 }

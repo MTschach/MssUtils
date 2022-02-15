@@ -1,21 +1,25 @@
 package de.mss.utils.findpath.dijkstra;
 
-import org.junit.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import de.mss.utils.findpath.NodeType;
-import junit.framework.TestCase;
 
-public class NodeTest extends TestCase {
+public class NodeTest {
 
    private NodeInt classUnderTest;
    private NodeInt n1;
    private NodeInt n2;
 
 
-   @Override
+   @BeforeEach
    public void setUp() throws Exception {
-      super.setUp();
-
       this.classUnderTest = new NodeInt("TestNode", 12, 87, NodeType.START);
       setUpMap();
    }
@@ -99,20 +103,20 @@ public class NodeTest extends TestCase {
    @Test
    public void testConstructorName() {
       final Node n = new Node("node");
-      assertEquals("name", "node", n.getName());
-      assertEquals("x", Double.valueOf(0), Double.valueOf(n.getX()));
-      assertEquals("y", Double.valueOf(0), Double.valueOf(n.getY()));
-      assertEquals("type", NodeType.NORMAL, n.getType());
+      assertEquals("node", n.getName());
+      assertEquals(Double.valueOf(0), Double.valueOf(n.getX()));
+      assertEquals(Double.valueOf(0), Double.valueOf(n.getY()));
+      assertEquals(NodeType.NORMAL, n.getType());
    }
 
 
    @Test
    public void testConstructorNameType() {
       final Node n = new Node("node", NodeType.DESTINATION);
-      assertEquals("name", "node", n.getName());
-      assertEquals("x", Double.valueOf(0), Double.valueOf(n.getX()));
-      assertEquals("y", Double.valueOf(0), Double.valueOf(n.getY()));
-      assertEquals("type", NodeType.DESTINATION, n.getType());
+      assertEquals("node", n.getName());
+      assertEquals(Double.valueOf(0), Double.valueOf(n.getX()));
+      assertEquals(Double.valueOf(0), Double.valueOf(n.getY()));
+      assertEquals(NodeType.DESTINATION, n.getType());
    }
 
 

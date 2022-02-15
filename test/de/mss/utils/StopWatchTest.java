@@ -1,31 +1,31 @@
 package de.mss.utils;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class StopWatchTest extends TestCase {
+public class StopWatchTest {
 
    @Test
    public void test() {
       StopWatch s = new StopWatch();
       s.stop();
-      assertTrue("Duration >= 0", s.getDuration() >= 0);
+      assertTrue(s.getDuration() >= 0);
 
       s = new StopWatch();
-      assertTrue("Duration >= 0", s.getDuration() >= 0);
+      assertTrue(s.getDuration() >= 0);
    }
 
 
    @Test
    public void testReset() throws InterruptedException {
-      StopWatch s = new StopWatch();
+      final StopWatch s = new StopWatch();
       Thread.sleep(25);
       long duration = s.getDuration();
-      assertTrue("Duration >= 1 ms (" + duration + ")", duration >= 1);
+      assertTrue(duration >= 1);
       s.reset();
       duration = s.getDuration();
-      assertTrue("Duration <= 1ms", duration <= 1);
+      assertTrue(duration <= 1);
    }
 
 }

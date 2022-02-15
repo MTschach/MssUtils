@@ -1,5 +1,8 @@
 package de.mss.utils.logging;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -9,13 +12,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import de.mss.utils.DateTimeTools;
 import de.mss.utils.exception.MssException;
-import junit.framework.TestCase;
 
-public class LoggingUtilTest extends TestCase {
+public class LoggingUtilTest {
 
 
    @Test
@@ -29,9 +31,9 @@ public class LoggingUtilTest extends TestCase {
 
       assertNull(LoggingUtil.addLogging("nullProps", BigDecimal.ONE, null));
       assertNull(LoggingUtil.addLogging("nullProps", new BigDecimal[] {BigDecimal.TEN, BigDecimal.ZERO}, null));
-      assertEquals("size", Integer.valueOf(2), Integer.valueOf(props.size()));
-      assertEquals("simple", "1", props.get("simple"));
-      assertEquals("array", "[ size {2} [0] {10} [1] {0} ] ", props.get("array"));
+      assertEquals(Integer.valueOf(2), Integer.valueOf(props.size()));
+      assertEquals("1", props.get("simple"));
+      assertEquals("[ size {2} [0] {10} [1] {0} ] ", props.get("array"));
    }
 
 
@@ -46,9 +48,9 @@ public class LoggingUtilTest extends TestCase {
 
       assertNull(LoggingUtil.addLogging("nullProps", BigInteger.ONE, null));
       assertNull(LoggingUtil.addLogging("nullProps", new BigInteger[] {BigInteger.TEN, BigInteger.ZERO}, null));
-      assertEquals("size", Integer.valueOf(2), Integer.valueOf(props.size()));
-      assertEquals("simple", "1", props.get("simple"));
-      assertEquals("array", "[ size {2} [0] {10} [1] {0} ] ", props.get("array"));
+      assertEquals(Integer.valueOf(2), Integer.valueOf(props.size()));
+      assertEquals("1", props.get("simple"));
+      assertEquals("[ size {2} [0] {10} [1] {0} ] ", props.get("array"));
    }
 
 
@@ -62,9 +64,9 @@ public class LoggingUtilTest extends TestCase {
 
       assertNull(LoggingUtil.addLogging("nullProps", true, null));
       assertNull(LoggingUtil.addLogging("nullProps", new boolean[] {true, false}, null));
-      assertEquals("size", Integer.valueOf(2), Integer.valueOf(props.size()));
-      assertEquals("simple", "true", props.get("simple"));
-      assertEquals("array", "[ size {2} [0] {true} [1] {false} ] ", props.get("array"));
+      assertEquals(Integer.valueOf(2), Integer.valueOf(props.size()));
+      assertEquals("true", props.get("simple"));
+      assertEquals("[ size {2} [0] {true} [1] {false} ] ", props.get("array"));
    }
 
 
@@ -79,9 +81,9 @@ public class LoggingUtilTest extends TestCase {
 
       assertNull(LoggingUtil.addLogging("nullProps", Boolean.TRUE, null));
       assertNull(LoggingUtil.addLogging("nullProps", new Boolean[] {Boolean.TRUE, Boolean.FALSE}, null));
-      assertEquals("size", Integer.valueOf(2), Integer.valueOf(props.size()));
-      assertEquals("simple", "true", props.get("simple"));
-      assertEquals("array", "[ size {2} [0] {true} [1] {false} ] ", props.get("array"));
+      assertEquals(Integer.valueOf(2), Integer.valueOf(props.size()));
+      assertEquals("true", props.get("simple"));
+      assertEquals("[ size {2} [0] {true} [1] {false} ] ", props.get("array"));
    }
 
 
@@ -95,9 +97,9 @@ public class LoggingUtilTest extends TestCase {
 
       assertNull(LoggingUtil.addLogging("nullProps", (byte)1, null));
       assertNull(LoggingUtil.addLogging("nullProps", new byte[] {(byte)10, (byte)0}, null));
-      assertEquals("size", Integer.valueOf(2), Integer.valueOf(props.size()));
-      assertEquals("simple", "1", props.get("simple"));
-      assertEquals("array", "[ size {2} [0] {10} [1] {0} ] ", props.get("array"));
+      assertEquals(Integer.valueOf(2), Integer.valueOf(props.size()));
+      assertEquals("1", props.get("simple"));
+      assertEquals("[ size {2} [0] {10} [1] {0} ] ", props.get("array"));
    }
 
 
@@ -112,9 +114,9 @@ public class LoggingUtilTest extends TestCase {
 
       assertNull(LoggingUtil.addLogging("nullProps", Byte.valueOf("1"), null));
       assertNull(LoggingUtil.addLogging("nullProps", new Byte[] {Byte.valueOf("10"), Byte.valueOf("0")}, null));
-      assertEquals("size", Integer.valueOf(2), Integer.valueOf(props.size()));
-      assertEquals("simple", "1", props.get("simple"));
-      assertEquals("array", "[ size {2} [0] {10} [1] {0} ] ", props.get("array"));
+      assertEquals(Integer.valueOf(2), Integer.valueOf(props.size()));
+      assertEquals("1", props.get("simple"));
+      assertEquals("[ size {2} [0] {10} [1] {0} ] ", props.get("array"));
    }
 
 
@@ -138,9 +140,9 @@ public class LoggingUtilTest extends TestCase {
                         "nullProps",
                         new Date[] {DateTimeTools.parseString2Date("2021-12-31 23:59:59"), DateTimeTools.parseString2Date("2020-12-24 18:56:12")},
                         null));
-      assertEquals("size", Integer.valueOf(2), Integer.valueOf(props.size()));
-      assertEquals("simple", "2022-01-06T12:34:56 +0100", props.get("simple"));
-      assertEquals("array", "[ size {2} [0] {2021-12-31T23:59:59 +0100} [1] {2020-12-24T18:56:12 +0100} ] ", props.get("array"));
+      assertEquals(Integer.valueOf(2), Integer.valueOf(props.size()));
+      assertEquals("2022-01-06T12:34:56 +0100", props.get("simple"));
+      assertEquals("[ size {2} [0] {2021-12-31T23:59:59 +0100} [1] {2020-12-24T18:56:12 +0100} ] ", props.get("array"));
    }
 
 
@@ -154,9 +156,9 @@ public class LoggingUtilTest extends TestCase {
 
       assertNull(LoggingUtil.addLogging("nullProps", 1.2, null));
       assertNull(LoggingUtil.addLogging("nullProps", new double[] {1.2, 1.1}, null));
-      assertEquals("size", Integer.valueOf(2), Integer.valueOf(props.size()));
-      assertEquals("simple", "1.2", props.get("simple"));
-      assertEquals("array", "[ size {2} [0] {10.0} [1] {0.1} ] ", props.get("array"));
+      assertEquals(Integer.valueOf(2), Integer.valueOf(props.size()));
+      assertEquals("1.2", props.get("simple"));
+      assertEquals("[ size {2} [0] {10.0} [1] {0.1} ] ", props.get("array"));
    }
 
 
@@ -171,9 +173,9 @@ public class LoggingUtilTest extends TestCase {
 
       assertNull(LoggingUtil.addLogging("nullProps", Double.valueOf(1.2), null));
       assertNull(LoggingUtil.addLogging("nullProps", new Double[] {Double.valueOf(1.2), Double.valueOf(1.1)}, null));
-      assertEquals("size", Integer.valueOf(2), Integer.valueOf(props.size()));
-      assertEquals("simple", "1.2", props.get("simple"));
-      assertEquals("array", "[ size {2} [0] {10.0} [1] {0.1} ] ", props.get("array"));
+      assertEquals(Integer.valueOf(2), Integer.valueOf(props.size()));
+      assertEquals("1.2", props.get("simple"));
+      assertEquals("[ size {2} [0] {10.0} [1] {0.1} ] ", props.get("array"));
    }
 
 
@@ -187,9 +189,9 @@ public class LoggingUtilTest extends TestCase {
 
       assertNull(LoggingUtil.addLogging("nullProps", 0.1f, null));
       assertNull(LoggingUtil.addLogging("nullProps", new float[] {1, 0.9f}, null));
-      assertEquals("size", Integer.valueOf(2), Integer.valueOf(props.size()));
-      assertEquals("simple", "1.2", props.get("simple"));
-      assertEquals("array", "[ size {2} [0] {10.0} [1] {0.1} ] ", props.get("array"));
+      assertEquals(Integer.valueOf(2), Integer.valueOf(props.size()));
+      assertEquals("1.2", props.get("simple"));
+      assertEquals("[ size {2} [0] {10.0} [1] {0.1} ] ", props.get("array"));
    }
 
 
@@ -204,9 +206,9 @@ public class LoggingUtilTest extends TestCase {
 
       assertNull(LoggingUtil.addLogging("nullProps", Float.valueOf(1.2f), null));
       assertNull(LoggingUtil.addLogging("nullProps", new Float[] {Float.valueOf(2.1f), Float.valueOf(1.1f)}, null));
-      assertEquals("size", Integer.valueOf(2), Integer.valueOf(props.size()));
-      assertEquals("simple", "1.2", props.get("simple"));
-      assertEquals("array", "[ size {2} [0] {10.0} [1] {0.1} ] ", props.get("array"));
+      assertEquals(Integer.valueOf(2), Integer.valueOf(props.size()));
+      assertEquals("1.2", props.get("simple"));
+      assertEquals("[ size {2} [0] {10.0} [1] {0.1} ] ", props.get("array"));
    }
 
 
@@ -236,9 +238,9 @@ public class LoggingUtilTest extends TestCase {
 
       assertNull(LoggingUtil.addLogging("nullProps", 1, null));
       assertNull(LoggingUtil.addLogging("nullProps", new int[] {3, 1}, null));
-      assertEquals("size", Integer.valueOf(2), Integer.valueOf(props.size()));
-      assertEquals("simple", "1", props.get("simple"));
-      assertEquals("array", "[ size {2} [0] {10} [1] {1} ] ", props.get("array"));
+      assertEquals(Integer.valueOf(2), Integer.valueOf(props.size()));
+      assertEquals("1", props.get("simple"));
+      assertEquals("[ size {2} [0] {10} [1] {1} ] ", props.get("array"));
    }
 
 
@@ -253,9 +255,9 @@ public class LoggingUtilTest extends TestCase {
 
       assertNull(LoggingUtil.addLogging("nullProps", Integer.valueOf(1), null));
       assertNull(LoggingUtil.addLogging("nullProps", new Integer[] {Integer.valueOf(2), Integer.valueOf(4)}, null));
-      assertEquals("size", Integer.valueOf(2), Integer.valueOf(props.size()));
-      assertEquals("simple", "1", props.get("simple"));
-      assertEquals("array", "[ size {2} [0] {10} [1] {1} ] ", props.get("array"));
+      assertEquals(Integer.valueOf(2), Integer.valueOf(props.size()));
+      assertEquals("1", props.get("simple"));
+      assertEquals("[ size {2} [0] {10} [1] {1} ] ", props.get("array"));
    }
 
 
@@ -270,8 +272,8 @@ public class LoggingUtilTest extends TestCase {
       props = LoggingUtil.addLogging("null", (List<?>)null, props);
 
       assertNull(LoggingUtil.addLogging("null", list, null));
-      assertEquals("size", Integer.valueOf(1), Integer.valueOf(props.size()));
-      assertEquals("list", "[ size {2} [0] {first} [1] {second} ] ", props.get("list"));
+      assertEquals(Integer.valueOf(1), Integer.valueOf(props.size()));
+      assertEquals("[ size {2} [0] {first} [1] {second} ] ", props.get("list"));
    }
 
 
@@ -285,9 +287,9 @@ public class LoggingUtilTest extends TestCase {
 
       assertNull(LoggingUtil.addLogging("nullProps", 1l, null));
       assertNull(LoggingUtil.addLogging("nullProps", new long[] {2l, 1l}, null));
-      assertEquals("size", Integer.valueOf(2), Integer.valueOf(props.size()));
-      assertEquals("simple", "1", props.get("simple"));
-      assertEquals("array", "[ size {2} [0] {10} [1] {1} ] ", props.get("array"));
+      assertEquals(Integer.valueOf(2), Integer.valueOf(props.size()));
+      assertEquals("1", props.get("simple"));
+      assertEquals("[ size {2} [0] {10} [1] {1} ] ", props.get("array"));
    }
 
 
@@ -302,9 +304,9 @@ public class LoggingUtilTest extends TestCase {
 
       assertNull(LoggingUtil.addLogging("nullProps", Long.valueOf(1), null));
       assertNull(LoggingUtil.addLogging("nullProps", new Long[] {Long.valueOf(2), Long.valueOf(1)}, null));
-      assertEquals("size", Integer.valueOf(2), Integer.valueOf(props.size()));
-      assertEquals("simple", "1", props.get("simple"));
-      assertEquals("array", "[ size {2} [0] {10} [1] {1} ] ", props.get("array"));
+      assertEquals(Integer.valueOf(2), Integer.valueOf(props.size()));
+      assertEquals("1", props.get("simple"));
+      assertEquals("[ size {2} [0] {10} [1] {1} ] ", props.get("array"));
    }
 
 
@@ -319,8 +321,8 @@ public class LoggingUtilTest extends TestCase {
       props = LoggingUtil.addLogging("null", (List<?>)null, props);
 
       assertNull(LoggingUtil.addLogging("null", list, null));
-      assertEquals("size", Integer.valueOf(1), Integer.valueOf(props.size()));
-      assertEquals("list", "[ size {2} [firstName] {firstValue} [secondName] {secondValue} ] ", props.get("list"));
+      assertEquals(Integer.valueOf(1), Integer.valueOf(props.size()));
+      assertEquals("[ size {2} [firstName] {firstValue} [secondName] {secondValue} ] ", props.get("list"));
    }
 
 
@@ -369,9 +371,9 @@ public class LoggingUtilTest extends TestCase {
       assertNull(LoggingUtil.addLogging("nullProps", new LoggingTestObject("single"), null));
       assertNull(
             LoggingUtil.addLogging("nullProps", new LoggingTestObject[] {new LoggingTestObject("first"), new LoggingTestObject("second")}, null));
-      assertEquals("size", Integer.valueOf(2), Integer.valueOf(props.size()));
-      assertEquals("simple", "Name {single} ", props.get("simple"));
-      assertEquals("array", "[ size {2} [0] {Name {first} } [1] {Name {second} } ] ", props.get("array"));
+      assertEquals(Integer.valueOf(2), Integer.valueOf(props.size()));
+      assertEquals("Name {single} ", props.get("simple"));
+      assertEquals("[ size {2} [0] {Name {first} } [1] {Name {second} } ] ", props.get("array"));
    }
 
 
@@ -385,9 +387,9 @@ public class LoggingUtilTest extends TestCase {
 
       assertNull(LoggingUtil.addLogging("nullProps", (short)1, null));
       assertNull(LoggingUtil.addLogging("nullProps", new short[] {(short)1, (short)0}, null));
-      assertEquals("size", Integer.valueOf(2), Integer.valueOf(props.size()));
-      assertEquals("simple", "1", props.get("simple"));
-      assertEquals("array", "[ size {2} [0] {10} [1] {1} ] ", props.get("array"));
+      assertEquals(Integer.valueOf(2), Integer.valueOf(props.size()));
+      assertEquals("1", props.get("simple"));
+      assertEquals("[ size {2} [0] {10} [1] {1} ] ", props.get("array"));
    }
 
 
@@ -402,9 +404,9 @@ public class LoggingUtilTest extends TestCase {
 
       assertNull(LoggingUtil.addLogging("nullProps", Short.valueOf("1"), null));
       assertNull(LoggingUtil.addLogging("nullProps", new Short[] {Short.valueOf("3"), Short.valueOf("1")}, null));
-      assertEquals("size", Integer.valueOf(2), Integer.valueOf(props.size()));
-      assertEquals("simple", "1", props.get("simple"));
-      assertEquals("array", "[ size {2} [0] {10} [1] {1} ] ", props.get("array"));
+      assertEquals(Integer.valueOf(2), Integer.valueOf(props.size()));
+      assertEquals("1", props.get("simple"));
+      assertEquals("[ size {2} [0] {10} [1] {1} ] ", props.get("array"));
    }
 
 
@@ -419,9 +421,9 @@ public class LoggingUtilTest extends TestCase {
 
       assertNull(LoggingUtil.addLogging("nullProps", "1", null));
       assertNull(LoggingUtil.addLogging("nullProps", new String[] {"3", "1"}, null));
-      assertEquals("size", Integer.valueOf(2), Integer.valueOf(props.size()));
-      assertEquals("simple", "1", props.get("simple"));
-      assertEquals("array", "[ size {2} [0] {10} [1] {1} ] ", props.get("array"));
+      assertEquals(Integer.valueOf(2), Integer.valueOf(props.size()));
+      assertEquals("1", props.get("simple"));
+      assertEquals("[ size {2} [0] {10} [1] {1} ] ", props.get("array"));
    }
 
 
@@ -436,7 +438,7 @@ public class LoggingUtilTest extends TestCase {
       props = LoggingUtil.addLogging("null", (List<?>)null, props);
 
       assertNull(LoggingUtil.addLogging("null", list, null));
-      assertEquals("size", Integer.valueOf(1), Integer.valueOf(props.size()));
-      assertEquals("list", "[ size {2} [0] {first} [1] {second} ] ", props.get("list"));
+      assertEquals(Integer.valueOf(1), Integer.valueOf(props.size()));
+      assertEquals("[ size {2} [0] {first} [1] {second} ] ", props.get("list"));
    }
 }
