@@ -16,34 +16,13 @@ apply from: 'deploy.gradle'
 
 apply from: 'artifactory.gradle'
 
-apply plugin: 'eclipse'
-
-eclipse.classpath.file {
-    whenMerged {
-        entries.findAll { isModule(it) }.each { it.entryAttributes['module'] = 'true' }
-    }
-}
-
-boolean isModule(entry) {
-    // filter java 9 modules
-    entry.kind == 'lib'  // Only libraries can be modules
-}
-
+apply from: 'eclipse.gradle'
 
 buildscript {
-   repositories {
-       mavenLocal()
-       maven {
-           url 'https://plugins.gradle.org/m2/'
-       }
-       jcenter()
-       google()
-   }
-   dependencies {
-      classpath 'com.android.tools.build:gradle:3.2.1'
-      classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
-    }
+   apply from: 'buildscript.gradle'
 }
+
+apply plugin: 'name.remal.module-info-generator'
 
 sourceSets {
    main {
@@ -62,6 +41,11 @@ dependencies {
    implementation       group: 'org.apache.logging.log4j'         , name: 'log4j-core'                      , version: 'latest.release'
    implementation       group: 'org.apache.logging.log4j'         , name: 'log4j-api'                       , version: 'latest.release'
 
-   testImplementation   group: 'org.junit.jupiter'                , name: 'junit-jupiter-engine'            , version: '5.8.2'
-   testImplementation   group: 'org.easymock'                     , name: 'easymock'                        , version: '4.3'
+   testImplementation   group: 'org.junit.jupiter'                , name: 'junit-jupiter-engine'            , version: "${junitVersion}"
+   testImplementation   group: 'org.easymock'                     , name: 'easymock'                        , version: "${easyMockVersion}"
+}
+
+
+tasks.generateModuleInfo {
+    moduleName = 'mss.utils'
 }
