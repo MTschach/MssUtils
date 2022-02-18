@@ -10,7 +10,7 @@ project.buildscript {
       mysqlConnectorVersion = '8.0.11'
       powerMockVersion = '2.0.9'
       sqliteVersion = '3.7.2'
-      testcontainersVesion = '1.16.3'
+      testcontainersVersion = '1.16.3'
    }
    repositories {
        mavenLocal()
