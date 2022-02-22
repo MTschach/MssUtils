@@ -47,5 +47,9 @@ dependencies {
 
 
 tasks.generateModuleInfo {
-    moduleName = 'mss.utils'
+   moduleName = 'mss.utils'
+   exports {
+      includes.add('de.mss.utils')
+      includes.add('de.mss.utils.*')
+   }
 }
