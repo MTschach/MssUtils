@@ -7,6 +7,7 @@ project.buildscript {
       flywayVersion = '8.0.4'
       jerseyContainerServletVersion = '3.0.4'
       junitVersion = '5.8.2'
+      loggingVersion = '2.17.2'
       mysqlConnectorVersion = '8.0.11'
       powerMockVersion = '2.0.9'
       sqliteVersion = '3.7.2'
