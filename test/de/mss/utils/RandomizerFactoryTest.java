@@ -4,10 +4,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Random;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 public class RandomizerFactoryTest {
 
+   @AfterEach
    public void tearDown() {
       RandomizerFactory.closeAllInstances();
    }

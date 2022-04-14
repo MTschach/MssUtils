@@ -6,7 +6,7 @@ project.buildscript {
       easyMockVersion = '4.3'
       flywayVersion = '8.0.4'
       jerseyContainerServletVersion = '3.0.4'
-      junitVersion = '5.8.2'
+      junitVersion = '5.8.1'
       loggingVersion = '2.17.2'
       mysqlConnectorVersion = '8.0.11'
       powerMockVersion = '2.0.9'
@@ -25,6 +25,6 @@ project.buildscript {
       classpath 'com.android.tools.build:gradle:3.2.1'
       classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
       classpath 'name.remal:gradle-plugins:1.5.0'
-      classpath 'de.jjohannes.gradle:extra-java-module-info:0.10'
+      classpath 'de.jjohannes.gradle:extra-java-module-info:0.11'
     }
 }

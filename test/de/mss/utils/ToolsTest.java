@@ -111,7 +111,9 @@ public class ToolsTest {
          });
          fail("no exception was thrown");
       }
-      catch (final Exception e) {}
+      catch (final Exception e) {
+         Tools.doNullLog(e);
+      }
    }
 
 

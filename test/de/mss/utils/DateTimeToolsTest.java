@@ -21,7 +21,6 @@ public class DateTimeToolsTest {
    private static final String STR_DATE_STRING = "2018-12-11 17:15:35.128";
    private static final String STR_DATE_EN     = "2018-12-11";
    private static final String STR_DATE_DE     = "11.12.2018";
-   private static final String STR_ERROR_CODE  = "ErrorCode";
 
    private void checkDate(Date d, boolean withTime, boolean withSecond, boolean withMillisecond) {
       final GregorianCalendar gc = new GregorianCalendar();

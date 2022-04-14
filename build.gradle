@@ -8,7 +8,7 @@
 
 // Apply the java-library plugin to add support for Java Library
 apply plugin: 'java-library'
-apply plugin: 'maven-publish'
+apply plugin: 'jacoco'
 
 defaultTasks 'build'
 
@@ -22,7 +22,13 @@ buildscript {
    apply from: 'buildscript.gradle'
 }
 
-apply plugin: 'name.remal.module-info-generator'
+apply plugin: 'de.jjohannes.extra-java-module-info'
+apply plugin: "name.remal.module-info-generator"
+
+extraJavaModuleInfo {
+   automaticModule('log4j-api-2.17.2.jar', '')
+   automaticModule('log4j-core-2.17.2.jar', '')
+}
 
 sourceSets {
    main {
@@ -37,19 +43,40 @@ sourceSets {
    }
 }
 
-dependencies {
-   implementation       group: 'org.apache.logging.log4j'         , name: 'log4j-core'                      , version: 'latest.release'
-   implementation       group: 'org.apache.logging.log4j'         , name: 'log4j-api'                       , version: 'latest.release'
+sourceCompatibility=11
+targetCompatibility=11
 
-   testImplementation   group: 'org.junit.jupiter'                , name: 'junit-jupiter-engine'            , version: "${junitVersion}"
-   testImplementation   group: 'org.easymock'                     , name: 'easymock'                        , version: "${easyMockVersion}"
+dependencies {
+   implementation       group: 'org.apache.logging.log4j'                     , name: 'log4j-core'                      , version: "${loggingVersion}"
+   implementation       group: 'org.apache.logging.log4j'                     , name: 'log4j-api'                       , version: "${loggingVersion}"
+
+   testImplementation   group: 'org.junit.jupiter'                            , name: 'junit-jupiter'            , version: "${junitVersion}"
+//   testImplementation   group: 'org.junit.jupiter'                            , name: 'junit-jupiter-engine'            , version: "${junitVersion}"
+//   testImplementation   group: 'org.junit.platform'                           , name: 'junit-platform-launcher'         , version: 'latest.release'
+//   testImplementation group: 'org.junit', name: 'junit-bom', version: '5.4.0-M1', ext: 'pom'
+   
 }
 
+
+jacocoTestReport {
+   dependsOn test
+   reports {
+      xml.required = true
+   }
+}
+
+test {
+    useJUnitPlatform()
+}
 
 tasks.generateModuleInfo {
    moduleName = 'mss.utils'
    exports {
       includes.add('de.mss.utils')
       includes.add('de.mss.utils.*')
+   }
+   requires {
+      add('org.apache.logging.log4j')
+      add('org.apache.logging.log4j.core')
    }
 }

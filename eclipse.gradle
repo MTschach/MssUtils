@@ -1,12 +1,12 @@
 apply plugin: 'eclipse'
 
-eclipse.classpath.file {
-    whenMerged {
-        entries.findAll { isModule(it) }.each { it.entryAttributes['module'] = 'true' }
-    }
-}
-
-boolean isModule(entry) {
-    // filter java 9 modules
-    entry.kind == 'lib'  // Only libraries can be modules
-}
+//eclipse.classpath.file {
+//    whenMerged {
+//        entries.findAll { isModule(it) }.each { it.entryAttributes['module'] = 'true' }
+//    }
+//}
+//
+//boolean isModule(entry) {
+//    // filter java 9 modules
+//    entry.kind == 'lib'  // Only libraries can be modules
+//}

@@ -5,7 +5,8 @@ import java.util.Map;
 
 public class LoggingTestObject implements Logable {
 
-   private final String name;
+   private static final long serialVersionUID = -8266859669093973643L;
+   private final String      name;
 
    public LoggingTestObject(String n) {
       this.name = n;
