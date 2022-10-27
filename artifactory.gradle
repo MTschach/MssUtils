@@ -34,7 +34,7 @@ task callMaven (type: Exec) {
    println ("callMavewn for " + filename)
    if (file.exists()) {
       dependsOn build, generatePomFileForMavenJavaPublication
-      def jarfile = "-Dfile=" + filename
+      def jarfile = '-Dfile=' + filename
       def groupid = '-DgroupId=' + artifact.groupId
       def artifactid = '-DartifactId=' + artifact.artifactId
       def version = '-Dversion=' + artifact.version
