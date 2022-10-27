@@ -43,26 +43,12 @@ public class DateTimeToolsTest {
 
 
    @Test
-   public void testAddDate() throws MssException {
+   public void testAddDate() {
       final java.util.Date tomorrow = DateTimeTools.getTomorrowDate();
-      final java.util.Date date = DateTimeTools.addDate(new java.util.Date(), 1, Calendar.DAY_OF_MONTH);
-      assertTrue(DateTimeTools.isSameDay(tomorrow, date));
+      assertTrue(DateTimeTools.isSameDay(tomorrow, DateTimeTools.addDate(new java.util.Date(), 1, Calendar.DAY_OF_MONTH)));
+      assertTrue(DateTimeTools.isSameDay(tomorrow, DateTimeTools.addDate(null, 1, Calendar.DAY_OF_MONTH)));
 
-      try {
-         DateTimeTools.addDate(null, 1, Calendar.DAY_OF_MONTH);
-         fail();
-      }
-      catch (final MssException e) {
-         assertEquals(2, e.getError().getErrorCode());
-      }
-
-      try {
-         DateTimeTools.addDate(new java.util.Date(), 1, 123);
-         fail();
-      }
-      catch (final MssException e) {
-         assertEquals(3, e.getError().getErrorCode());
-      }
+      assertTrue(DateTimeTools.isSameDay(new java.util.Date(), DateTimeTools.addDate(1, 1234567)));
    }
 
 
@@ -96,7 +82,7 @@ public class DateTimeToolsTest {
 
 
    @Test
-   public void testGetFriday() throws MssException {
+   public void testGetFriday() {
       final GregorianCalendar gc = new GregorianCalendar();
 
       final java.util.Date monday = DateTimeTools.getFridayDate();
@@ -130,7 +116,7 @@ public class DateTimeToolsTest {
 
 
    @Test
-   public void testGetMonday() throws MssException {
+   public void testGetMonday() {
       final GregorianCalendar gc = new GregorianCalendar();
 
       final java.util.Date monday = DateTimeTools.getMondayDate();
@@ -164,7 +150,7 @@ public class DateTimeToolsTest {
 
 
    @Test
-   public void testGetSaturday() throws MssException {
+   public void testGetSaturday() {
       final GregorianCalendar gc = new GregorianCalendar();
 
       final java.util.Date monday = DateTimeTools.getSaturdayDate();
@@ -198,7 +184,7 @@ public class DateTimeToolsTest {
 
 
    @Test
-   public void testGetSunday() throws MssException {
+   public void testGetSunday() {
       final GregorianCalendar gc = new GregorianCalendar();
 
       final java.util.Date monday = DateTimeTools.getSundayDate();
@@ -232,7 +218,7 @@ public class DateTimeToolsTest {
 
 
    @Test
-   public void testGetThursday() throws MssException {
+   public void testGetThursday() {
       final GregorianCalendar gc = new GregorianCalendar();
 
       final java.util.Date monday = DateTimeTools.getThursdayDate();
@@ -266,7 +252,7 @@ public class DateTimeToolsTest {
 
 
    @Test
-   public void testGetTuesday() throws MssException {
+   public void testGetTuesday() {
       final GregorianCalendar gc = new GregorianCalendar();
 
       final java.util.Date monday = DateTimeTools.getTuesdayDate();
@@ -300,7 +286,7 @@ public class DateTimeToolsTest {
 
 
    @Test
-   public void testGetWednesday() throws MssException {
+   public void testGetWednesday() {
       final GregorianCalendar gc = new GregorianCalendar();
 
       final java.util.Date monday = DateTimeTools.getWednesdayDate();

@@ -22,17 +22,25 @@ task publishLocal {
    dependsOn 'publishToMavenLocal'
 }
 
+
 task callMaven (type: Exec) {
-println ("callMavewn for ${project.projectDir}${File.separator}build${File.separator}libs${File.separator}" + artifact.artifactId + '-' + artifact.version + '.jar')
-   def file = new File("${project.projectDir}${File.separator}build${File.separator}libs${File.separator}" + artifact.artifactId + '-' + artifact.version + '.jar')
+   def filename = "${project.projectDir}${File.separator}build${File.separator}libs${File.separator}" + artifact.artifactId + '.jar'
+   def file = new File(filename)
+   if (!file.exists()) {
+      filename = "${project.projectDir}${File.separator}build${File.separator}libs${File.separator}" + artifact.artifactId + '-' + artifact.version + '.jar'
+      file = new File(filename)
+   }
+   
+   println ("callMavewn for " + filename)
    if (file.exists()) {
       dependsOn build, generatePomFileForMavenJavaPublication
-      def jarfile = "-Dfile=${project.projectDir}${File.separator}build${File.separator}libs${File.separator}" + artifact.artifactId + '-' + artifact.version + '.jar'
+      def jarfile = "-Dfile=${project.projectDir}${File.separator}build${File.separator}libs${File.separator}" + artifact.artifactId + '.jar'
       def groupid = '-DgroupId=' + artifact.groupId
       def artifactid = '-DartifactId=' + artifact.artifactId
       def version = '-Dversion=' + artifact.version
       def artifactpath = "-DlocalRepositoryPath=${localArtifactoryPath}${File.separator}"
       commandLine 'mvn', 'install:install-file', groupid, artifactid, version, jarfile, '-Dpackaging=jar', '-DgeneratePom=true', artifactpath, '-DcreateChecksum=true', "-DpomFile=${project.projectDir}${File.separator}build${File.separator}publications${File.separator}mavenJava${File.separator}pom-default.xml"
+      println ("client lib required")
    }
    else {
       commandLine 'echo', 'no client lib required for artifactory'

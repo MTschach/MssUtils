@@ -104,6 +104,7 @@ public class ToolsTest {
       assertEquals("982d9e3eb996f559e633f4d194def3761d909f5a3b647d1a851fead67c32c9d1", Tools.getHash("SHA-256", "text", () -> {
          return new Exception();
       }));
+      assertEquals("fb8e20fc2e4c3f248c60c39bd652f3c1347298bb977b8b4d5903b85055620603", Tools.getHash("SHA-256", "ab", null));
       assertNull(Tools.getHash("blah", "text", null));
       try {
          Tools.getHash("blah", "text", () -> {

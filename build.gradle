@@ -43,18 +43,14 @@ sourceSets {
    }
 }
 
-sourceCompatibility=11
-targetCompatibility=11
+//sourceCompatibility=11
+//targetCompatibility=11
 
 dependencies {
    implementation       group: 'org.apache.logging.log4j'                     , name: 'log4j-core'                      , version: "${loggingVersion}"
    implementation       group: 'org.apache.logging.log4j'                     , name: 'log4j-api'                       , version: "${loggingVersion}"
 
    testImplementation   group: 'org.junit.jupiter'                            , name: 'junit-jupiter'            , version: "${junitVersion}"
-//   testImplementation   group: 'org.junit.jupiter'                            , name: 'junit-jupiter-engine'            , version: "${junitVersion}"
-//   testImplementation   group: 'org.junit.platform'                           , name: 'junit-platform-launcher'         , version: 'latest.release'
-//   testImplementation group: 'org.junit', name: 'junit-bom', version: '5.4.0-M1', ext: 'pom'
-   
 }
 
 

@@ -11,7 +11,9 @@ public class DateTimeTools {
 
    private static java.util.Date nowForTest = null;
 
-   private static GregorianCalendar addDate(GregorianCalendar gc, int diff, int field) throws MssException {
+   private static GregorianCalendar addDate(GregorianCalendar gc, int diff, int field) {
+      final GregorianCalendar ret = gc;
+
       if (diff != 0) {
          switch (field) {
             case Calendar.YEAR:
@@ -23,34 +25,33 @@ public class DateTimeTools {
             case Calendar.HOUR_OF_DAY:
             case Calendar.MINUTE:
             case Calendar.SECOND:
-               gc.set(field, gc.get(field) + diff);
+               ret.set(field, ret.get(field) + diff);
                break;
 
             default:
-               throw new MssException(
-                     new de.mss.utils.exception.Error(ErrorCodes.ERROR_DATE_TIME_FORMAT_UNKNOWN.getErrorCode(), "Unknown field provided"));
+               break;
          }
       }
 
-      return gc;
+      return ret;
    }
 
 
-   public static java.util.Date addDate(int diff, int field) throws MssException {
+   public static java.util.Date addDate(int diff, int field) {
       final GregorianCalendar gc = new GregorianCalendar();
 
       return addDate(gc, diff, field).getTime();
    }
 
 
-   public static java.util.Date addDate(java.util.Date date, int diff, int field) throws MssException {
-      if (date == null) {
-         throw new MssException(
-               new de.mss.utils.exception.Error(ErrorCodes.ERROR_INVALID_PARAM.getErrorCode(), "Parameter date was null"));
+   public static java.util.Date addDate(java.util.Date date, int diff, int field) {
+      java.util.Date ret = date;
+      if (ret == null) {
+         ret = new java.util.Date();
       }
 
       final GregorianCalendar gc = new GregorianCalendar();
-      gc.setTime(date);
+      gc.setTime(ret);
 
       return addDate(gc, diff, field).getTime();
    }
@@ -87,61 +88,61 @@ public class DateTimeTools {
    }
 
 
-   public static java.util.Date getFridayDate() throws MssException {
+   public static java.util.Date getFridayDate() {
       final GregorianCalendar gc = new GregorianCalendar();
 
       return addDate(gc, Calendar.FRIDAY - gc.get(Calendar.DAY_OF_WEEK), Calendar.DAY_OF_WEEK).getTime();
    }
 
 
-   public static java.util.Date getMondayDate() throws MssException {
+   public static java.util.Date getMondayDate() {
       final GregorianCalendar gc = new GregorianCalendar();
 
       return addDate(gc, Calendar.MONDAY - gc.get(Calendar.DAY_OF_WEEK), Calendar.DAY_OF_WEEK).getTime();
    }
 
 
-   public static java.util.Date getSaturdayDate() throws MssException {
+   public static java.util.Date getSaturdayDate() {
       final GregorianCalendar gc = new GregorianCalendar();
 
       return addDate(gc, Calendar.SATURDAY - gc.get(Calendar.DAY_OF_WEEK), Calendar.DAY_OF_WEEK).getTime();
    }
 
 
-   public static java.util.Date getSundayDate() throws MssException {
+   public static java.util.Date getSundayDate() {
       final GregorianCalendar gc = new GregorianCalendar();
 
       return addDate(gc, Calendar.SUNDAY - gc.get(Calendar.DAY_OF_WEEK), Calendar.DAY_OF_WEEK).getTime();
    }
 
 
-   public static java.util.Date getThursdayDate() throws MssException {
+   public static java.util.Date getThursdayDate() {
       final GregorianCalendar gc = new GregorianCalendar();
 
       return addDate(gc, Calendar.THURSDAY - gc.get(Calendar.DAY_OF_WEEK), Calendar.DAY_OF_WEEK).getTime();
    }
 
 
-   public static java.util.Date getTomorrowDate() throws MssException {
+   public static java.util.Date getTomorrowDate() {
       return addDate(1, Calendar.DAY_OF_MONTH);
    }
 
 
-   public static java.util.Date getTuesdayDate() throws MssException {
+   public static java.util.Date getTuesdayDate() {
       final GregorianCalendar gc = new GregorianCalendar();
 
       return addDate(gc, Calendar.TUESDAY - gc.get(Calendar.DAY_OF_WEEK), Calendar.DAY_OF_WEEK).getTime();
    }
 
 
-   public static java.util.Date getWednesdayDate() throws MssException {
+   public static java.util.Date getWednesdayDate() {
       final GregorianCalendar gc = new GregorianCalendar();
 
       return addDate(gc, Calendar.WEDNESDAY - gc.get(Calendar.DAY_OF_WEEK), Calendar.DAY_OF_WEEK).getTime();
    }
 
 
-   public static java.util.Date getYesterdayDate() throws MssException {
+   public static java.util.Date getYesterdayDate() {
       return addDate(-1, Calendar.DAY_OF_MONTH);
    }
 
@@ -152,7 +153,7 @@ public class DateTimeTools {
 
 
    public static boolean isSameDay(java.util.Date date1, java.util.Date date2) {
-      if (date1 == null || date2 == null) {
+      if ((date1 == null) || (date2 == null)) {
          return false;
       }
 
@@ -161,9 +162,9 @@ public class DateTimeTools {
       final GregorianCalendar gc2 = new GregorianCalendar();
       gc2.setTime(date2);
 
-      return gc1.get(Calendar.YEAR) == gc2.get(Calendar.YEAR)
-            && gc1.get(Calendar.MONTH) == gc2.get(Calendar.MONTH)
-            && gc1.get(Calendar.DAY_OF_MONTH) == gc2.get(Calendar.DAY_OF_MONTH);
+      return (gc1.get(Calendar.YEAR) == gc2.get(Calendar.YEAR))
+            && (gc1.get(Calendar.MONTH) == gc2.get(Calendar.MONTH))
+            && (gc1.get(Calendar.DAY_OF_MONTH) == gc2.get(Calendar.DAY_OF_MONTH));
    }
 
 

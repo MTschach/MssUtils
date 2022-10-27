@@ -116,8 +116,8 @@ public class Tools {
    }
 
 
-   public static void doNullLog(Exception e) {
-      //      LogManager.getLogger("default").log(Level.OFF, "Error", e);
+   public static void doNullLog(@SuppressWarnings("unused") Exception e) {
+      // Exception is not logged
    }
 
 
@@ -168,22 +168,22 @@ public class Tools {
 
 
    public static boolean isEmpty(List<?> l) {
-      return l == null || l.isEmpty();
+      return (l == null) || l.isEmpty();
    }
 
 
    public static boolean isEmpty(Map<?, ?> m) {
-      return m == null || m.isEmpty();
+      return (m == null) || m.isEmpty();
    }
 
 
    public static boolean isEmpty(Vector<?> v) {
-      return v == null || v.isEmpty();
+      return (v == null) || v.isEmpty();
    }
 
 
    public static boolean isFalse(Boolean b) {
-      return b != null && Boolean.FALSE.compareTo(b) == 0;
+      return (b != null) && (Boolean.FALSE.compareTo(b) == 0);
    }
 
 
@@ -205,22 +205,22 @@ public class Tools {
 
 
    public static boolean isSet(byte[] b) {
-      return b != null && b.length > 0;
+      return (b != null) && (b.length > 0);
    }
 
 
    public static boolean isSet(Object[] o) {
-      return o != null && o.length > 0;
+      return (o != null) && (o.length > 0);
    }
 
 
    public static boolean isSet(String s) {
-      return s != null && s.length() > 0;
+      return (s != null) && (s.length() > 0);
    }
 
 
    public static boolean isTrue(Boolean b) {
-      return b != null && Boolean.TRUE.compareTo(b) == 0;
+      return (b != null) && (Boolean.TRUE.compareTo(b) == 0);
    }
 
 
