@@ -8,6 +8,7 @@ project.buildscript {
       flywayVersion = '8.0.4'
       httpclientVersion = '4.5.13'
       jacksonVersion = '2.13.4'
+      jacksonMapperVersion = '1.9.13'
       jakartaServletVersion = '6.0.0'
       javaxRsApiVersion = '2.1.1'
       jaxbApiVersion = '2.3.1'
