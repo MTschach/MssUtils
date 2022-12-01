@@ -7,6 +7,7 @@ project.buildscript {
       easyMockVersion = '4.3'
       flywayVersion = '8.0.4'
       httpclientVersion = '4.5.13'
+      httpcoreVersion = '4.4.13'
       jacksonVersion = '2.13.4'
       jacksonMapperVersion = '1.9.13'
       jakartaServletVersion = '6.0.0'
