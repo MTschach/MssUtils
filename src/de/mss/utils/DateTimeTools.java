@@ -1,15 +1,20 @@
 package de.mss.utils;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import de.mss.utils.exception.ErrorCodes;
 import de.mss.utils.exception.MssException;
 
 public class DateTimeTools {
 
-   private static java.util.Date nowForTest = null;
+   private static List<Date> nowForTest      = null;
+   private static int        nowForTestIndex = 0;
 
    private static GregorianCalendar addDate(GregorianCalendar gc, int diff, int field) {
       final GregorianCalendar ret = gc;
@@ -147,8 +152,31 @@ public class DateTimeTools {
    }
 
 
-   public static void initNowForTest(java.util.Date v) {
-      nowForTest = v;
+   public static void initNowForTest(Date v) {
+      if (v == null) {
+         nowForTest = null;
+         return;
+      }
+
+      final List<Date> l = new ArrayList<>();
+      l.add(v);
+      initNowForTest(l);
+   }
+
+
+   public static void initNowForTest(Date[] dates) {
+      if (dates == null) {
+         nowForTest = null;
+         return;
+      }
+
+      initNowForTest(Arrays.asList(dates));
+   }
+
+
+   public static void initNowForTest(List<Date> dates) {
+      nowForTest = dates;
+      nowForTestIndex = 0;
    }
 
 
@@ -169,8 +197,12 @@ public class DateTimeTools {
 
 
    public static java.util.Date now() {
-      if (nowForTest != null) {
-         return nowForTest;
+      if ((nowForTest != null) && !nowForTest.isEmpty()) {
+         final Date ret = nowForTest.get(nowForTestIndex++ );
+         if (nowForTestIndex >= nowForTest.size()) {
+            nowForTestIndex = 0;
+         }
+         return ret;
       }
 
       return new java.util.Date();

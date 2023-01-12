@@ -342,12 +342,20 @@ public class DateTimeToolsTest {
 
    @Test
    public void testNow() throws MssException {
-      final java.util.Date d = DateTimeTools.parseString2Date("2020-07-20 12:34:56");
+      DateTimeTools.initNowForTest((Date)null);
+      final java.util.Date d1 = DateTimeTools.parseString2Date("2020-07-20 12:34:56");
+      final java.util.Date d2 = DateTimeTools.parseString2Date("2020-07-19 01:23:45");
 
       assertEquals(
             DateTimeTools.formatDate(new java.util.Date(), DateTimeFormat.DATE_TIME_FORMAT_DB),
             DateTimeTools.formatDate(DateTimeTools.now(), DateTimeFormat.DATE_TIME_FORMAT_DB));
-      DateTimeTools.initNowForTest(d);
+      DateTimeTools.initNowForTest(d1);
+      assertEquals("2020-07-20 12:34:56", DateTimeTools.formatDate(DateTimeTools.now(), DateTimeFormat.DATE_TIME_FORMAT_DB));
+
+      DateTimeTools.initNowForTest((Date[])null);
+      DateTimeTools.initNowForTest(new Date[] {d1, d2});
+      assertEquals("2020-07-20 12:34:56", DateTimeTools.formatDate(DateTimeTools.now(), DateTimeFormat.DATE_TIME_FORMAT_DB));
+      assertEquals("2020-07-19 01:23:45", DateTimeTools.formatDate(DateTimeTools.now(), DateTimeFormat.DATE_TIME_FORMAT_DB));
       assertEquals("2020-07-20 12:34:56", DateTimeTools.formatDate(DateTimeTools.now(), DateTimeFormat.DATE_TIME_FORMAT_DB));
    }
 
