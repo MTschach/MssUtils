@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import de.mss.utils.exception.ErrorCodes;
@@ -39,6 +40,12 @@ public class DateTimeToolsTest {
       if (withMillisecond) {
          assertEquals(128, gc.get(Calendar.MILLISECOND));
       }
+   }
+
+
+   @AfterEach
+   public void tearDown() {
+      DateTimeTools.initNowForTest((Date)null);
    }
 
 
@@ -78,6 +85,22 @@ public class DateTimeToolsTest {
       assertEquals("11.12.2018 17:15:35", DateTimeTools.formatDate(d, DateTimeFormat.DATE_TIMESTAMP_FORMAT_DE));
       assertEquals("2018-12-11 05:15:35 " + ampm, DateTimeTools.formatDate(d, DateTimeFormat.DATE_TIMESTAMP_FORMAT_EN));
       assertEquals("2018-12-11T17:15:35 +0100", DateTimeTools.formatDate(d, DateTimeFormat.DATE_TIMESTAMP_FORMAT_UTC));
+   }
+
+
+   @Test
+   public void testGetBeginOfDay() {
+      assertEquals(
+            new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + " 00:00:00.000",
+            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(DateTimeTools.getBeginOfDay()));
+   }
+
+
+   @Test
+   public void testGetEndOfDay() {
+      assertEquals(
+            new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + " 23:59:59.000",
+            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(DateTimeTools.getEndOfDay()));
    }
 
 
@@ -401,5 +424,4 @@ public class DateTimeToolsTest {
       d = DateTimeTools.parseString2Date(STR_DATE_DE);
       checkDate(d, false, false, false);
    }
-
 }

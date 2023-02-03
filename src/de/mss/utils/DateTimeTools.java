@@ -93,6 +93,38 @@ public class DateTimeTools {
    }
 
 
+   public static Date getBeginOfDay() {
+      return getBeginOfDay(now());
+   }
+
+
+   public static Date getBeginOfDay(Date day) {
+      final Calendar c = Calendar.getInstance();
+      c.setTime(day != null ? day : now());
+      c.set(Calendar.HOUR, 0);
+      c.set(Calendar.MINUTE, 0);
+      c.set(Calendar.SECOND, 0);
+      c.set(Calendar.MILLISECOND, 0);
+      return c.getTime();
+   }
+
+
+   public static Date getEndOfDay() {
+      return getEndOfDay(now());
+   }
+
+
+   public static Date getEndOfDay(Date day) {
+      final Calendar c = Calendar.getInstance();
+      c.setTime(day != null ? day : now());
+      c.set(Calendar.HOUR, 23);
+      c.set(Calendar.MINUTE, 59);
+      c.set(Calendar.SECOND, 59);
+      c.set(Calendar.MILLISECOND, 0);
+      return c.getTime();
+   }
+
+
    public static java.util.Date getFridayDate() {
       final GregorianCalendar gc = new GregorianCalendar();
 

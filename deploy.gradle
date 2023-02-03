@@ -15,6 +15,14 @@ publishing {
             groupId artifact.groupId
             artifactId artifact.artifactId
             version artifact.version
+            pom.withXml {
+  Node pomNode = asNode()
+  pomNode.dependencies.'*'.findAll() {
+    it.artifactId.text().endsWith ('Shared')
+  }.each() {
+    it.parent().remove(it)
+  }
+}
         }
     }
 }
