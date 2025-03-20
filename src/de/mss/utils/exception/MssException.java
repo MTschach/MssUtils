@@ -75,7 +75,7 @@ public class MssException extends Exception {
    }
 
 
-   protected String getStackTrace(Exception e) {
+   protected String getStackTrace(Throwable e) {
       final StringBuilder sb = new StringBuilder();
 
       for (final StackTraceElement trace : e.getStackTrace()) {

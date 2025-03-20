@@ -20,7 +20,7 @@ project.buildscript {
       loggingVersion = '2.17.2'
       mysqlConnectorVersion = '8.0.11'
       powerMockVersion = '2.0.9'
-      sqliteVersion = '3.7.2'
+      sqliteVersion = '3.49.0.0'
       testcontainersVersion = '1.16.3'
    }
    repositories {

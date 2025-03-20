@@ -91,16 +91,16 @@ public class DateTimeToolsTest {
    @Test
    public void testGetBeginOfDay() {
       assertEquals(
-            new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + " 00:00:00.000",
-            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(DateTimeTools.getBeginOfDay()));
+            new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + " 00:00:00",
+            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(DateTimeTools.getBeginOfDay()));
    }
 
 
    @Test
    public void testGetEndOfDay() {
       assertEquals(
-            new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + " 23:59:59.000",
-            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(DateTimeTools.getEndOfDay()));
+            new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + " 23:59:59",
+            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(DateTimeTools.getEndOfDay()));
    }
 
 

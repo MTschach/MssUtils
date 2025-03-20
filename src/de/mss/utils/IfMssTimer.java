@@ -6,8 +6,8 @@ public interface IfMssTimer {
    public void prepareSleep(long millies);
 
 
-   public void sleep() throws InterruptedException;
+   public void sleep();
 
 
-   public void sleep(long millies) throws InterruptedException;
+   public void sleep(long millies);
 }

@@ -121,6 +121,11 @@ public class Tools {
    }
 
 
+   public static void doNullLog(@SuppressWarnings("unused") Throwable e) {
+      // Exception is not logged
+   }
+
+
    public static String formatLoggingId(String loggingId) {
       return "<" + loggingId + "> ";
    }

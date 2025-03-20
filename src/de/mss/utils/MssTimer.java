@@ -13,21 +13,28 @@ public class MssTimer implements IfMssTimer {
 
 
    @Override
-   public void sleep() throws InterruptedException {
-      if (this.waitUntil <= 0)
+   public void sleep() {
+      if (this.waitUntil <= 0) {
          return;
+      }
 
-      long waitMillies = this.waitUntil - System.currentTimeMillis();
-      if (waitMillies <= 0)
+      final long waitMillies = this.waitUntil - System.currentTimeMillis();
+      if (waitMillies <= 0) {
          return;
+      }
 
       sleep(waitMillies);
    }
 
 
    @Override
-   public void sleep(long millies) throws InterruptedException {
-      Thread.sleep(millies);
+   public void sleep(long millies) {
+      try {
+         Thread.sleep(millies);
+      }
+      catch (final InterruptedException e) {
+         Tools.doNullLog(e);
+      }
    }
 
 }

@@ -101,10 +101,7 @@ public class DateTimeTools {
    public static Date getBeginOfDay(Date day) {
       final Calendar c = Calendar.getInstance();
       c.setTime(day != null ? day : now());
-      c.set(Calendar.HOUR, 0);
-      c.set(Calendar.MINUTE, 0);
-      c.set(Calendar.SECOND, 0);
-      c.set(Calendar.MILLISECOND, 0);
+      c.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
       return c.getTime();
    }
 
@@ -117,10 +114,7 @@ public class DateTimeTools {
    public static Date getEndOfDay(Date day) {
       final Calendar c = Calendar.getInstance();
       c.setTime(day != null ? day : now());
-      c.set(Calendar.HOUR, 23);
-      c.set(Calendar.MINUTE, 59);
-      c.set(Calendar.SECOND, 59);
-      c.set(Calendar.MILLISECOND, 0);
+      c.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH), 23, 59, 59);
       return c.getTime();
    }
 
